@@ -56,13 +56,25 @@ if (Test-Path $secretos) {
     }
     [IO.File]::WriteAllLines($envHermes, [string[]]$lineas, (New-Object Text.UTF8Encoding $false))
 }
-# 5. Consentimiento del hook de tope de delegación (el gateway no pregunta)
+# 5. Consentimiento de los hooks propios (el gateway no pregunta)
 $allow = Join-Path $hermesHome "shell-hooks-allowlist.json"
-$cmdHook = "E:/asistente-hermes/scripts/hook_tope_delegacion.py"
 $al = if (Test-Path $allow) { Get-Content $allow -Raw -Encoding UTF8 | ConvertFrom-Json } else { [pscustomobject]@{ approvals = @() } }
-if (-not ($al.approvals | Where-Object { $_.event -eq "pre_tool_call" -and $_.command -eq $cmdHook })) {
-    $al.approvals = @($al.approvals) + [pscustomobject]@{ event = "pre_tool_call"; command = $cmdHook }
-    [IO.File]::WriteAllText($allow, ($al | ConvertTo-Json -Depth 5), (New-Object Text.UTF8Encoding $false))
-    Write-Output "hook aprobado: $cmdHook"
+$hooks = @(
+    @{ event = "pre_tool_call"; command = "E:/asistente-hermes/scripts/hook_tope_delegacion.py" },
+    @{ event = "pre_llm_call";  command = "E:/asistente-hermes/scripts/hook_aviso_juego.py" }
+)
+$cambio = $false
+foreach ($h in $hooks) {
+    if (-not ($al.approvals | Where-Object { $_.event -eq $h.event -and $_.command -eq $h.command })) {
+        $al.approvals = @($al.approvals) + [pscustomobject]$h
+        $cambio = $true
+        Write-Output "hook aprobado: $($h.event) $($h.command)"
+    }
 }
+if ($cambio) { [IO.File]::WriteAllText($allow, ($al | ConvertTo-Json -Depth 5), (New-Object Text.UTF8Encoding $false)) }
+
+# 6. Vigía de juegos al iniciar sesión (descarga los modelos de la GPU si hay juego)
+$inicio = [Environment]::GetFolderPath("Startup")
+Copy-Item (Join-Path $repo "scripts/vigia.vbs") (Join-Path $inicio "AsistenteVigia.vbs") -Force
+Write-Output "vigía en Inicio"
 Write-Output "aplicar.ps1: listo"
