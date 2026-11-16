@@ -1,0 +1,8 @@
+secretos/
+!secretos/.env.example
+estado/
+.venv/
+__pycache__/
+noticias/
+.superpowers/
+.pytest_cache/
