@@ -6,3 +6,8 @@ model.context_length 64000
 auth.adopt_external_logins false
 telemetry.shared_metrics.enabled false
 telemetry.shared_metrics.send false
+# Subagentes en Claude por la suscripción (plugin claude-subscription-directsdk), con tope por hook
+delegation.provider claude-subscription-directsdk-experimental
+delegation.model sonnet
+delegation.max_iterations 20
+hooks.pre_tool_call [{"matcher":"^delegate_task$","command":"E:/asistente-hermes/scripts/hook_tope_delegacion.py","timeout":30,"fail_closed":true}]

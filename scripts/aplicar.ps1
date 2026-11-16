@@ -20,7 +20,9 @@ foreach ($linea in Get-Content (Join-Path $repo "config\hermes\ajustes.txt") -En
     $clave, $valor = $l -split "\s+", 2
     $actual = (& $hermes config get $clave 2>$null | Out-String).Trim()
     if ($actual -ne $valor) {
-        & $hermes config set $clave $valor | Out-Null
+        # PS 5.1 quita las comillas dobles al pasar argumentos a un .exe: hay que escaparlas
+        & $hermes config set $clave ($valor -replace '"', '\"') | Out-Null
+        if ($LASTEXITCODE -ne 0) { throw "hermes config set $clave fallo" }
         Write-Output "ajuste: $clave = $valor"
     }
 }
@@ -53,5 +55,14 @@ if (Test-Path $secretos) {
         else { $lineas += $nueva; Write-Output "secreto añadido: $k" }
     }
     [IO.File]::WriteAllLines($envHermes, [string[]]$lineas, (New-Object Text.UTF8Encoding $false))
+}
+# 5. Consentimiento del hook de tope de delegación (el gateway no pregunta)
+$allow = Join-Path $hermesHome "shell-hooks-allowlist.json"
+$cmdHook = "E:/asistente-hermes/scripts/hook_tope_delegacion.py"
+$al = if (Test-Path $allow) { Get-Content $allow -Raw -Encoding UTF8 | ConvertFrom-Json } else { [pscustomobject]@{ approvals = @() } }
+if (-not ($al.approvals | Where-Object { $_.event -eq "pre_tool_call" -and $_.command -eq $cmdHook })) {
+    $al.approvals = @($al.approvals) + [pscustomobject]@{ event = "pre_tool_call"; command = $cmdHook }
+    [IO.File]::WriteAllText($allow, ($al | ConvertTo-Json -Depth 5), (New-Object Text.UTF8Encoding $false))
+    Write-Output "hook aprobado: $cmdHook"
 }
 Write-Output "aplicar.ps1: listo"

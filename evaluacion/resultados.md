@@ -31,3 +31,10 @@ Tandas OpenRouter tras comprar créditos; p3 no se envía a OpenRouter (correo =
 - Principal: **gemma4-64k** local (único que pasa p3 con calidad; correo y calendario nunca salen del PC).
 - OpenRouter: **sin fallback automático** (los auxiliares heredarían el texto de correos). Uso manual con `/model` para charla general y noticias: nemotron-3.5-super-vl:free, alternativa ernie-5.5-flash-preview:free.
 - Claude: nivel 2 vía `asistente.claude_tope`.
+
+## Prueba DirectSDK (plugin `claude-subscription-directsdk` 0.3.5, oficial Nous, @6313fad5)
+- Lanza `claude -p` sin herramientas propias de Claude (`--tools ''`, `--max-turns 1`, `--permission-mode dontAsk`, `--setting-sources ''`); las herramientas las ejecuta Hermes. Usa el login de Claude Code (`claude.ai`), sin API key.
+- Directo (`--provider claude-subscription-directsdk-experimental -m sonnet`, "di OK"): funciona, 56 s; 17,1K tokens de escritura en caché + 404 de entrada (≈0,07 $ a precio de lista, cargado a la suscripción).
+- Delegación (padre gemma4-64k local, `delegation.provider` = DirectSDK, `delegation.model` = sonnet): funciona, 48 s. Hijo: 20,2K escritura caché + 13,4K lectura caché + 481 de salida. Uso 5 h: 7 % → 8 % (resolución de 1 %, incluye la sesión de Claude Code abierta).
+- Tope: hook de shell `pre_tool_call` (matcher `^delegate_task$`, `fail_closed`) → `asistente/tope_delegacion.py`: misma regla que `claude_tope` (80 %, dato fresco, tope diario 10), cuenta una llamada por subtarea. Probado de punta a punta: con 10/10 el modelo recibe el bloqueo y lo comunica.
+- Decisión: cumple los 3 criterios (funciona, medible, con tope) → **se queda como vía de subagentes**. `claude_tope` se mantiene para tareas con WebSearch/WebFetch de Claude, que DirectSDK no expone.
