@@ -1,0 +1,4 @@
+{"tope_claude_diario": 10, "umbral_uso": 80, "frescura_uso_h": 5,
+ "juegos": ["Cyberpunk2077.exe", "eldenring.exe"], "umbral_gpu": 70,
+ "retraso_bloque_min": 30, "retraso_max_h": 4,
+ "ruta_uso": "C:\Users\usuario\.claude\uso-5h.json"}
