@@ -1,0 +1,8 @@
+Learning to Reason with LLMs (1654 puntos) https://openai.com/index/learning-to-reason-with-llms/
+DeepSeek-R1: Incentivizing Reasoning Capability in LLMs via RL (1351 puntos) https://arxiv.org/abs/2501.12948
+LLM Visualization (1592 puntos) https://bbycroft.net/llm
+LLMs reward expertise (1416 puntos) https://www.seangoedecke.com/llms-reward-expertise/
+A small number of samples can poison LLMs of any size (1202 puntos) https://www.anthropic.com/research/small-samples-poison
+
+session_id: local-30402ec42feef14ab8f502cb53ee3c81bc568fcb827680c4863326a7bb133505
+segundos=28

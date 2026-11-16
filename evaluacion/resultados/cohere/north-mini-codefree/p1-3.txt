@@ -1,0 +1,23 @@
+**Optimización de Claude Code y Modelos Locales IA en 5 Puntos:**
+
+1. **Resolución de Problemas de Control de Sesiones:** Los últimos cambios corrigieron errores críticos donde los comandos fallaban después de la eliminación del directorio de trabajo, las sesiones en gateways de terceros se bloqueaban por errores de longitud de contexto, y los turnos recientes se perdían al reanudar sesiones después de cierres no limpios.
+
+2. **Estabilidad de Configuración de Modelos:** Se solucionó un bug donde los ajustes de modelo guardados (como `sonnet[1m]`) se reescribían incorrectamente durante nuevas instalaciones con identificadores rechazados por la API, asegurando consistencia en las configuraciones.
+
+3. **Optimización de Comandos de Voz:** Se corrigió la notificación engañosa sobre cambios en el modo de voz cuando las configuraciones globales, archivos `.claude/settings.json`, o ajustes gestionados mantenían el estado original, evitando confusión en el control.
+
+4. **Logros en RL para Razonamiento LLM:** DeepSeek-R1 demostró que se pueden incentivar capacidades de razonamiento avanzadas en LLMs vía aprendizaje por refuerzo, ofreciendo una ruta práctica para mejorar habilidades cognitivas en modelos entrenados localmente.
+
+5. **Reconocimiento de Experticia en LLM:** La investigación revela que los sistemas LLM premian la expertise genuina sobre el contenido superficial, una consideración crucial para optimizar prompts y evalúar resultados en implementaciones locales.
+
+Enlaces:
+- LLM Inevitabilism | 1773 puntos | https://tomrenner.com/posts/llm-inevitabilism/
+- Learning to Reason with LLMs | 1654 puntos | https://openai.com/index/learning-to-reason-with-llms/
+- LLM Visualization | 1592 puntos | https://bbycroft.net/llm
+- LLMs reward expertise | 1416 puntos | https://www.seangoedecke.com/llms-reward-expertise/
+- DeepSeek-R1: Incentivizing Reasoning Capability in LLMs via RL | 1351 puntos | https://arxiv.org/abs/2501.12948
+- A small number of samples can poison LLMs of any size | 1202 puntos | https://www.anthropic.com/research/small-samples-poison
+- LLMs are eroding my software engineering career and I don't know what to do | 1151 puntos | https://human-in-the-loop.bearblog.dev/llms-are-eroding-my-software-engineering-career-and-i-dont-know-what-to-do/
+
+session_id: local-f5f2aea0f880cbfd412ff624a19a67258ba9f71a58866c8c09a510012c7f1b0f
+segundos=10

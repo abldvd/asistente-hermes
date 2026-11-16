@@ -1,0 +1,19 @@
+Aquí tienes los 5 puntos más relevantes del material para alguien interesado en optimizar Claude Code y modelos de IA locales:
+
+1. DeepSeek-R1: Incentivizing Reasoning Capability in LLMs via RL — 1351 puntos — https://arxiv.org/abs/2501.12948
+   Punto clave: el reinforcement learning puede incentivar la capacidad de razonamiento de los LLMs; relevante para quien busca mejorar o destilar modelos de IA locales de razonamiento.
+
+2. A small number of samples can poison LLMs of any size — 1202 puntos — https://www.anthropic.com/research/small-samples-poison
+   Punto clave: un pequeño número de muestras puede envenenar LLMs de cualquier tamaño; clave para el fine-tuning local y la calidad de los datos de entrenamiento.
+
+3. Claude Code changelog (extracto, versión 2.1.325) — sin enlace en el material
+   Punto clave: correcciones relevantes para optimizar Claude Code, como el manejo de errores de context length en gateways de terceros (compactación automática), ajustes en subagents y permisos.
+
+4. LLM Visualization — 1592 puntos — https://bbycroft.net/llm
+   Punto clave: visualización del funcionamiento interno de los LLMs (atención/contexto), útil para optimizar el uso de contextos largos.
+
+5. LLMs reward expertise — 1416 puntos — https://www.seangoedecke.com/llms-reward-expertise/
+   Punto clave: los LLMs rinden mejor cuando el prompt refleja la expertise; relevante para optimizar prompts en Claude Code y modelos locales.
+
+session_id: local-c0fb8e30f704e6556073e8af24e80ac4d0899609c846994d70f077f1cb2254b6
+segundos=221

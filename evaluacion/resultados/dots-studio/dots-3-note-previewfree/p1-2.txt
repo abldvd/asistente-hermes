@@ -1,0 +1,16 @@
+Aquí tienes el resumen en 5 puntos, con la información más relevante para quien busca optimizar Claude Code y modelos de IA locales:
+
+---
+
+1. **La expertise de dominio es la clave para sacarle provecho a un LLM** — Los LLMs convierten a cualquiera en un generalista, pero quien tiene conocimiento profundo del área puede dirigir el modelo con mucha más precisión y extraerle mucho más valor. El humano es el cuello de botella, no el modelo: la información ya está en el modelo, pero hace falta un ser humano inteligente para sacarla. https://www.seangoedecke.com/llms-reward-expertise/
+
+2. **El razonamiento se entrena con RL, no solo con preentrenamiento** — El modelo o1 de OpenAI demuestra que el aprendizaje por refuerzo (RL) enseña al modelo a usar su *chain of thought* de manera productiva: corrige errores, divide problemas en pasos más simples y prueba enfoques distintos. El rendimiento mejora consistentemente con más compute de entrenamiento y con más tiempo de pensamiento en inference. https://openai.com/index/learning-to-reason-with-llms/
+
+3. **DeepSeek-R1 muestra cómo RL puede despertar razonamiento en modelos locales** — El paper de DeepSeek presenta un método para incentivar la capacidad de razonamiento en LLMs mediante RL, una ruta que es especialmente relevante para entrenar modelos locales con capacidades de razonamiento sin depender de proveedores cerrados. https://arxiv.org/abs/2501.12948
+
+4. **Comprender los componentes internos del modelo ayuda a optimizarlo** — La herramienta de visualización interactiva muestra los componentes del transformer (embedding, layer norm, self attention, projection, MLP, softmax) y permite explorar modelos como GPT-2, nano-gpt y GPT-3, lo que facilita entender el comportamiento del modelo para optimizarlo. https://bbycroft.net/llm
+
+5. **No hay inevitabilidad: se tienen opciones sobre cómo usar la IA** — El article critma la narrativa de que los LLMs son inevitables y que lo único sensato es adaptarse a ese futuro. Defiende que se tienen opciones sobre cómo construir el futuro y cómo usar las máquinas, en lugar de simplemente seguir la corriente de figuras como Zuckerberg o Andrew Ng que encuadran la conversación como "cómo adaptarse" y no "qué futuro queremos". https://tomrenner.com/posts/llm-inevitabilism/
+
+session_id: local-2202e2ae031cc7fde1c7ffa2c4e524d15673567ab4a14f0df088c5684c430dc4
+segundos=92

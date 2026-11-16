@@ -1,0 +1,10 @@
+Archivos .md bajo `E:\asistente-hermes\docs` (y subcarpetas):
+
+1. `docs\2026-11-16-asistente-hermes-design.md` — documento de diseño del asistente.
+2. `docs\notas-hermes.md` — notas de instalación y diferencias con el plan.
+3. `docs\superpowers\plans\2026-11-16-nucleo.md` — plan de implementación del núcleo (incluye la especificación de la compuerta).
+
+La "compuerta" de tareas programadas (`asistente/compuerta.py`, Task 4 del plan) es el módulo que decide, en cada ejecución del cron de Hermes (cada 30 min), si una tarea programada debe correr ahora o no. Evalúa el estado guardado por tarea (`compuerta_<tarea>.json`): si ya se ejecutó hoy devuelve `HECHO`; si ya se saltó, `YA_SALTADO`; si hay juego abierto o no hay cuota de Claude, registra el primer intento y devuelve `ESPERAR` — o `SALTAR` si ya pasaron más de 4 horas desde ese primer intento; en cualquier otro caso devuelve `EJECUTAR`. Así los cron pueden dispararse con frecuencia sin riesgo de duplicados, y se recuperan de ejecuciones perdidas (PC apagado) y de retrasos por juego/cuota sin necesidad de un disparador de Windows aparte.
+
+session_id: local-88ec34ad6fc47e3daf8bdcdeb1bf71dcb42f90f802960b0de9fbcd1e4a88d10a
+segundos=20

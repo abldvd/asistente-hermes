@@ -1,0 +1,12 @@
+1. Claude Code changelog (extracto): correcciones clave para optimizar su uso — manejo de modelos (opusplan/haiku, sonnet[1m]), subagents con modelo propio y lecturas de archivo/resultados MCP dimensionados con el modelo correcto, compactado de contexto en gateways de terceros y Foundry, y /voice gobernado por los settings del proyecto. Sin enlace en el material proporcionado.
+
+2. DeepSeek-R1: Incentivizing Reasoning Capability in LLMs via RL: razonamiento en LLMs incentivado mediante aprendizaje por refuerzo, base relevante para trabajar con modelos locales de razonamiento. https://arxiv.org/abs/2501.12948
+
+3. Learning to Reason with LLMs (OpenAI): sobre el desarrollo del razonamiento en modelos de lenguaje; útil para optimizar cómo se instruye y se usa Claude Code en tareas complejas. https://openai.com/index/learning-to-reason-with-llms/
+
+4. LLMs reward expertise: los modelos premian la experiencia del usuario; aplicar conocimiento de dominio y prompting experto mejora los resultados con Claude Code. https://www.seangoedecke.com/llms-reward-expertise/
+
+5. A small number of samples can poison LLMs of any size (Anthropic): pocos ejemplos maliciosos pueden corromper modelos de cualquier tamaño; advertencia de seguridad al fine-tunear o usar modelos locales con datos externos. https://www.anthropic.com/research/small-samples-poison
+
+session_id: local-ab8b0c752f7e2fe0ac04d5e75462d7a35f886f50cd51bfda8d27c730e26a69f3
+segundos=20

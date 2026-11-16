@@ -1,0 +1,14 @@
+**Optimización de Claude Code y Modelos de IA Locales - Resumen en 5 Puntos**
+
+1. **Actualizaciones Claude Code 2.1.325 para Optimización**: Corrección de problemas de decodificación zstd, mejoras en manejo de notebooks Jupyter, gestión de políticas organizacionales, y fixes críticos para modelos multi-agente y sesiones en gateways (https://github.com/anthropics/claude-code-changelog#2-1-325)
+
+2. **DeepSeek-R1: Avances Clave en Optimización de Razonamiento**: DeepSeek-R1 utiliza RL para incentivar capacidad de razonamiento en LLMs, mostrando que el entrenamiento con solo 7M parámetros supera a modelos más grandes - relevante para optimization local (https://arxiv.org/abs/2501.12948)
+
+3. **Recompensa de Experticia en LLMs**: Los modelos premian expertise sobre simple inferencia estadística, destacando la importancia de datasets de alta calidad para optimizar performance local (https://www.seangoedecke.com/llms-reward-expertise/)
+
+4. **Aprendizaje de Razonamiento con LLMs**: OpenAI demuestra que aprender a razonar mejora significativamente performance - clave para optimizar modelos locales con capacidad de resolución de problemas (https://openai.com/index/learning-to-reason-with-llms/)
+
+5. **Seguridad en Pequenos Datos de Entrenamiento**: Investigación revela que pocas muestras pueden envenenar LLMs de cualquier tamaño - esencial considerar para datasets locales (https://www.anthropic.com/research/small-samples-poison)
+
+session_id: local-44cb5f8853b0490a1d9c781c9dff6e8ba8bab6af84e28daad7d1180ab9d67fc6
+segundos=13

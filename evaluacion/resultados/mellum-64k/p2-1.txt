@@ -1,0 +1,4 @@
+La “compuerta” de tareas programadas es el mecanismo de ejecución automática de flujos de trabajo en Hermes Agent según horarios o triggers definidos, actuando como puerta de entrada para lanzar tareas recurrentes sin intervención manual.
+
+session_id: local-24411b4ae489e9c6143bdd6512637bc076d5df453349f27f0220db9d8549f4a4
+segundos=184

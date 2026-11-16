@@ -1,0 +1,8 @@
+1. Optimiza el razonamiento de LLMs con enfoques de aprendizaje profundo descritos en https://openai.com/index/learning-to-reason-with-llms/
+2. Aplica técnicas de recompensa por razonamiento mediante RL inspiradas en el paper de DeepSeek-R1 https://arxiv.org/abs/2501.12948
+3. Mejora modelos locales aprendiendo de la recompensa de expertise según https://www.seangoedecke.com/llms-reward-expertise/
+4. Evita la contaminación por pequeños conjuntos de datos al entrenar modelos locales, como se adverte en https://www.anthropic.com/research/small-samples-poison
+5. Visualiza y depura modelos LLM usando herramientas de https://bbycroft.net/llm
+
+session_id: local-61539875c869eae423086138df17145231f8276b80bcbe185c3fd5c49cb42c40
+segundos=29

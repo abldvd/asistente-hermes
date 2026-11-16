@@ -1,0 +1,8 @@
+La **compuerta de tareas programadas** es el mecanismo de control previo a la ejecución de cada cron de Hermes que:
+
+1. **Verifica el consumo de Claude** (`uso-5h.json` ≥ 80 % → retrasa Job Hunter en bloques de 30 min hasta 4 h; bloquea subagentes Claude).
+2. **Detecta juego activo** (proceso + GPU ocupada) → posterga la tarea cron con la misma lógica de reintento y avisa por Telegram.
+3. **Ejecuta el gateway de Hermes** (instalado como tarea de Windows al iniciar sesión), que es quien lanza realmente el cron interno solo si pasa las comprobaciones.
+
+session_id: local-985c61c1de7046360b6464da4e19f49de214048fe7a5ba153e4c72ef353cc5d0
+segundos=33

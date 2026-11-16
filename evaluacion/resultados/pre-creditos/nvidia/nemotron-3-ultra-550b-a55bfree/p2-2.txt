@@ -1,0 +1,11 @@
+**Archivos .md en `E:\asistente-hermes\docs`:**
+- `docs\2026-11-16-asistente-hermes-design.md` (diseño principal)
+- `docs\notas-hermes.md`
+- `docs\superpowers\plans\2026-11-16-nucleo.md`
+
+---
+
+La **compuerta** (gateway) es una **tarea programada de Windows llamada `Hermes_Gateway` que se dispara al iniciar sesión**. Ejecuta `hermes gateway install` y **mantiene vivo el cron interno de Hermes** dentro de ese proceso gateway; así todas las tareas programadas del asistente (Job Hunter 08:00, noticias 08:30, correo diario, etc.) corren bajo ese único demonio en lugar de como tareas separadas de Windows.
+
+session_id: local-de9691029d8678eda48ab0df4fff1612c216b2cdac25cdb1fa073ead49923209
+segundos=21

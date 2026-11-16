@@ -1,0 +1,12 @@
+Archivos .md en docs (3 en total):
+
+    E:\asistente-hermes\docs\2026-11-16-asistente-hermes-design.md
+    E:\asistente-hermes\docs\notas-hermes.md
+    E:\asistente-hermes\docs\superpowers\plans\2026-11-16-nucleo.md
+
+Qué hace la compuerta de tareas programadas (Task 4 del plan del núcleo):
+
+Cada cron de Hermes corre cada 30 min dentro de una ventana (p. ej. 08:00–23:30) y una función `decidir()` evalúa si ejecuta. Si hay un juego abierto o falta cuota de Claude, la tarea espera y va acumulando retraso; cuando supera el máximo (4 h) se salta y avisa, o si el usuario la marca como hecha no repite. Así cubre tanto los retrasos por GPU/cuota como las ejecuciones perdidas con el PC apagado, sin depender de un disparador de Windows.
+
+session_id: local-aaa5e3e547aa4b4b7b8853c544386f33b0eaaf6e633e1a543114a7d90171ae3a
+segundos=15

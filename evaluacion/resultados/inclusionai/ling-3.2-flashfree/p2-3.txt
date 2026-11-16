@@ -1,0 +1,9 @@
+Archivos .md encontrados (3):
+- E:\asistente-hermes\docs\2026-11-16-asistente-hermes-design.md
+- E:\asistente-hermes\docs\notas-hermes.md
+- E:\asistente-hermes\docs\superpowers\plans\2026-11-16-nucleo.md
+
+La "compuerta" (design doc, líneas 143-145): antes de cada tarea cron corre un script previo que decide si la tarea se ejecuta, se retrasa o se salta. Comprueba si hay un juego abierto (lista de procesos configurable + GPU ocupada por encima de un umbral) y si la cuota de Claude (`uso-5h.json`) está al 80 % o más. Si hay juego o cuota alta, la tarea se retrasa en bloques de 30 min hasta un máximo de 4 h; si nunca se libera, se salta y se avisa por Telegram. En el plan del núcleo se materializa como `asistente\compuerta.py`, que imprime `DECISION: EJECUTAR/ESPERAR/SALTAR/HECHO` y guarda el estado por tarea en JSON.
+
+session_id: local-6533dc6e454e66c905b0267a9f6792daed6fdb1d0b348928afcdeb0719523560
+segundos=85

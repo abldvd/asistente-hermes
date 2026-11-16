@@ -1,0 +1,9 @@
+Los archivos .md en `E:\asistente-hermes\docs` son:
+- `2026-11-16-asistente-hermes-design.md`
+- `notas-hermes.md`
+- `superpowers/plans/2026-11-16-nucleo.md`
+
+La "compuerta" de tareas programadas es el mecanismo de control que gestiona la ejecución de los jobs diarios (como Job Hunter y Noticias) validando condiciones previas: si la GPU está ocupada por un juego o si la cuota de Claude supera el 80%, la tarea se retrasa en bloques de 30 minutos (hasta un máximo de 4 horas) o se omite. Además, el `Hermes_Gateway` actúa como la tarea de Windows persistente que mantiene vivo el cron interno de Hermes al iniciar sesión.
+
+session_id: local-0fca4dd2840446c9d2a067209275e366db56d0a48c40b9cf790815b978b2b7b1
+segundos=43

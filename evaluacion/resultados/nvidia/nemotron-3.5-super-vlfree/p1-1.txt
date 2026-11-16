@@ -1,0 +1,12 @@
+1. DeepSeek-R1 muestra cómo el aprendizaje por refuerzo (RL) incentiva la capacidad de razonamiento en LLMs, base para ajustar modelos locales de razonamiento. https://arxiv.org/abs/2501.12948
+
+2. OpenAI describe cómo los LLMs aprenden a razonar, útil para configurar y optimizar el uso de herramientas como Claude Code. https://openai.com/index/learning-to-reason-with-llms/
+
+3. Los LLMs premian la experiencia del usuario: cuanto más se sabe, más se saca de modelos como Claude Code. https://www.seangoedecke.com/llms-reward-expertise/
+
+4. La visualización de LLM explica el funcionamiento interno de los modelos, clave para entender y ajustar IA local. https://bbycroft.net/llm
+
+5. Un número pequeño de muestras puede envenenar LLMs de cualquier tamaño, un riesgo de seguridad al usar o ajustar modelos locales. https://www.anthropic.com/research/small-samples-poison
+
+session_id: local-fed480128fe8283c1fc28985d75144f4c9bc7a52d9f8d2dd8cb838581b9edca3
+segundos=22

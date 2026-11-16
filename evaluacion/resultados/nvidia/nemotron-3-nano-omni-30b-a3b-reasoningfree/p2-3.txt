@@ -1,0 +1,4 @@
+La "compuerta" de tareas programadas es el cron integrado en Hermes Agent que ejecuta diariamente Job Hunter (08:00) y Noticias (08:30), gestionando su ejecución, desactivando tareas de Windows para evitar duplicados y asegurando que los modelos locales respeten límites de contexto, con integración en Telegram y configuración de fuentes/temas.
+
+session_id: local-4359c9d49f414ffe91b6970987dd72219a8ca3167f17530fa1d20976b073008a
+segundos=45

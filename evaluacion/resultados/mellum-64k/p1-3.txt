@@ -1,0 +1,8 @@
+DeepSeek-R1: Incentivizing Reasoning Capability in LLMs via RL (arxiv.org/abs/2501.12948) – usa RL para mejorar el razonamiento, clave para optimizar modelos locales de Claude Code.  
+A small number of samples can poison LLMs of any size (www.anthropic.com/research/small-samples-poison) – destaca la sensibilidad a datos limitados, importante para curar modelos locales con pocos ejemplos.  
+LLMs reward expertise (www.seangoedecke.com/llms-reward-expertise/) – indica que datos expertos mejoran el rendimiento, útil para entrenar variantes locales de Claude Code.  
+Learning to Reason with LLMs (openai.com/index/learning-to-reason-with-llms/) – describe técnicas para mejorar el razonamiento de LLMs, aplicables a la optimización de la funcionalidad de razonamiento de Claude Code.  
+LLM Inevitabilism (tomrenner.com/posts/llm-inevitabilism/) – argumenta el progreso inevitable de LLMs, justificando invertir en optimización local de modelos como Claude Code.
+
+session_id: local-12643b78ee0c455f4d7f299150ab92a2f44f53172e0ec51e592ab5188fc955bf
+segundos=32

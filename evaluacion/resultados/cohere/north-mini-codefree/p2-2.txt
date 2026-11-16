@@ -1,0 +1,10 @@
+I found 3 .md files in E:\asistente-hermes\docs:
+
+- E:\asistente-hermes\docs\superpowers\plans\2026-11-16-nucleo.md
+- E:\asistente-hermes\docs\notas-hermes.md  
+- E:\asistente-hermes\docs\2026-11-16-asistente-hermes-design.md
+
+Based on the design document, the "scheduled task gate" is the Hermes gateway mechanism. It's installed as a Windows scheduled task (named `Hermes_Gateway`) that runs at user login and acts as the central control point for all other scheduled tasks (Job Hunter, news, email, calendar, etc.). The gate manages task execution, monitors system conditions (like if someone is gaming), and controls when tasks can run and how they interact with the local Ollama model vs Claude API.
+
+session_id: local-f0a5a0553c8bfc77de894a626eae869cfcfc51faae0c3defae878b3687615c04
+segundos=28

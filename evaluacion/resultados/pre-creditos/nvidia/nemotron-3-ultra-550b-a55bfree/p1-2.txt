@@ -1,0 +1,12 @@
+1. **DeepSeek-R1: Incentivizing Reasoning Capability in LLMs via RL** (1351 pts) — Paper clave para modelos locales: muestra cómo el refuerzo puro (sin SFT) desarrolla capacidades de razonamiento emergentes; base para optimizar modelos locales tipo R1. https://arxiv.org/abs/2501.12948
+
+2. **Learning to Reason with LLMs** (1654 pts) — OpenAI documenta cómo el entrenamiento en cadena de pensamiento (o1) mejora razonamiento complejo; guía directa para configurar prompts y flujos en Claude Code que aprovechen reasoning nativo. https://openai.com/index/learning-to-reason-with-llms/
+
+3. **Claude Code 2.1.325 — Fixes críticos para optimización local** — Corrige: subagentes con modelo propio movidos a plan-mode incorrectamente; subagentes en modelo distinto dimensionando lecturas/MCP con modelo principal; sesiones en gateways de terceros/Foundry fallando por contexto en vez de compactar; warnings de permisos y MCP registrados como "vistos" sin serlo. https://github.com/anthropics/claude-code/releases/tag/2.1.325
+
+4. **LLMs reward expertise** (1416 pts) — Argumenta que LLMs amplifican, no sustituyen, expertise técnico; para optimizar Claude Code: invierte en prompts precisos, arquitectura de contexto y validación humana — el modelo premia quien sabe dirigirlo. https://www.seangoedecke.com/llms-reward-expertise/
+
+5. **A small number of samples can poison LLMs of any size** (1202 pts) — Anthropic demuestra que pocos ejemplos maliciosos en fine-tuning/data poisoning comprometen modelos de cualquier escala; implica validación estricta de datos de entrenamiento y contextos en pipelines locales. https://www.anthropic.com/research/small-samples-poison
+
+session_id: local-a44d8de32b59b2eb5d7e65f699740703c6471fae5af203826b1bd888a1d2c8be
+segundos=25

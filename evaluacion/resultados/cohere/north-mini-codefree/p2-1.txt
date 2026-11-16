@@ -1,0 +1,12 @@
+The task gate is a control system that manages when tasks can run based on resource constraints like Claude usage limits, game states, and overdue usage tracking.
+
+Key gate mechanisms:
+- **Claude usage gate**: Checks `uso-5h.json` to prevent runs when Claude quota exceeds 80% or daily call limit (default 10 calls) reached
+- **Game gate**: Delays tasks by 30-minute blocks up to 4 hours if a configured game is running, to prevent GPU conflict
+- **Recovery gate**: Has Windows start-up trigger for tasks missed due to cron failures
+- **Delay gate**: Postpones tasks by 30-minute blocks (up to 4 hours) when resources are constrained
+
+The gate ensures tasks execute only when resources are available and before the user-specified thresholds, preventing overconsumption and conflicts while maintaining reliability through fallback triggers.
+
+session_id: local-0e81fd3a8c24dcd05f9862099f3e2842d91099b82c3d1a970d3d23dc4682be15
+segundos=18

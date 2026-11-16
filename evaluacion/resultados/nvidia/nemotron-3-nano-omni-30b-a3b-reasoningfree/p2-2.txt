@@ -1,0 +1,6 @@
+La “compuerta” es el conjunto de tareas programadas (cron) que Hermes ejecuta automáticamente en los horarios definidos.  
+Ejecutan acciones recurrentes como el Job Hunter, la recopilación de noticias y el procesamiento del correo.  
+Estas operaciones se realizan sin intervención manual, garantizando que el asistente realice sus rutinas diarias de forma continua.
+
+session_id: local-bf11ba0b422f22b759360261a2976cd8494dcee3f3ff5bb6b5769ba0c4d33a4e
+segundos=63

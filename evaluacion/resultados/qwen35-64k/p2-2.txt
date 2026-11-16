@@ -1,0 +1,10 @@
+## Compuerta de tareas programadas
+
+Según el diseño, es el mecanismo que ejecuta los **crons de Hermes** al dispararse:
+
+1. **Arranca un script previo** que verifica si hay juego abierto (GPU sobrecargada) y, según el resultado, ejecuta la tarea inmediatamente, la retrasa o la salta.
+2. **Hermes_Gateway** (la tarea maestra que vive dentro del gateway) recibe el comando y ejecuta, por ejemplo, el **cron del Job Hunter** a las 08:00 (o cualquier otro cron de submódulo).
+3. **La tarea de Hermes corre con el modelo local o subagentes**, haciendo que el script del Job Hunter (`E:\job-hunter`) se ejecute, procese y devuelva su resumen por Telegram.
+
+session_id: local-c58354e2da17a18315b4e0d1e775a0c77a837c9564a37411912623bc1db5803d
+segundos=19

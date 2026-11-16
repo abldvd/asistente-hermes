@@ -1,0 +1,23 @@
+Aquí tienes los 5 puntos más relevantes para optimizar Claude Code y trabajar con modelos de IA locales, usando solo el material entregado:
+
+1. Los LLM recompensan la pericia (expertise)
+   El artículo sostiene que los modelos rinden mejor cuando el usuario aporta conocimiento experto; optimizar Claude Code pasa por dirigirlo con criterio, no por delegar a ciegas.
+   https://www.seangoedecke.com/llms-reward-expertise/
+
+2. Changelog de Claude Code 2.1.325 (extracto)
+   Correcciones clave para quien lo optimiza: seguridad al decodificar respuestas zstd; subagentes con modelo propio que ya no se reasignan a `opusplan`/`haiku` ni dimensionan lecturas/MCP con el modelo de la sesión principal; compactación en gateways de terceros y Foundry en vez de fallar por longitud de contexto; recuperación de turnos tras cierres no limpios; y avisos más claros cuando la política de la organización bloquea una petición (indica usar `/rewind` o `/clear`). (Sin enlace en el material.)
+
+3. Visualización de LLM
+   Recurso interactivo para ver por dentro cómo funciona un LLM; útil para entender el comportamiento de modelos locales y ajustar expectativas al optimizar prompts o configuración.
+   https://bbycroft.net/llm
+
+4. DeepSeek-R1: incentivar razonamiento mediante RL
+   Explica cómo se induce capacidad de razonamiento en los LLM con aprendizaje por refuerzo; referencia directa para evaluar y aprovechar modelos de razonamiento locales.
+   https://arxiv.org/abs/2501.12948
+
+5. Learning to Reason with LLMs (OpenAI)
+   Aborda el entrenamiento de modelos para razonar; contexto para elegir y configurar modelos con mayor capacidad de razonamiento en flujos como Claude Code.
+   https://openai.com/index/learning-to-reason-with-llms/
+
+session_id: local-00dd64dd1e07dc98624a534681dcc7f65aff7da4cf955f58b631c3f63f3c482f
+segundos=21

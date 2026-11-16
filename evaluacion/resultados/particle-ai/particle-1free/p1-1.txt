@@ -1,0 +1,16 @@
+Resumen (5 puntos, solo con lo que hay en el material):
+
+1. Claude Code changelog 2.1.325 — lo más directamente útil para optimizar Claude Code: corrección de un fallo de seguridad al decodificar respuestas comprimidas con zstd; arreglos en subagentes con modelo propio (ya no se les mueve al modelo de plan-mode con `opusplan`/`haiku`, y ya no dimensionan lecturas de ficheros ni resultados MCP con el modelo de la sesión principal); sesiones en gateways de terceros y Foundry que fallaban por longitud de contexto en cada turno en vez de compactar; y arreglos de fiabilidad (turnos perdidos al reanudar sesión, comandos shell tras borrar el directorio de trabajo, planes guardados en carpeta por defecto con aviso). (Este ítem no trae enlace en el material.)
+
+2. DeepSeek-R1: Incentivizing Reasoning Capability in LLMs via RL — referencia clave para quien entrena o elige modelos locales: incentivar la capacidad de razonamiento mediante RL. https://arxiv.org/abs/2501.12948
+
+3. LLM Visualization — visualización interactiva del funcionamiento interno de un LLM, útil para entender qué estás cuantizando/ejecutando en local antes de optimizar. https://bbycroft.net/llm
+
+4. LLMs reward expertise — tesis: los LLM recompensan la pericia de quien los usa; relevante para sacar más partido a Claude Code (la calidad del que dirige el modelo importa). https://www.seangoedecke.com/llms-reward-expertise/
+
+5. A small number of samples can poison LLMs of any size — un número pequeño de muestras puede envenenar modelos de cualquier tamaño: advertencia directa para quien hace fine-tuning o usa datos propios en modelos locales. https://www.anthropic.com/research/small-samples-poison
+
+Nota: de los ítems 2–5 el material solo aporta título y temática, así que los resúmenes se limitan a eso; no hay detalles de resultados que pueda citar sin inventarlos.
+
+session_id: local-ef90934a208a87a177c360ef26d151861b089cb9588efebba8e7298837be50be
+segundos=20

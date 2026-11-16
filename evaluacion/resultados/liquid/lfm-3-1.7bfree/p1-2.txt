@@ -1,0 +1,12 @@
+Aquí tienes el resumen en 5 puntos, solo usando la información proporcionada:
+
+1. **Aprender a razonar con LLMs** — El artículo de OpenAI explica cómo entrenar modelos para que puedan razonar de forma autónoma, lo que ayuda a que Claude Code pueda razonar mejor. Enlace: https://openai.com/index/learning-to-reason-with-llms/
+2. **Visualización de LLMs** — Guía de bby croft sobre herramientas para visualizar y entender cómo funcionan los modelos de lenguaje. Enlace: https://bbycroft.net/llm
+3. **LLMs premian la experiencia (expertise)** — Estudio de Sean Decke sobre si los LLMs recompensan la experiencia del dominio, relevante para alinear modelos locales. Enlace: https://www.seangoedecke.com/llms-reward-expertise/
+4. **DeepSeek-R1: RL para incentivar la capacidad de razonamiento** — Preprint arXiv que usa aprendizaje reforzado para mejorar la capacidad de razonamiento en LLMs, aplicable a modelos locales. Enlace: https://arxiv.org/abs/2501.12948
+5. **Un pequeño número de muestras puede envenemar LLMs** — Investigación de Anthropic sobre cómo unos pocos ejemplos pueden corromper modelos de cualquier tamaño, crítico para la calidad de datos locales. Enlace: https://www.anthropic.com/research/small-samples-poison
+
+Nota: el extracto del changelog de Claude Code (fichas perdidas tras cierre sin limpiar, seguridad zstd, etc.) no tiene enlace explícito en el material proporcionado, pero sus correcciones suelen estar documentadas en la versión pública del repositorio.
+
+session_id: local-eb96c5e2d34c8dc78b4caef00880af0b5edef0bb672dfea5553b9a68220b5d40
+segundos=36

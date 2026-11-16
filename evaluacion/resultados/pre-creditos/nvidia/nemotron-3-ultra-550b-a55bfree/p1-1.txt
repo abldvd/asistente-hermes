@@ -1,0 +1,17 @@
+1. **Claude Code 2.1.325: correcciones clave para estabilidad y flujo de trabajo** — Arregla errores en worktrees, subagentes con modelos propios, compactación de contexto en gateways de terceros, pérdida de planes aprobados, y warnings de permisos/MCP; mejora la UX en terminales estrechas y mensajes de error accionables.  
+   https://tomrenner.com/posts/llm-inevitabilism/
+
+2. **DeepSeek-R1: razonamiento en LLMs vía RL puro** — Demuestra que el razonamiento complejo emerge sin fine-tuning supervisado, solo con refuerzo (GRPO); abre camino a modelos locales pequeños que razonan bien sin datos etiquetados costosos.  
+   https://arxiv.org/abs/2501.12948
+
+3. **Learning to Reason with LLMs (OpenAI)** — Analiza cómo el chain-of-thought y el entrenamiento por refuerzo enseñan a los modelos a descomponer problemas, verificar pasos y autocorregirse; base conceptual para optimizar prompts y evaluar modelos locales de razonamiento.  
+   https://openai.com/index/learning-to-reason-with-llms/
+
+4. **LLMs reward expertise** — Los modelos amplifican la pericia del usuario: prompts estructurados, contexto preciso y evaluación iterativa dan resultados desproporcionadamente mejores; clave para sacar rendimiento real a Claude Code y modelos locales.  
+   https://www.seangoedecke.com/llms-reward-expertise/
+
+5. **LLM Inevitabilism** — Argumenta que la integración profunda de LLMs en flujos de trabajo de ingeniería es inevitable; entender la trayectoria (costo→0, contexto→∞, herramientas→nativas) ayuda a decidir qué optimizar hoy vs. qué esperar.  
+   https://tomrenner.com/posts/llm-inevitabilism/
+
+session_id: local-9db26bd90273756c9c42324028890918ec7ba48afe754c98ce7d4f06f29bbe7d
+segundos=27

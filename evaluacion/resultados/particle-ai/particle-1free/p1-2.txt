@@ -1,0 +1,20 @@
+Resumen (5 puntos). Aviso: de los artículos solo tengo el titular y la URL, así que cada descripción se limita a lo que afirma el título; el changelog sí trae detalle real.
+
+1. Claude Code, changelog 2.1.325 — lo más útil si estás ajustando modelos y subagentes: arregla que los subagentes con modelo propio se pasaran al modelo de plan-mode con `opusplan`/`haiku`, y que los subagentes con otro modelo calcularan lecturas de ficheros y resultados MCP con el modelo de la sesión principal. También corrige sesiones en gateways de terceros y Foundry que fallaban por longitud de contexto en cada turno en vez de compactar, y un fallo de seguridad al decodificar respuestas comprimidas con zstd. (Este extracto no incluye enlace.)
+
+2. DeepSeek-R1: Incentivizing Reasoning Capability in LLMs via RL — el paper sobre inducir razonamiento en LLMs mediante aprendizaje por refuerzo, la referencia clave si te interesan modelos de razonamiento abiertos para ejecución local.
+https://arxiv.org/abs/2501.12948
+
+3. LLM Visualization — visualización interactiva del funcionamiento interno de un LLM, útil para entender qué cómputo hay detrás de un modelo pequeño antes de optimizarlo o cuantizarlo.
+https://bbycroft.net/llm
+
+4. LLMs reward expertise — la tesis de que los LLM rinden mucho mejor en manos de quien ya domina el dominio; de aplicación directa a Claude Code: el valor está en el contexto y criterio que aportas, no solo en el prompt.
+https://www.seangoedecke.com/llms-reward-expertise/
+
+5. A small number of samples can poison LLMs of any size (Anthropic) — una pequeña cantidad de muestras puede envenenar modelos de cualquier tamaño; lectura obligatoria antes de afinar o alimentar con datos propios un modelo local.
+https://www.anthropic.com/research/small-samples-poison
+
+Descartados por encarecer menos tu caso: LLM Inevitabilism (https://tomrenner.com/posts/llm-inevitabilism/), Learning to Reason with LLMs (https://openai.com/index/learning-to-reason-with-llms/) y la reflexión sobre la carrera de ingeniería de software (https://human-in-the-loop.bearblog.dev/llms-are-eroding-my-software-engineering-career-and-i-dont-know-what-to-do/).
+
+session_id: local-9c068b97359563edce8daad45d5042a5afbce4d0247ece7f351ba84e4548cae8
+segundos=46

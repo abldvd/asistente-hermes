@@ -1,0 +1,12 @@
+Based on my review of the assistant design document, I can see several "gates" that control scheduled task execution:
+
+1. **Gaming gate (line 143)**: Before each scheduled task runs, a script checks if gaming processes are active or GPU usage exceeds a threshold. If a game is running, tasks are delayed in 30-minute blocks up to 4 hours.
+
+2. **Claude quota gate (line 145)**: When Job Hunter runs, the system first checks if `~/.claude/usage-5h.json` shows Claude usage at ≥80%. If so, the task is delayed in 30-minute blocks up to 4 hours.
+
+3. **Ollama context gate (line 31)**: The system requires ≥64K context for Hermes Agent but Ollama only provides 4,096 by default. This is a hard prerequisite that must be fixed before tasks can run reliably.
+
+These gates prevent tasks from running when system resources are constrained, gaming is active, or cloud quota is nearly exhausted.
+
+session_id: local-279c8e62759a062e3d83fc2948362062a6c5fbafc06cee94d1231eedb4693295
+segundos=26

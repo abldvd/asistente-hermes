@@ -1,0 +1,10 @@
+Los 3 archivos `.md` de `E:\asistente-hermes\docs` son:
+
+1. **`notas-hermes.md`** — notas generales del asistente
+2. **`superpowers/plans/2026-11-16-nucleo.md`** — planificación del núcleo
+3. **`2026-11-16-asistente-hermes-design.md`** — el diseño principal
+
+De este último, la **compuerta de tareas programadas** (p. 68-79) es el mecanismo que orquesta el "motor de cron" de Hermes: una pieza central que toma dos trabajos diarios —Job Hunter a las 08:00 y Noticias a las 08:30—, ejecuta primero un script previo que limpia el estado (para evitar duplicados de Windows y detectar si hay un juego abierto), y dispara al modelo local o a Claude para que procese y resuma. Cada tarea produce un output, se guarda en el buzón de Telegram, y si se pasa de las 4 h de ejecución por un juego, el siguiente ciclo la ignora silenciosamente.
+
+session_id: local-4f5c36e5718ed9399670390bc12590867b577ace9078e47c53b4e3f540cb9a0a
+segundos=21

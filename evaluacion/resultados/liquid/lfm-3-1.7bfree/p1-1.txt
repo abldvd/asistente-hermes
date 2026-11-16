@@ -1,0 +1,14 @@
+Aquí tienes un resumen en 5 puntos, basado exclusivamente en el material que proporcionaste:
+
+1. **Claude Code – parches y correcciones recientes** (Claude Code changelog extracto): se corrigieron fallos de seguridad al descodificar respuestas zstd, se añadió una alerta de re-running de celda en notebooks Jupyter, se mejoró el mensaje cuando la política bloquea la petición (`/rewind` / `/clear`), se arreglaron errores en `git checkout` sandbox, subagentes con su propio modelo, contexto largo, pérdida de turns tras interrupción sin cierre limpio, comandos en directorio de lanzamiento, pérdida de ediciones de plan, reescritura de `sonnet[1m]`, vista focal que ocultaba replies, opciones largas en listas, permisos parciales, advertencias de autenticación de MCP, encabezado de bienvenida con caracteres de control, error rojo al intentar comandos solo ejecutables, estadísticas de `/stats` desactualizadas, informes falsos en `/insights` y `/voice`. *(El extracto está en el repositorio de Claude Code; no tiene enlace externo en el material.)*
+
+2. **Learning to Reason with LLMs** — https://openai.com/index/learning-to-reason-with-llms/ — guía para entrenar y orientar a los LLMs para que puedan razonar paso a paso, clave para modelos de IA locales.
+
+3. **LLM Visualization** — https://bbycroft.net/llm/ — herramientas para visualizar y entender el estado interno de los LLMs.
+
+4. **LLMs reward expertise** — https://www.seangoedecke.com/llms-reward-expertise/ — evidencia de que los LLMs favorecen a quienes poseen experiencia especializada, relevante para despliegues locales.
+
+5. **DeepSeek-R1: Incentivizing Reasoning Capability in LLMs via RL** — https://arxiv.org/abs/2501.12948/ — investigación sobre RL para incentivar la capacidad de razonamiento en LLMs.
+
+session_id: local-6a323bb2629dbae8c319bf0c36281c17e0e4e02827e98666fb921c347b526c21
+segundos=20

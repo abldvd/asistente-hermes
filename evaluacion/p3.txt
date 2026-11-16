@@ -1,0 +1,6 @@
+Hoy es lunes 16 de noviembre de 2026 y tu zona horaria es Atlantic/Canary. Extrae el evento de este correo y responde SOLO con JSON {"titulo":..., "inicio": ISO-8601 con offset, "fin": ISO-8601 con offset}. Si no hay hora de fin, asume 1 hora.
+
+---
+De: Laura Méndez <rrhh@datacanarias.example>
+Asunto: Entrevista técnica - Data Scientist junior
+Hola, te confirmamos la entrevista técnica para el puesto de Data Scientist junior el jueves que viene a las 10:00 en nuestra oficina de Triana (Canarias). Durará aproximadamente hora y media. Un saludo.

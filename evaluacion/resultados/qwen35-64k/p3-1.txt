@@ -1,0 +1,4 @@
+{"titulo":"Entrevista técnica - Data Scientist junior","inicio":"2026-11-19T10:00+01:00","fin":"2026-11-19T11:30+01:00"}
+
+session_id: local-3b63c0a9f2754bd6feda81f05657d954fbd10c1e3f0b549e1ba5453e68e1a8d8
+segundos=13

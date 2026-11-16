@@ -1,0 +1,6 @@
+OpenRouter rejected your API key, so the model can't be reached. Update it in Settings → Providers, or run `hermes setup` in a terminal.
+
+Provider said: HTTP 403: This model is not available in your region.
+
+session_id: local-677e9e399fe977dbba66e12277891d9febac56d0b006261d3a428120874b0ea0
+segundos=4

@@ -1,0 +1,10 @@
+Archivos `.md` en `E:\asistente-hermes\docs` (y subcarpetas):
+
+1. `docs\2026-11-16-asistente-hermes-design.md` — documento de diseño del asistente
+2. `docs\notas-hermes.md`
+3. `docs\superpowers\plans\2026-11-16-nucleo.md` — plan de implementación donde se especifica la compuerta
+
+La "compuerta" es el módulo `asistente/compuerta.py` (función `decidir`) que actúa como guarda antes de lanzar cada tarea cron de Hermes (que corre cada 30 min en una ventana, p. ej. 08:00–23:30). Decide entre `EJECUTAR`, `ESPERAR`, `SALTAR`, `HECHO` o `YA_SALTADO`: si la tarea ya está hecha hoy devuelve `HECHO`; si ya saltó hoy devuelve `YA_SALTADO`; si hay un juego abierto o no hay cuota de Claude (`uso-5h.json` ≥ 80 % o tope diario de 10 llamadas), anota la hora del primer intento y devuelve `ESPERAR` — pasadas 4 h (bloques de 30 min) sin que se despeje, devuelve `SALTAR` y avisa. Reinicia el estado al cambiar de día (cubre ejecuciones perdidas con el PC apagado sin disparador de Windows) y guarda todo atómicamente en `compuerta_<tarea>.json` (tmp + `os.replace`). La CLI imprime `DECISION: <X> — <motivo>` y sale con código 0/10/11/12.
+
+session_id: local-c530e0597ce878ad4ab3629b7fcfe53a84222783dd54024bc302ecc0c3a7eaae
+segundos=27

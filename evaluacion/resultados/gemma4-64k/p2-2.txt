@@ -1,0 +1,9 @@
+Los archivos `.md` en `E:\asistente-hermes\docs` son:
+1. E:/asistente-hermes/docs\superpowers\plans\2026-11-16-nucleo.md
+2. E:/asistente-hermes/docs\notas-hermes.md
+3. E:/asistente-hermes/docs\2026-11-16-asistente-hermes-design.md
+
+La "compuerta" (Gateway) es la tarea `Hermes_Gateway` que se activa al iniciar sesión y aloja el cron interno de Hermes. Su función es orquestar las tareas diarias (como Job Hunter y Noticias) validando condiciones previas: si la GPU está ocupada por un juego o si la cuota de Claude supera el 80%, la tarea se retrasa en bloques de 30 minutos (hasta un máximo de 4 horas) o se omite.
+
+session_id: local-f49429b7ac4f55179cd07526d00c15c24503503c5b49c43b2819456aabb9c316
+segundos=44

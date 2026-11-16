@@ -1,0 +1,20 @@
+Aquí va el resumen en 5 puntos, usando solo lo que trae el material.
+
+1. Claude Code 2.1.325 corrige varios problemas que afectan al rendimiento y a la estabilidad en configuraciones no estándar: los errores de longitud de contexto en gateways de terceros y Foundry ahora compactan en vez de fallar en cada turno; los subagentes con modelo propio ya no se redimensionan al modelo de la sesión principal ni se mueven al modelo de plan-mode con `opusplan`/`haiku`; y los comandos git inline de `/security-review` y de skills funcionan en worktrees de repos bare, checkouts `--separate-git-dir` y `repo` de Android. También se arregla la decodificación de respuestas comprimidas con zstd (seguridad), la pérdida de turnos al reanudar sesiones cerradas sin salida limpia y la pérdida de una edición de plan aprobada cuando `plansDirectory` no puede escribirla (ahora cae a la carpeta por defecto y avisa). Es el extracto del changelog incluido en el material, sin enlace.
+
+2. DeepSeek-R1: el titular es "Incentivizing Reasoning Capability in LLMs via RL", es decir, incentivar capacidad de razonamiento mediante aprendizaje por refuerzo. Es la referencia más directa del material para modelos locales con razonamiento entrenado por RL.
+https://arxiv.org/abs/2501.12948
+
+3. LLM Visualization: "LLM Visualization" (1592 puntos), una explicación visual de cómo funciona un LLM por dentro. Encaja con lo anterior: útil para entender qué hace realmente un modelo local antes de ajustar prompts,采样 o configuración.
+https://bbycroft.net/llm
+
+4. Learning to Reason with LLMs: "Learning to Reason with LLMs" (1654 puntos), de OpenAI. Es el marco general de entrenar razonamiento en modelos de lenguaje, complemento conceptual del punto 2 cuando se comparan enfoques de modelos locales frente a los de laboratorio.
+https://openai.com/index/learning-to-reason-with-llms/
+
+5. A small number of samples can poison LLMs of any size: "A small number of samples can poison LLMs of any size" (1202 puntos), de Anthropic. El aviso operativo del material: no hace falta un dataset grande para degradar un modelo, así que el control de calidad de los datos de ajuste/fine-tuning pesa más que el volumen.
+https://www.anthropic.com/research/small-samples-poison
+
+Otros enlaces del material que no entran en los 5 puntos: "LLMs reward expertise" (https://www.seangoedecke.com/llms-reward-expertise/) e "LLM Inevitabilism" (https://tomrenner.com/posts/llm-inevitabilism/).
+
+session_id: local-f2b8585001583924775affe7de6a54ce2a59d7f6d205bf28fa5477823bd86b30
+segundos=14

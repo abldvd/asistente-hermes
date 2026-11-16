@@ -1,0 +1,8 @@
+1. **Incentivo del razonamiento mediante RL:** El uso de Aprendizaje por Refuerzo (RL) es una técnica clave para incentivar las capacidades de razonamiento en modelos de IA, como se detalla en el caso de DeepSeek-R1. https://arxiv.org/abs/2501.12948
+2. **Gestión de subagentes y contexto en Claude Code:** Se optimizó el manejo de diferentes tamaños de modelos para subagentes y la compactación de contexto para evitar errores de longitud en diversos gateways. Claude Code changelog (extracto)
+3. **Recompensa a la pericia humana:** La optimización de los resultados de los modelos de IA está directamente ligada a la experiencia y pericia del usuario que guía la interacción. https://www.seangoedecke.com/llms-reward-expertise/
+4. **Aprendizaje del razonamiento:** Es fundamental comprender cómo los modelos de IA aprenden a razonar para mejorar su desempeño en tareas complejas. https://openai.com/index/learning-to-reason-with-llms/
+5. **Visualización de modelos:** La visualización de los procesos internos de los LLM permite una mejor comprensión de su funcionamiento para su optimización. https://bbycroft.net/llm
+
+session_id: local-b8806649a02b41a64811131faea899897191aecb8658f1e3931b23f30ff8fcfb
+segundos=69

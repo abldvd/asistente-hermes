@@ -1,0 +1,6 @@
+OpenRouter rate-limited every one of 3 attempts — it looks temporarily unavailable. Wait a minute and send /retry, or switch models with /model. To avoid this in future, add a backup provider with `hermes fallback add`.
+
+Provider said: HTTP 429: Provider returned error
+
+session_id: local-462917699df10fe2e3ac51e6ed64e598140bcd672e44ceaf19d8b9d4ba10f044
+segundos=13

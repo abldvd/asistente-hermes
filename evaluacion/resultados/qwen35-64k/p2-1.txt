@@ -1,0 +1,6 @@
+### La compuerta de tareas programadas
+
+Es el corazón de Hermes: **orquesta los cron de tu gateway** (Hermes_Gateway se arranca al iniciar sesión en Windows) y ejecuta las tareas de Job Hunter, Noticias, Correo y demás. Cada módulo de función vive en `cron/` (definición de tareas como código) y le da al asistente una **rampa de escala limpia**: para añadir algo nuevo, solo lanzas un script `aplicar.ps1` que sincroniza tu repo con `~/.hermes`, inyectando el script previo, la carpeta de skills y la entrada de crontab sin tocar el resto. El resultado es un asistente que parece monolítico, pero crece por módulos que puedes pausar, duplicar o reconfigurar al instante.
+
+session_id: local-966ae8e39eedffba35a47f3ad2f32c0f4a49f813c976e49ff834a9df23fd5aaf
+segundos=29

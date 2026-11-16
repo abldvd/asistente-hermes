@@ -1,0 +1,16 @@
+Resumen basado solo en el material proporcionado (titulares + puntos + extracto del changelog):
+
+1. Claude Code changelog 2.1.325 (extracto; es el único ítem con detalle, y en el material no trae enlace): lo más accionable para optimizar Claude Code — parche de seguridad en el decodificado de respuestas zstd; los subagents con modelo propio ya no se mueven al modelo de plan-mode con los ajustes opusplan/haiku; los subagents con otro modelo ya no dimensionan lecturas de fichero y resultados MCP con el modelo de la sesión principal; las sesiones en gateways de terceros y Foundry ya no fallan con error de longitud de contexto en cada turno (ahora compactan); y ante un bloqueo por política de la organización, la salida es /rewind o /clear.
+
+2. DeepSeek-R1: Incentivizing Reasoning Capability in LLMs via RL (1351 puntos): razonamiento en LLMs incentivado mediante RL — el único paper del lote, referencia directa para modelos de razonamiento locales. https://arxiv.org/abs/2501.12948
+
+3. A small number of samples can poison LLMs of any size (1202 puntos, Anthropic): un número pequeño de muestras puede envenenar LLMs de cualquier tamaño — riesgo clave al entrenar o afinar modelos locales. https://www.anthropic.com/research/small-samples-poison
+
+4. LLMs reward expertise (1416 puntos): los LLM recompensan la experiencia — la pericia del usuario pesa en el resultado. https://www.seangoedecke.com/llms-reward-expertise/
+
+5. Learning to Reason with LLMs (1654 puntos, OpenAI): razonamiento en LLMs; complementa el punto 2. https://openai.com/index/learning-to-reason-with-llms/
+
+Nota: los artículos llegan solo como titular + puntos, así que los puntos 2–5 se limitan a lo que dice el titular; no inventé contenido más allá del material.
+
+session_id: local-f7e686e1c9b6fdb4e39f297e695a9a6a973d691f6d5170681c9ca05c0b4bbc18
+segundos=324

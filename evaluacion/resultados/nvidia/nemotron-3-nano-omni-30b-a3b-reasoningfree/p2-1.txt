@@ -1,0 +1,8 @@
+E:/asistente-hermes/docs/superpowers/plans/2026-11-16-nucleo.md, E:/asistente-hermes/docs/notas-hermes.md, E:/asistente-hermes/docs/2026-11-16-asistente-hermes-design.md
+
+La compuerta programa y ejecuta automáticamente las tareas diarias (Job Hunter, noticias, resumen de correo y sugerencias de calendario).  
+Cada ejecución verifica que no haya solapamientos, que la GPU no esté ocupada por juegos y que el uso de Claude no supere el 80 % antes de delegar; si las condiciones no se cumplen, retrasa o salta la tarea y avisa al usuario.  
+También desactiva la tarea de Windows correspondiente para evitar ejecuciones duplicadas y registra el último ID o fecha procesada para no repetir acciones.
+
+session_id: local-4efa40fc9b6cdb0adccda0a1ba2f419aa1d296384702fe6fcec40f7344a239e8
+segundos=32

@@ -1,0 +1,4 @@
+{"titulo": "Entrevista técnica - Data Scientist junior", "inicio": "2026-11-19T10:00:00+00:00", "fin": "2026-11-19T11:30:00+00:00"}
+
+session_id: local-c5c018a19faec06ac51e67154ba7e9cd9c559fc18a9a99ee0b927c462ea1ccab
+segundos=14

@@ -1,0 +1,14 @@
+Archivos .md en E:\asistente-hermes\docs (y subcarpetas):
+1. docs/2026-11-16-asistente-hermes-design.md
+2. docs/notas-hermes.md
+3. docs/superpowers/plans/2026-11-16-nucleo.md
+
+Sobre la "compuerta": ojo, la palabra no aparece en el diseño; ahí está como la regla de "GPU y juegos" (decisión del 16-nov), y el término y el módulo asistente/compuerta.py vienen del plan de núcleo. En 4 líneas:
+
+- Es una comprobación previa que cada tarea cron consulta antes de ejecutarse: si hay un juego abierto (procesos en lista o GPU por encima del umbral, sin contar la carga de Ollama) o falta cuota de Claude (uso-5h.json >= 80 % o tope diario de llamadas), la tarea no corre.
+- En ese caso se retrasa en bloques de 30 min desde el primer intento, hasta un máximo de 4 h; pasado ese tiempo se salta y se avisa por Telegram, sin reintentar en bucle.
+- Guarda por tarea y por día el estado (hecha / saltada / primer intento), así no se repite y además recupera ejecuciones perdidas por tener el PC apagado a la hora prevista.
+- Devuelve una decisión por código de salida: 0 EJECUTAR, 10 ESPERAR, 11 SALTAR (avisar), 12 HECHO/YA_SALTADO (silencio).
+
+session_id: local-9e09be9514ac353b29023e3d12de51afb11155bc481e397769893667f0b8c95f
+segundos=148

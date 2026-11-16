@@ -1,0 +1,10 @@
+Archivos `.md` en `docs/` (y subcarpetas):
+
+- `E:\asistente-hermes\docs\2026-11-16-asistente-hermes-design.md`
+- `E:\asistente-hermes\docs\notas-hermes.md`
+- `E:\asistente-hermes\docs\superpowers\plans\2026-11-16-nucleo.md`
+
+**La compuerta de tareas programadas** (Task 4 del plan de núcleo) es un gate que corre cada 30 min en una ventana horaria (ej. 08:00–23:30) y decide si una tarea ejecuta, espera o salta. Si hay juego activo o cuota de Claude agotada, registra el primer intento y retrasa en bloques de 30 min hasta 4 h; si se supera el límite, marca la tarea como saltada para que no se reintente en bucle. También cubre ejecuciones perdidas (PC apagado): al día siguiente, si no está hecha, la vuelve a intentar. El estado se guarda en `compuerta_<tarea>.json` y es atómico (tmp + `os.replace`) para evitar carreras con el chat.
+
+session_id: local-0529e92372c03cdb7c42c6a2e6ad23dc1a77674a11d4b8bf96d799203c533130
+segundos=37

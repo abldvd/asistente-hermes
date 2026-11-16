@@ -1,0 +1,18 @@
+Tres archivos `.md` en `docs/` (y subcarpetas):
+
+- `E:\asistente-hermes\docs\2026-11-16-asistente-hermes-design.md`
+- `E:\asistente-hermes\docs\notas-hermes.md`
+- `E:\asistente-hermes\docs\superpowers\plans\2026-11-16-nucleo.md`
+
+---
+
+La **"compuerta"** es el wrapper (`claude-tope.ps1` / `.py`) que controla cuándo Hermes puede usar Claude. Funciona así:
+
+1. **Lee `uso-5h.json`** antes de cada llamada: si el consumo de la última 5 h es ≥ 80 % del límite, se niega inmediatamente y lo comunica.
+2. **Lleva un counter diario** (tope configurable, 10 por defecto) en `estado/`, así Claude no se usa en exceso en un solo día.
+3. **Ejecuta `claude -p` con restricciones**: `--allowedTools` acotado por tipo de tarea, `--max-turns` limitado, formato JSON, y nunca con `bypassPermissions`.
+
+En resumen, es la capa que impide que el asistente agote la cuota de Claude sin control, escalando a Claude solo cuando el usuario lo pide explícitamente o cuando una tarea marcada como difícil excede lo que puede hacer el modelo local.
+
+session_id: local-64317b280f5206448631ef32bf7c8675658edef33400a69efa05837a99ffefe5
+segundos=60

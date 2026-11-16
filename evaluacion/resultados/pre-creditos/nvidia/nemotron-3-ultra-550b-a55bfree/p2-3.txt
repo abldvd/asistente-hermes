@@ -1,0 +1,4 @@
+La **compuerta (gateway)** es el proceso persistente que Hermes instala como tarea programada de Windows (`Hermes_Gateway`) al iniciar sesión; **dentro de ese gateway corre el cron interno de Hermes**, así que las tareas diarias (Job Hunter 08:00, noticias 08:30, correo, etc.) se disparan desde ahí sin necesidad de tareas de Windows separadas. Sirve de único punto de arranque y ciclo de vida: si el gateway está vivo, el cron ejecuta; si no, nada corre.
+
+session_id: local-7b34ad1df0fb0b949d44c0cac43a6e61a82a4c4388a3628d44ce7654b82651f9
+segundos=34

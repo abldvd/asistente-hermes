@@ -1,0 +1,10 @@
+Archivos .md en `E:\asistente-hermes\docs` (3):
+
+    docs\2026-11-16-asistente-hermes-design.md
+    docs\notas-hermes.md
+    docs\superpowers\plans\2026-11-16-nucleo.md
+
+La "compuerta" de tareas programadas (`asistente\compuerta.py`, Task 4 del plan núcleo) es el árbitro que decide si una tarea cron se ejecuta ahora, se espera o se salta. Cada cron corre cada 30 min en una ventana (p. ej. 08:00–23:30) y la compuerta resuelve: si la tarea ya se hizo hoy → HECHO; si ya se saltó → YA_SALTADO; si hay un juego abierto o falta cuota de Claude (`--requiere-claude`), registra el primer intento y devuelve ESPERAR, y si han pasado más de `retraso_max_h` (4 h) → SALTAR avisando. Si no hay bloqueo → EJECUTAR. El estado vive en `compuerta_<tarea>.json` (se reinicia si la fecha cambia) y la CLI sale con 0/10/11/12 según la decisión, lo que cubre de una vez los retrasos por juego/cuota y las ejecuciones perdidas con el PC apagado sin necesidad de disparador de Windows.
+
+session_id: local-f0c97344e0ce4cac08cd80fc9ece2cab4f99a2bb8733f7a752ad330d986a17a4
+segundos=20

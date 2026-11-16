@@ -1,0 +1,14 @@
+Hecho solo con lo que aporta el material (títulos, puntuaciones y el extracto del changelog; no he abierto los enlaces). Enlace tal cual aparece en cada caso:
+
+1. Claude Code 2.1.325 (extracto del changelog; no lleva URL en el material): lo directamente accionable para optimizarlo — se arregló un problema de seguridad en el decodificado de respuestas zstd; los subagents con modelo propio ya no se mueven al modelo de plan-mode con opusplan/haiku ni dimensionan lecturas de archivos y resultados MCP con el modelo de la sesión principal; las sesiones en muchos gateways de terceros y Foundry ya no fallan con error de longitud de contexto en cada turno (compactan); si la política de la organización bloquea una petición, se indica usar /rewind y cambiar el mensaje o /clear; un plan aprobado ya no se pierde si plansDirectory no acepta el archivo; y se arreglaron /stats, /insights, /voice y avisos de inicio.
+
+2. Razonamiento en LLMs: "DeepSeek-R1: Incentivizing Reasoning Capability in LLMs via RL" (1351 puntos) https://arxiv.org/abs/2501.12948 y "Learning to Reason with LLMs" (OpenAI, 1654 puntos) https://openai.com/index/learning-to-reason-with-llms/ — ambos títulos apuntan a cómo conseguir que los LLMs razonen; el de DeepSeek lo hace explícitamente vía RL.
+
+3. "A small number of samples can poison LLMs of any size" (Anthropic, 1202 puntos) https://www.anthropic.com/research/small-samples-poison — según su título, un número pequeño de muestras puede envenenar LLMs de cualquier tamaño; clave para la higiene de datos al ajustar modelos locales.
+
+4. Entender y dirigir el modelo: "LLM Visualization" (1592 puntos) https://bbycroft.net/llm — visualización de LLMs; y "LLMs reward expertise" (1416 puntos) https://www.seangoedecke.com/llms-reward-expertise/ — los LLMs recompensan la expertise, según su título.
+
+5. Contexto profesional: "LLM Inevitabilism" (1773 puntos) https://tomrenner.com/posts/llm-inevitabilism/ y "LLMs are eroding my software engineering career and I don't know what to do" (1151 puntos) https://human-in-the-loop.bearblog.dev/llms-are-eroding-my-software-engineering-career-and-i-dont-know-what-to-do/ — impacto de los LLMs en la carrera de ingeniería de software, según sus títulos.
+
+session_id: local-392e79d9f7579d996e0a53c9fc336e4b382ea9612ba7912e8b02d05def5b8d0a
+segundos=400

@@ -1,0 +1,9 @@
+Archivos .md encontrados en `E:\asistente-hermes\docs` (y subcarpetas):
+- `E:\asistente-hermes\docs\superpowers\plans\2026-11-16-nucleo.md`
+- `E:\asistente-hermes\docs\notas-hermes.md`
+- `E:\asistente-hermes\docs\2026-11-16-asistente-hermes-design.md`
+
+**Compuerta de tareas programadas** (diseño,líneas 68‑78): dos tareas cron diarias (Job Hunter 08:00 y Noticias 08:30) que se ejecutan bajo control de Giles: evitan doble ejecución (es necesario desactivar la tarea de Windows "JobHunter"), retrasan la ejecución si el uso de Claude supera el 80 % (archivo `uso-5h.json`), y posponen las tareas en bloques de 30 min hasta 4 h si hay juegos abiertos y la GPU está ocupada. El modelo local filtra y resume las fuentes, y los resultados se envían por Telegram y guardan en la carpeta de noticias.
+
+session_id: local-b4d312c791176ebec7ddda1ae3ff8c35c839ad057758db15d76955de0ce65c0a
+segundos=25

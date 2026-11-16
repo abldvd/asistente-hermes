@@ -1,0 +1,21 @@
+Aquí tienes un resumen de 5 puntos, en español, con lo más relevante del material para alguien interesado en optimizar Claude Code y modelos de IA locales. **Nota: para los artículos, solo se proporcionó el título y URL — no el contenido completo, así que los puntos se basan en lo que el título revela.**
+
+---
+
+1. **DeepSeek-R1: Incentivizing Reasoning Capability in LLMs via RL** — https://arxiv.org/abs/2501.12948  
+   Este trabajo muestra cómo el aprendizaje por refuerzo (RL) puede activar y mejorar la capacidad de razonamiento en modelos de lenguaje. Para who está trabajando con modelos locales, es una referencia clave para entender cómo entrenar o fine-tunar modelos que razonen paso a paso, sin depender de APIs externas.
+
+2. **Learning to Reason with LLMs** — https://openai.com/index/learning-to-reason-with-llms/  
+   OpenAI comparte técnicas para que los LLMs aprendan a razonar de manera más efectiva. Interesante para cualquiera que quiera entender los mecanismos detrás del razonamiento en modelos y cómo optimizar prompts o flujos de trabajo que dependan de razonamiento complejo.
+
+3. **LLMs reward expertise** — https://www.seangoedecke.com/llms-reward-expertise/  
+   El título sugiere que los modelos de IA recompensan la especialización: a mayor dominio del dominio por parte del usuario, mejores resultados obtiene el LLM. Para optimizar Claude Code o modelos locales, esto implica que invertir en conocimiento del dominio produce un multiplicador de eficiencia.
+
+4. **Claude Code changelog (v2.1.325)** — https://claude.com/changelog (extracto proporcionado)  
+   Esta versión incluye múltiples correcciones relevantes para el flujo de trabajo: fixes en la decodificación de respuestas comprimidas con zstd, manejo de errores en repositorios bare/worktrees, corrección de subagentes que se movían al modelo equivocado cuando la configuración es `opusplan` o `haiku`, fixes de compactación en sessions resumed, y mejoras en la visualización de planes y prompts. Para quien optimiza Claude Code, estos fixes eliminan fricciones en flujos complejos (subagentes, worktrees, sesiones largas).
+
+5. **A small number of samples can poison LLMs of any size** — https://www.anthropic.com/research/small-samples-poison  
+   Anthropic investiga cómo una pequeña cantidad de datos envenenados puede comprometer modelos de IA de cualquier tamaño. Para quien despliega modelos locales o fine-tuna, es un recordatorio crucial de que la seguridad en los datos de entrenamiento es independiente del tamaño del modelo: pocos samples maliciosos pueden ser suficientes para corromperlo.
+
+session_id: local-1ad226ee4842e0f68262c65d2c589b0e9924cb019604d7ddcd52b887c2f01f8b
+segundos=41

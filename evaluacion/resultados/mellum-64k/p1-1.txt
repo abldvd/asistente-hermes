@@ -1,0 +1,8 @@
+- Aprender enseñanza de razonamiento para optimizar la capacidad de Claude Code https://openai.com/index/learning-to-reason-with-llms/
+- Utilizar visualización de LLMs para diagnosticar y ajustar modelos locales https://bbycroft.net/llm
+- Aprovechar recompensa de expertise al fine‑tuning de modelos especializados en Claude Code https://www.seangoedecke.com/llms-reward-expertise/
+- aplicar técnicas de RL inspiradas en DeepSeek‑R1 para potenciar razonamiento en modelos locales https://arxiv.org/abs/2501.12948
+- Evitar contaminación por pocos muestras al entrenar LLMs locales https://www.anthropic.com/research/small-samples-poison
+
+session_id: local-d1b8400e8e2017f0e20d5494cff3ce37540c729144e0cd4ab4109d1eb067213d
+segundos=43

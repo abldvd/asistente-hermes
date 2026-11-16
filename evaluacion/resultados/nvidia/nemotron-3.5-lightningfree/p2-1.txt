@@ -1,0 +1,4 @@
+En E:\asistente-hermes\docs hay 3 archivos .md. La "compuerta" de tareas programadas es un umbral de uso de Claude: si el archivo `~/.claude/uso-5h.json` marca ≥ 80 % de consumo al momento programado, las tareas cron (Job Hunter y noticias) se retrasan en bloques de 30 min hasta 4 h o se saltan con aviso por Telegram, protegiendo la cuota restante.
+
+session_id: local-799ec56749fe5a8756b237bf5a5bc7aba6f9aeed10904f181e83666e24aace7e
+segundos=18

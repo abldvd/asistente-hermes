@@ -1,0 +1,18 @@
+Archivos `.md` encontrados en `E:\asistente-hermes\docs` y subcarpetas:
+
+- `E:\asistente-hermes\docs\2026-11-16-asistente-hermes-design.md`
+- `E:\asistente-hermes\docs\notas-hermes.md`
+- `E:\asistente-hermes\docs\superpowers\plans\2026-11-16-nucleo.md`
+
+**Qué hace la "compuerta" de tareas programadas:**
+
+Es el módulo `asistente/compuerta.py` del plan de implementación (Task 4 del plan Núcleo). Antes de que cada tarea cron de Hermes se ejecute, la compuerta decide con el estado guardado si debe ejecutar, esperar o saltar:
+
+1. Si la tarea ya se hizo hoy → HECHO; si ya se saltó → YA_SALTADO.
+2. Si hay un juego abierto o falta la cuota de Claude → registra el primer intento y, si supera el retraso máximo (4 h en bloques de 30 min), la salta (SALTAR) o la pospone (ESPERAR).
+3. Si todo está en orden → EJECUTAR.
+
+Así las tareas programadas se retrasan por juego/cuota o se recuperan (ejecuciones perdidas con el PC apagado) sin necesidad del disparador de Windows.
+
+session_id: local-5251f0868c94666cefa726460c26d1d0bc09044934923df6dddee715c3ffc46f
+segundos=46

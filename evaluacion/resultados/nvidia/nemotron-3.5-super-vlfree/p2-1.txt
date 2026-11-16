@@ -1,0 +1,12 @@
+Archivos .md bajo `E:\asistente-hermes\docs` (incluyendo subcarpetas):
+
+- `docs\2026-11-16-asistente-hermes-design.md` — diseño del asistente
+- `docs\notas-hermes.md`
+- `docs\superpowers\plans\2026-11-16-nucleo.md` — plan donde se especifica la compuerta
+
+La "compuerta" de tareas programadas (`asistente\compuerta.py`, ver `docs\superpowers\plans\2026-11-16-nucleo.md:134-143`) es un script que se consulta antes de lanzar cada tarea cron: cada 30 min en una ventana horaria (p. ej. 08:00–23:30) decide si la tarea corre, imprime `DECISION: <X> — <motivo>` y sale con código 0 (EJECUTAR), 10 (ESPERAR), 11 (SALTAR avisando) o 12 (HECHO/YA_SALTADO, silencio). Guarda el estado en `compuerta_<tarea>.json` (`--hecho` marca la tarea como hecha hoy), escribe atómicamente (tmp + os.replace) para evitar doble ejecuciones cron/chat, y permite retrasar hasta 4 h en bloques de 30 min o saltar y avisar si hay juego/GPU ocupada o falta de VRAM, sin depender del programador de tareas de Windows.
+
+Verificado: listado obtenido con búsqueda de archivos y el diseño leído completo (`docs/2026-11-16-asistente-hermes-design.md`); el detalle de la compuerta está en el plan de núcleo, no en el diseño propiamente dicho.
+
+session_id: local-48a8036153acf5e4b885b16d2c37cbe7878793d5a6db7ba4ab85a9c0cf033a41
+segundos=31

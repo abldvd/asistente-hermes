@@ -1,0 +1,9 @@
+**Archivos .md en `E:\asistente-hermes\docs`:**
+- `docs\2026-11-16-asistente-hermes-design.md` (diseño principal)
+- `docs\notas-hermes.md`
+- `docs\superpowers\plans\2026-11-16-nucleo.md`
+
+**La "compuerta" de tareas programadas** es un script previo que se ejecuta antes de cada cron y verifica dos condiciones de bloqueo: (1) si la cuota de Claude (`uso-5h.json`) está ≥ 80 %, retrasa la tarea en bloques de 30 min hasta 4 h; (2) si hay un juego abierto que ocupa la GPU (VRAM > umbral), hace lo mismo. Si ninguna condición se cumple, la tarea procede; si se agota el tiempo, se salta y avisa por Telegram.
+
+session_id: local-cfc44bd8be654c948fd5d9dc243177cda8d51ebf04e523ab777f7bc14fbc7d58
+segundos=23

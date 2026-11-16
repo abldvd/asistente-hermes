@@ -1,0 +1,16 @@
+Archivos .md en docs/ (3):
+
+    E:\asistente-hermes\docs\2026-11-16-asistente-hermes-design.md
+    E:\asistente-hermes\docs\notas-hermes.md
+    E:\asistente-hermes\docs\superpowers\plans\2026-11-16-nucleo.md
+
+La compuerta de tareas programadas:
+
+Es un pequeño módulo Python (asistente/compuerta.py) que cada cron de Hermes invoca antes de hacer su trabajo real. En vez de programar disparadores exactos en Windows, cada tarea se lanza cada 30 min dentro de una ventana (p. ej. 08:00–23:30) y la compuerta decide si toca ejecutar ahora, esperar o saltar el día. Devuelve una decisión por CLI con código de salida —EJECUTAR (0), ESPERAR (10), SALTAR (11), HECHO/YA_SALTADO (12)— y guarda su estado por tarea en compuerta_<tarea>.json.
+
+La lógica, en orden: si ya está hecha hoy → HECHO; si ya se saltó → YA_SALTADO; si hay juego activo o (con --requiere-claude) falta cuota de Claude → registra el primer intento y ESPERAR, hasta agotar un retraso máximo (4 h) tras el cual marca saltado y avisa; en cualquier otro caso → EJECUTAR. Al cambiar de fecha el estado se reinicia, de modo que una tarea saltada ayer se recupera hoy, y las ejecuciones perdidas con el PC apagado se recuperan al arrancar.
+
+Existe implementación y tests: asistente\compuerta.py y tests\test_compuerta.py.
+
+session_id: local-d5406f42708f04ec421c023a1486190ab1f2acb284678321b3ae3a5d46d749ab
+segundos=31

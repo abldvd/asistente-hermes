@@ -1,0 +1,51 @@
+LLM Inevitabilism | 1773 puntos | https://tomrenner.com/posts/llm-inevitabilism/
+Learning to Reason with LLMs | 1654 puntos | https://openai.com/index/learning-to-reason-with-llms/
+LLM Visualization | 1592 puntos | https://bbycroft.net/llm
+LLMs reward expertise | 1416 puntos | https://www.seangoedecke.com/llms-reward-expertise/
+DeepSeek-R1: Incentivizing Reasoning Capability in LLMs via RL | 1351 puntos | https://arxiv.org/abs/2501.12948
+A small number of samples can poison LLMs of any size | 1202 puntos | https://www.anthropic.com/research/small-samples-poison
+LLMs are eroding my software engineering career and I don't know what to do | 1151 puntos | https://human-in-the-loop.bearblog.dev/llms-are-eroding-my-software-engineering-career-and-i-dont-know-what-to-do/
+Claude Code changelog (extracto):
+# Changelog
+## 2.1.325
+- Fixed a security issue in how zstd-compressed responses are decoded
+- Added a spinner tip in VS Code and similar integrated terminals about re-running a notebook cell, shown once Claude has read or edited a Jupyter notebook
+- Added a line under the error shown when your organization's policy blocks a request, saying how to continue: run `/rewind` and change the message, or run `/clear`
+- Added a note for Claude when a sandboxed `git checkout`, `git stash` or autostash pull cannot update protected files such as those in `.claude`
+- Fixed `/security-review` and skills' inline git commands stopping with an error in worktrees of bare repositories, `--separate-git-dir` checkouts and Android `repo` checkouts
+- Fixed subagents with their own model being moved to the plan-mode model when the model setting is `opusplan` or `haiku`
+- Fixed subagents on a different model sizing file reads and MCP results with the main session's model
+- Fixed sessions on many third-party gateways and Foundry stopping with a context length error on every turn instead of compacting
+- Fixed recent turns sometimes going missing from a resumed session after Claude Code stopped without a clean exit
+- Fixed shell commands running in the launch directory after the working directory was deleted; the command now fails with a message and can be re-issued
+- Fixed an approved plan edit being lost when the `plansDirectory` folder can't take it: the plan is now saved in the default plans folder, and a warning says where and why
+- Fixed a saved `sonnet[1m]` model setting being rewritten on a new install to a model id the API rejects
+- Fixed focus view hiding the reply to your prompt when a scheduled task replied after it
+- Fixed the prompt sometimes missing from a background subagent's view when fullscreen is off
+- Fixed long options in lists and permission prompts being partly overwritten when they wrap, and first-run screens losing lines on narrow terminals
+- Fixed startup warnings about permission rules and the "N MCP servers need authentication" notice being recorded as seen when they were scrolled out of view
+- Fixed the welcome header showing control characters or splitting across lines when an agent's name or the working folder contains them or a line break
+- Fixed the red error shown when Claude tries a command only you can run: a dim line now says it runs only when you type it at the prompt
+- Fixed `/stats` showing an Active days total that was one day too high
+- Fixed `/insights` saying a report was ready when no session qualified for analysis, and writing two values into its HTML report without escaping them
+- Fixed `/voice` saying voice mode changed when managed settings, `--settings`, or the project's `.claude/settings.json` or `.claude/settings.local.json` kept it as it was; it now says what holds it
+
+5 puntos resumidos en español, usando SOLO la información del material:
+
+1. DeepSeek-R1: Incentivizing Reasoning Capability in LLMs via RL | 1351 puntos | https://arxiv.org/abs/2501.12948  
+   Técnica de aprendizaje por refuerzo para fortalecer el razonamiento en LLMs, clave para optimizar modelos locales en tareas de lógica y planificación compleja.
+
+2. LLMs reward expertise | 1416 puntos | https://www.seangoedecke.com/llms-reward-expertise/  
+   Los LLMs conceden mejor calidad de respuesta cuando los prompts aprovechan conocimientos especializados, directiva fundamental para ingeniería de prompts con modelos locales.
+
+3. A small number of samples can poison LLMs of any size | 1202 puntos | https://www.anthropic.com/research/small-samples-poison  
+   Riesgo crítico: datos mínimos pueden envenenar cualquier modelo LLM, imperativo considerar seguridad al entrenar o desplegar modelos locales.
+
+4. Learning to Reason with LLMs | 1654 puntos | https://openai.com/index/learning-to-reason-with-llms/  
+   Hallazgos sobre cómo entrenar LLMs en razonamiento estructurado, aplicable para mejorar capacidades cognitivas en implementaciones locales.
+
+5. LLM Visualization | 1592 puntos | https://bbycroft.net/llm  
+   Herramientas de representación visual para inspeccionar el comportamiento interno de los LLMs, útil para detectar cuellos de botella y optimizar rendimiento en modelos locales.
+
+session_id: local-4f324e12b2d5cbe913c367c77f0e305c5bbe33f2e2788f60265cc4281f613761
+segundos=99

@@ -1,0 +1,11 @@
+Los archivos .md en `E:\asistente-hermes\docs` (y subcarpetas) son:
+
+1. `E:/asistente-hermes/docs\superpowers\plans\2026-11-16-nucleo.md`
+2. `E:/asistente-hermes/docs\notas-hermes.md`
+3. `E:/asistente-hermes/docs\2026-11-16-asistente-hermes-design.md`
+
+**Explicación de la "compuerta" de tareas programadas:**
+Es un mecanismo de control (gateway) que se ejecuta como una tarea de Windows al iniciar sesión para mantener vivo el cron interno de Hermes. Antes de ejecutar cada tarea, verifica si hay un juego abierto o si la GPU está sobrecargada; de ser así, retrasa la tarea en bloques de 30 minutos (hasta un máximo de 4 horas) o la salta con un aviso. También incluye una comprobación de cuota para Claude que retrasa o salta tareas si el uso del límite de 5 horas supera el 80%.
+
+session_id: local-65c852d728a547c254eeb4f4a2e1b9dbf055e7e3472a66f15a7c090f3efcb808
+segundos=77

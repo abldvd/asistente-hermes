@@ -1,0 +1,8 @@
+Los LLMs son inevitables y su evolución afecta la optimización de herramientas como Claude Code; entender sus límites es clave. https://tomrenner.com/posts/llm-inevitabilism/  
+Aprender a razonar con LLMs mejora la capacidad de usar modelos locales de forma más eficiente. https://openai.com/index/learning-to-reason-with-llms/  
+Los LLMs recompensan la experiencia; dominar modelos locales aumenta su efectividad en tareas de código. https://www.seangoedecke.com/llms-reward-expertise/  
+DeepSeek-R1 muestra cómo el refuerzo de razonamiento puede optimizar modelos locales para tareas de razonamiento avanzado. https://arxiv.org/abs/2501.12948  
+La visualización de LLMs ayuda a diagnosticar y optimizar el comportamiento de modelos locales en entornos como Claude Code. https://bbycroft.net/llm
+
+session_id: local-1ead7fff13903fb486be4197a7661442c17ccbfb3284a7ff68b3f3f0329a7fc0
+segundos=18

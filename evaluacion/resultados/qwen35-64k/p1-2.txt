@@ -1,0 +1,14 @@
+Aquí están los 5 puntos más relevantes del material sobre optimizar Claude Code y modelos de IA locales:
+
+1. **Llama 4 optimizado para razonamiento con CoT** (DeepSeek-R1 demostró que el RL refina modelos base, no los crea) — https://arxiv.org/abs/2501.12948
+
+2. **Pequeñas muestras de datos pueden dominar a cualquier modelo** (aplicado a Claude Code: pocos buenos ejemplos en contexto cambian su comportamiento) — https://www.anthropic.com/research/small-samples-poison
+
+3. **Inevitabilidad del razonamiento en los LLM** (Claude Code debe aprovechar la auto-reflexión, no limitarse a respuestas planas) — https://tomrenner.com/posts/llm-inevitabilism/
+
+4. **Las IA locales recompensan la expertise** (modelos locales como qwen3-64k aprenden mejor con feedback, similar a cómo Claude se entrena) — https://www.seangoedecke.com/llms-reward-expertise/
+
+5. **Los subagentes en Claude Code ajustan su modelo automáticamente** (revisa el changelog 2.1.325: ahora usan el modelo de plan cuando es 'opusplan') — https://human-in-the-loop.bearblog.dev/llms-are-eroding-my-software-engineering-career-and-i-dont-know-what-to-do/
+
+session_id: local-3af2ee4120295fd4513b1fa68dd6a4aba370b004739bc8da85d29e9d2bd86585
+segundos=11

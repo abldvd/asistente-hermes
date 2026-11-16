@@ -1,0 +1,16 @@
+Aquí tienes los 5 puntos más relevantes del material, centrados en optimización de Claude Code y modelos de IA locales:
+
+---
+
+**1. DeepSeek-R1: RL para potenciar el razonamiento** — El paper de DeepSeek explora cómo el aprendizaje por refuerzo (RL) puede estimular capacidades de razonamiento en modelos de lenguaje. Es directamente relevante para quien busca optimizar modelos locales, ya que demuestra que el RL puede ser una vía efectiva para mejorar el razonamiento sin depender de fine-tuning supervisado. https://arxiv.org/abs/2501.12948
+
+**2. Aprender a razonar con LLMs** — El artículo de OpenAI aborda cómo los modelos de lenguaje pueden aprender a razonar, una cuestión central para mejorar la calidad de salida de cualquier modelo, incluidos los locales. Comprender estos mecanismos ayuda a optimizar prompts y configuraciones. https://openai.com/index/learning-to-reason-with-llms/
+
+**3. Las LLMs recompensan la experiencia** — Esta publicación examina cómo los modelos de lenguaje premian la experiencia domainespecífica, lo que sugiere que optimizar un modelo local requiere datos y ajustes de alta calidad en el área de interés, no solo escala de modelo. https://www.seangoedecke.com/llms-reward-expertise/
+
+**4. Visualización de LLMs** — La herramienta de visualización de LLMs de Bycroft permite inspeccionar internals de modelo (embeddings, attention heads, etc.). Para quien optimiza modelos locales, es una herramienta clave para entender qué está pasando dentro del modelo y detectar cuellos de botella. https://bbycroft.net/llm
+
+**5. Correcciones en Claude Code 2.1.325** — El changelog arregla problemas críticos para la optimización del flujo de trabajo: se corrigió que los subagentes con modelo propio eran redirigidos al modelo de planificación (`opusplan`/`haiku`), que los subagentes en un modelo distinto usaban el tamaño de lectura del modelo principal, y que sesiones en third-party gateways fallaban con erro de contexto en cada turno en lugar de compactar. También se arregló la pérdida de planes aprobados editados y el error de modelo `sonnet[1m]` en nuevas instalaciones. https://human-in-the-loop.bearblog.dev/llms-are-eroding-my-software-engineering-career-and-i-dont-know-what-to-do/
+
+session_id: local-4ad7fa6009e035aa77e061001249366d833c56dc4d522ee53624d6239d88c654
+segundos=35

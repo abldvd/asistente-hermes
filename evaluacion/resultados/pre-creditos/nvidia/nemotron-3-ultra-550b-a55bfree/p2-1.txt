@@ -1,0 +1,9 @@
+**Archivos .md en `docs/`:**
+- `docs/2026-11-16-asistente-hermes-design.md` (diseño principal)
+- `docs/notas-hermes.md`
+- `docs/superpowers/plans/2026-11-16-nucleo.md`
+
+**La "compuerta" de tareas programadas** (líneas 49, 143-145): es el **gateway de Hermes** (`hermes gateway install`) que crea una tarea de Windows al iniciar sesión; su cron interno ejecuta los jobs diarios, pero **antes de cada tarea** un script previo verifica: (1) si hay un juego abierto o la GPU está ocupada → retrasa en bloques de 30 min (máx. 4 h) o salta y avisa; (2) para Job Hunter, si `uso-5h.json` ≥ 80 % → mismo retraso/omisión. Así evita consumir VRAM/cuota mientras juegas o estás cerca del límite de Claude.
+
+session_id: local-643751b8fd4272f30946ec2d452a62a983e3800c87e06345ecfd81d23abca1cc
+segundos=25

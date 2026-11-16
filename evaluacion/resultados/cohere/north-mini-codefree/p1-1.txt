@@ -1,0 +1,14 @@
+**5 puntos clave en español para optimizar Claude Code y modelos de IA locales:**
+
+1. **Claude Code 2.1.325 optimizaciones técnicas:** Múltiples mejoras de rendimiento incluyendo fixes de seguridad en decodificación zstd, mejoras en manejo de worktrees y solvers en contextos multi-modelo. https://arxiv.org/abs/2501.12948
+
+2. **Optimización en reasoning con DeepSeek-R1:** Nueva estrategia RL para incentivar capacidades de razonamiento a través de recompensas, directamente aplicable a mejorar rendimiento de modelos locales. https://arxiv.org/abs/2501.12948
+
+3. **Visualización y comprensión de LLMs:** Metodologías avanzadas para visualizar funcionamiento interno de LLMs, útil para diagnosticar y optimizar comportamientos en implementaciones locales. https://bbycroft.net/llm
+
+4. **Incentivos para expertise:** Análisis de cómo LLMs actualmente recompensan expertise, guía para diseñar mejores prompts y datasets de entrenamiento para modelos locales. https://www.seangoedecke.com/llms-reward-expertise/
+
+5. **Evitar poisoning en LLMs:** Hallazgos críticos sobre cómo pequeñas muestras contaminadas pueden afectar modelos de cualquier tamaño, esencial para mantener integridad de datasets de entrenamiento locales. https://www.anthropic.com/research/small-samples-poison
+
+session_id: local-84a58bd7c867ea88c4f549d17d1b944443ad1b7d3ca05be313f21fc2ba3c065e
+segundos=22

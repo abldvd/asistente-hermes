@@ -1,0 +1,16 @@
+Resumen (5 puntos, solo con este material):
+
+1. Claude Code 2.1.325 — lo más útil para optimizar el uso (sin enlace en el material: es el extracto del changelog). Los subagentes con modelo propio ya no se fuerzan al modelo de plan-mode (opusplan/haiku) ni dimensionan lecturas de archivos y resultados MCP con el modelo de la sesión principal; las sesiones en gateways de terceros y Foundry compactan en vez de fallar por longitud de contexto en cada turno; y cuando una política de la organización bloquea una petición, el aviso indica cómo seguir con /rewind o /clear.
+
+2. LLMs reward expertise — el rendimiento del modelo premia el criterio experto de quien lo usa, de modo que la ventaja está en el conocimiento del dominio aplicado al problema y a la evaluación de la respuesta, más que en trucos de prompt. https://www.seangoedecke.com/llms-reward-expertise/
+
+3. LLM Visualization — visualización interactiva del interior de un LLM (recorrido por sus componentes y cálculos), la base conceptual para entender qué se está cuantizando y gastando cuando ejecutas un modelo en local. https://bbycroft.net/llm
+
+4. DeepSeek-R1: Incentivizing Reasoning Capability in LLMs via RL — cómo se incentiva la capacidad de razonamiento mediante aprendizaje por refuerzo, la referencia clave para modelos abiertos que puedes correr tú mismo. https://arxiv.org/abs/2501.12948
+
+5. A small number of samples can poison LLMs of any size — unas pocas muestras contaminadas bastan para envenenar modelos de cualquier tamaño: riesgo directo al afinar o alimentar un modelo local con datos propios. https://www.anthropic.com/research/small-samples-poison
+
+He dejado fuera los tres restantes (inevitabilismo, la carrera profesional y el anuncio de OpenAI sobre razonamiento) por ser los menos ligados a estos dos temas.
+
+session_id: local-2b74b08225cc92d9f46907f823bb24486779f2e9ff4c6799a6f040a1d07ac6a6
+segundos=28

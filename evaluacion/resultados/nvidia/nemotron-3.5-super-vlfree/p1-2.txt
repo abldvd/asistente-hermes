@@ -1,0 +1,19 @@
+1. DeepSeek-R1: Incentivizing Reasoning Capability in LLMs via RL — el material lo cita como trabajo sobre incentivar la capacidad de razonamiento en LLMs mediante aprendizaje por refuerzo (referencia para modelos locales con razonamiento).
+https://arxiv.org/abs/2501.12948
+
+2. Learning to Reason with LLMs — artículo de OpenAI sobre aprendizaje de razonamiento con LLMs.
+https://openai.com/index/learning-to-reason-with-llms/
+
+3. LLMs reward expertise — los LLMs premian la experiencia del usuario (relevante para optimizar el uso de asistentes de código como Claude Code).
+https://www.seangoedecke.com/llms-reward-expertise/
+
+4. A small number of samples can poison LLMs of any size — Anthropic advierte que un número reducido de muestras puede envenenar LLMs de cualquier tamaño (riesgo de seguridad también aplicable a modelos locales).
+https://www.anthropic.com/research/small-samples-poison
+
+5. LLMs are eroding my software engineering career and I don't know what to do — impacto de los LLMs en la carrera de ingeniería de software (contexto para usuarios de asistentes de código como Claude Code).
+https://human-in-the-loop.bearblog.dev/llms-are-eroding-my-software-engineering-career-and-i-dont-know-what-to-do/
+
+Nota: el material solo aporta título y enlace de estos artículos; no incluye su contenido. El único detalle concreto del listado es el changelog de Claude Code 2.1.325 (fixes de decodeo zstd, spinner de notebooks en VS Code, /rewind y /clear ante bloqueos de política de organización, sandbox de git sobre .claude, /security-review y skills en worktrees, subagents con modelo propio, compactado de contexto en gateways/Foundry, sonnet[1m] tras reinstalar, manejo de /stats, /insights y /voice), pero ese extracto no trae enlace en el material.
+
+session_id: local-bb0310f028c3fe5ac94a86866d12238ab0d7dfba701e7baeadae8bd01b4d38ff
+segundos=100

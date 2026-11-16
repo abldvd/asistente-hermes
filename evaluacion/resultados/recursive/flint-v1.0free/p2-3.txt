@@ -1,0 +1,18 @@
+Archivos .md encontrados en E:\asistente-hermes\docs y subcarpetas:
+
+- E:\asistente-hermes\docs\2026-11-16-asistente-hermes-design.md
+- E:\asistente-hermes\docs\notas-hermes.md
+- E:\asistente-hermes\docs\superpowers\plans\2026-11-16-nucleo.md
+
+He leído el diseño (y el plan de implementación donde se detalla).
+
+La compuerta de tareas programadas hace lo siguiente: es un módulo determinista (asistente/compuerta.py) que decide, por cada tarea cron de Hermes, si debe ejecutarse, esperar o saltar. Permite que los crons corran cada 30 min dentro de una ventana (p. ej. 08:00-23:30) y que la compuerta decida:
+
+1. Si la tarea ya se hizo hoy → HECHO (no la repite).
+2. Si hay juego abierto o falta cuota de Claude → registra el primer intento y, si supera el máximo de retraso (4 h en bloques de 30 min) → SALTAR (con aviso); si no, ESPERAR.
+3. En cualquier otro caso → EJECUTAR.
+
+En resumen: centraliza las reglas de retraso por juego/cuota y de ejecuciones perdidas, para que los crons solo actúen cuando corresponde.
+
+session_id: local-a88f77125376417a2743e699a7754b1108ce2d5eb7909499025280f4792031e9
+segundos=53

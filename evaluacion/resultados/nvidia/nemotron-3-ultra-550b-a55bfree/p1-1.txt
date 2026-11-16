@@ -1,0 +1,22 @@
+1. **Claude Code 2.1.325 — correcciones clave para uso diario**  
+   Arregla: seguridad en respuestas zstd, subagentes con modelo propio que no cambian a plan-mode, compactación de contexto en gateways de terceros, pérdida de turnos tras cierre sucio, comandos en directorio borrado, y persistencia de planes/editaciones aprobadas.  
+   https://github.com/anthropics/claude-code/blob/main/CHANGELOG.md (extracto proporcionado)
+
+2. **DeepSeek-R1: razonamiento vía RL en modelos abiertos**  
+   Demuestra que el aprendizaje por refuerzo puro (sin SFT previo) basta para dotar de razonamiento fuerte a LLMs locales; base directa para replicar/optimizar capacidades “o1-style” en hardware propio.  
+   https://arxiv.org/abs/2501.12948
+
+3. **Learning to Reason with LLMs (OpenAI)**  
+   Detalla cómo entrenar modelos para razonar paso a paso —clave para afinar prompts, few-shot y pipelines de razonamiento en Claude Code y modelos locales.  
+   https://openai.com/index/learning-to-reason-with-llms/
+
+4. **LLMs reward expertise**  
+   Explica por qué el conocimiento de dominio del usuario amplifica drásticamente la calidad de la salida; guía para estructurar prompts, contextos y workflows en Claude Code.  
+   https://www.seangoedecke.com/llms-reward-expertise/
+
+5. **A small number of samples can poison LLMs of any size (Anthropic)**  
+   Advierte que pocos ejemplos maliciosos contaminan cualquier modelo; crítico para validar datos de fine-tuning, RAG y memoria persistente en entornos locales.  
+   https://www.anthropic.com/research/small-samples-poison
+
+session_id: local-9f79fc9e117c0d2a6c5bc4bbb34f849647dff9ce2c75be27850317b666aa5f61
+segundos=20

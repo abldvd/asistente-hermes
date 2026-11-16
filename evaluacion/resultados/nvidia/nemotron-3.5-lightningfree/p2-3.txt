@@ -1,0 +1,10 @@
+Los 3 archivos .md en `E:\asistente-hermes\docs` (e incluido el subdirectorio `superpowers\plans`):
+
+- `E:/asistente-hermes/docs/2026-11-16-asistente-hermes-design.md`
+- `E:/asistente-hermes/docs/notas-hermes.md`
+- `E:/asistente-hermes/docs/superpowers/plans/2026-11-16-nucleo.md`
+
+**Compuerta de tareas programadas:** Es un guardián que decide cada 30 minutos (en una ventana 08:00–23:30) si una tarea cron debe ejecutarse, esperar o saltarse. Fija `EJECUTAR` si la tarea no corrió hoy y no hay juego ni cuota excedida; `ESPERAR` si faltan recursos pero aún está dentro del retraso máximo (4 h); y `SALTAR` (con aviso) si pasó el tiempo máximo o ya se saltó, reiniciando al día siguiente. Guardía su estado en `compuerta_<tarea>.json` para recuperar ejecuciones perdidas sin necesidad de un disparador de Windows.
+
+session_id: local-6ade74da20d6230f0c44c41d7e9af765cbd34851469b954ebd4166bbc2b0ea20
+segundos=23

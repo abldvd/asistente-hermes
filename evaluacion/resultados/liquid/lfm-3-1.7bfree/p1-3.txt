@@ -1,0 +1,16 @@
+Aquí tienes el resumen en 5 puntos, solo usando la información proporcionada:
+
+1. **Claude Code – Changelog (extracto)** — Lista de parches recientes: corrige una vulnerabilidad al descodificar respuestas zstd-comprimidas, añade un spinner de re-running de celda en notebooks Jupyter tras leer/editar, muestra mensaje cuando una política de la organización bloquea la petición (`/rewind` o `/clear`), trata git checkout/sandbox en repositorios nidos, evita pérdida de editaciones de plan cuando `plansDirectory` falla, reescribe malamente `sonnet[1m]` al reinstalarse, etc. *(Extracto interno del material; no tiene enlace externo)*.
+
+2. **LLM Inevitabilism** — Argumento sobre por qué los LLMs serán inevitables en el futuro (1773 puntos). https://tomrenner.com/posts/llm-inevitabilism/
+
+3. **Learning to Reason with LLMs** — Guía práctica para entrenar y usar LLMs orientados al razonamiento (1654 puntos). https://openai.com/index/learning-to-reason-with-llms/
+
+4. **DeepSeek-R1: Incentivizing Reasoning Capability in LLMs via RL** — Investigación sobre aprendizaje por refuerzo para incentivar la capacidad de razonamiento en LLMs (1351 puntos). https://arxiv.org/abs/2501.12948
+
+5. **LLMs reward expertise** — Estudio sobre si los LLMs recompensan la experiencia o conocimiento especializado (1416 puntos). https://www.seangoedecke.com/llms-reward-expertise/
+
+**Nota:** El punto 1 (changelog de Claude Code) es un extracto interno del material sin URL externa; los otros cuatro tienen sus enlaces tal cual aparecen en la lista.
+
+session_id: local-785f703181d1176f93af5defe4efb10ca28c9177ab0c7c2869bbedcff72806bd
+segundos=27

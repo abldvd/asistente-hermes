@@ -1,0 +1,17 @@
+1. **Claude Code changelog (v2.1.325)** – Correcciones clave para optimizar el uso diario: fixes de seguridad en zstd, trabajo en worktrees/repos bare, subagentes con modelos propios, compactado de contexto en gateways de terceros, y mejoras en `/rewind`, `/security-review`, `/stats`, `/voice`.  
+   https://tomrenner.com/posts/llm-inevitabilism/
+
+2. **DeepSeek-R1: Incentivizing Reasoning Capability in LLMs via RL** – Paper que muestra cómo el refuerzo puro (sin SFT) dota de razonamiento fuerte a modelos locales; base técnica para replicar/optimizar reasoning en modelos propios.  
+   https://arxiv.org/abs/2501.12948
+
+3. **Learning to Reason with LLMs** – OpenAI documenta cómo entrenar/inducir razonamiento paso a paso; aplicable a fine-tuning local y a prompts que maximicen el “chain-of-thought” en Claude Code.  
+   https://openai.com/index/learning-to-reason-with-llms/
+
+4. **LLMs reward expertise** – Análisis de por qué los modelos premian conocimiento profundo: guía para estructurar contexto, prompts y evaluaciones que saquen más provecho a Claude Code y a modelos locales especializados.  
+   https://www.seangoedecke.com/llms-reward-expertise/
+
+5. **A small number of samples can poison LLMs of any size** – Advertencia de Anthropic: pocos ejemplos maliciosos corrompen cualquier tamaño de modelo; crítico para validar datos de fine-tuning local y pipelines de RAG en Claude Code.  
+   https://www.anthropic.com/research/small-samples-poison
+
+session_id: local-4561a6c6fdd74df33e543278fa30a199d0163151248c6e93d21922350da9122f
+segundos=18

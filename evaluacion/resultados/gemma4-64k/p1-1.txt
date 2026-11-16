@@ -1,0 +1,19 @@
+Aquí tienes los 5 puntos más relevantes para optimizar Claude Code y modelos de IA locales, basados exclusivamente en el material proporcionado:
+
+1. **Incentivar el razonamiento mediante RL:** El uso de Aprendizaje por Refuerzo (RL) para fomentar la capacidad de razonamiento es una técnica clave para optimizar modelos avanzados.
+https://arxiv.org/abs/2501.12948
+
+2. **La importancia de la experiencia:** Para maximizar el rendimiento de herramientas como Claude Code, es fundamental que el usuario posea conocimientos expertos, ya que los LLM recompensan la experiencia.
+https://www.seangoedecke.com/llms-reward-expertise/
+
+3. **Riesgos de envenenamiento de datos:** Al trabajar con modelos de cualquier tamaño (incluyendo locales), es crítico vigilar la integridad de los datos, pues muestras pequeñas pueden envenenar el modelo.
+https://www.anthropic.com/research/small-samples-poison
+
+4. **Aprendizaje de razonamiento:** Comprender cómo los modelos aprenden a razonar permite una mejor optimización de sus capacidades de resolución de problemas.
+https://openai.com/index/learning-to-reason-with-llms/
+
+5. **Visualización de LLMs:** El uso de visualizaciones ayuda a entender el funcionamiento interno del modelo, facilitando una optimización más profunda de sus procesos.
+https://bbycroft.net/llm
+
+session_id: local-16e44beaae16984f2339b700ddaa9dfe5e3c90a7fd7228cf8e25186dc4649367
+segundos=93

@@ -1,0 +1,10 @@
+La "compuerta" es un módulo Python (`asistente/compuerta.py`) que decide si una tarea programada se ejecuta, se retrasa o se salta. Su lógica, en orden:
+
+1. Si la tarea ya está marcada como **hecha** o **saltada** del día anterior, lo indica sin más.
+2. Si hay **juego abierto** (lista de procesos configurable o GPU ocupada, excluyendo la carga de Ollama propia) o **cuota de Claude agotada** (≥80% de uso de 5h, o tope diario de 10 llamadas alcanzado), registra el primer intento y, si el retraso supera las 4 horas, la marca como **saltada** y avisa; si no, **espera** (reintentos cada 30 min).
+3. En cualquier otro caso, **ejecuta** la tarea.
+
+Así cubre tanto retrasos por juego/cuota como ejecuciones perdidas por el PC apagado, sin necesidad de un disparador de Windows separado.
+
+session_id: local-97abb774464bad640507e831b8296450356fb5f2c908c454467ccfdcba186767
+segundos=60

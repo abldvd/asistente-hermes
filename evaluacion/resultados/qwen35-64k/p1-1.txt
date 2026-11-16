@@ -1,0 +1,14 @@
+Aquí tienes el resumen en 5 puntos, extraído directamente del material:
+
+1. **El fenómeno de la "razonabilidad" y sus implicaciones**: Los LLMs modernos han desarrollado una capacidad de razonamiento explícito que emula el pensamiento paso a paso, transformando cómo interactuamos con ellos; este salto cognitivo se logra mediante técnicas de razonamiento auto-reflexivo que mejoran tanto la precisión como la coherencia en tareas complejas — https://tomrenner.com/posts/llm-inevitabilism/
+
+2. **Curva de aprendizaje de la "Reasoning" con LLMs**: La implementación de mecanismos de razonamiento interno (Chain of Thought, Self-Consistency) permite que los modelos grandes "piensen" antes de responder, creando una distinción clara entre modelos que razonan y aquellos que simplemente recuperan patrones estadísticos del entrenamiento — https://openai.com/index/learning-to-reason-with-llms/
+
+3. **Visualización de la cognición artificial**: Los mapas de atención y las representaciones latentes revelan que los modelos de escala masiva no solo procesan tokens linealmente, sino que mantienen representaciones jerárquicas del conocimiento donde las capas profundas actúan como un sistema de memoria indexada eficiente — https://bbycroft.net/llm
+
+4. **El poder de los datos de expertos**: Una muestra relativamente pequeña de ejemplos de dominio específico puede "envenenar" o calibrar significativamente a cualquier modelo, sugiriendo que para optimizar local vale la pena curar datasets compactos de texto técnico que repliquen el estilo de escritura de los expertos del campo — https://www.anthropic.com/research/small-samples-poison
+
+5. **Ciclos de recompensa y especialización**: Los sistemas de RL que incentivan la capacidad de razonamiento descubren que los modelos grandes tienden a especializarse en dominios donde su "expertise" supera al promedio, lo que sugiere que para tareas de ingeniería de software lo ideal es entrenar o fine-tunar modelos hacia patrones de código y documentación técnica — https://arxiv.org/abs/2501.12948
+
+session_id: local-27bd163ae8f4d594053e132a8342651721e2ace55afed638dad3c6bf2c3d3078
+segundos=22

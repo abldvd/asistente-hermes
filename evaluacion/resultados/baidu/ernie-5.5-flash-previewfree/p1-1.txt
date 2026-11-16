@@ -1,0 +1,26 @@
+Aquí tienes el resumen en 5 puntos, usando solo lo que aparece en el material y con el enlace de cada uno tal cual:
+
+1) DeepSeek-R1 (modelos de IA locales): el paper trata de incentivar la capacidad de razonamiento de los LLM mediante aprendizaje por refuerzo (RL); referencia directa para quien trabaja con modelos locales que deben razonar mejor.
+https://arxiv.org/abs/2501.12948
+
+2) Learning to Reason with LLMs (OpenAI): centrado en enseñar/entrenar a los modelos a razonar; útil para mejorar prompts y el comportamiento de razonamiento, tanto en la nube como en local.
+https://openai.com/index/learning-to-reason-with-llms/
+
+3) LLMs reward expertise: los LLM recompensan la experiencia; quien sabe usarlos bien obtiene mucho más de ellos. Clave para "optimizar" el uso (Claude Code incluido).
+https://www.seangoedecke.com/llms-reward-expertise/
+
+4) A small number of samples can poison LLMs of any size (Anthropic): unas pocas muestras pueden envenenar modelos de cualquier tamaño; punto crítico de seguridad al operar modelos locales.
+https://www.anthropic.com/research/small-samples-poison
+
+5) LLM Visualization: visualización de LLM que ayuda a entender qué pasa dentro de un modelo; útil para afinar y depurar, en local o con Claude Code.
+https://bbycroft.net/llm
+
+Extra para Claude Code (del changelog del material; ese extracto no trae enlace):
+- Seguridad: corregido el fallo al decodificar respuestas comprimidas con zstd.
+- Contexto: en gateways de terceros y Foundry ya no falla en cada turno por longitud de contexto (ahora compacta); también se corrigió la pérdida de turnos recientes al reanudar tras un cierre sucio.
+- Subagentes: los que tienen modelo propio ya no se reasignan al modelo de plan-mode con opusplan/haiku, ni dimensionan lecturas/resultados MCP con el modelo principal.
+- Planes: si plansDirectory no puede guardar, el plan se guarda en la carpeta por defecto con aviso de dónde y por qué.
+- Políticas de organización: cuando una política bloquea, ahora indica cómo continuar (/rewind y cambiar el mensaje, o /clear).
+
+session_id: local-6cb682fd507695f41fd768afeb67bde27296d321cf5e58b8abe1d43f2035145c
+segundos=47
