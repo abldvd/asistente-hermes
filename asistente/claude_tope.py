@@ -22,15 +22,21 @@ def cargar_perfiles() -> dict:
     return json.loads((RAIZ / "config" / "claude_perfiles.json").read_text(encoding="utf-8"))
 
 
-def construir_comando(perfil: dict, prompt: str) -> list[str]:
+def construir_comando(perfil: dict) -> list[str]:
+    """El prompt NO va en argv (va por stdin): así un texto que empiece por '-' no se lee como flag.
+
+    Ningún perfil mezcla lectura de archivos locales con herramientas de red: el prompt puede
+    contener texto no confiable (correos, webs) y no debe poder sacar archivos fuera.
+    """
     herramientas = perfil["allowedTools"]
     # --tools limita las herramientas cargadas (≈5K tokens de contexto en vez de ≈40K);
     # --strict-mcp-config y --setting-sources "" evitan cargar MCP, plugins y hooks del usuario.
-    return ["claude", "-p", prompt,
-            "--tools", herramientas, "--allowedTools", herramientas,
-            "--strict-mcp-config", "--setting-sources", "",
-            "--max-turns", str(perfil["max_turns"]), "--model", perfil["model"],
-            "--output-format", "json"]
+    cmd = ["claude", "-p", "--tools", herramientas]
+    if herramientas:
+        cmd += ["--allowedTools", herramientas]
+    return cmd + ["--strict-mcp-config", "--setting-sources", "",
+                  "--max-turns", str(perfil["max_turns"]), "--model", perfil["model"],
+                  "--output-format", "json"]
 
 
 def ejecutar(perfil_nombre: str, prompt: str, explicito: bool,
@@ -49,7 +55,7 @@ def ejecutar(perfil_nombre: str, prompt: str, explicito: bool,
     cwd = estado_dir() / "claude_cwd"
     cwd.mkdir(exist_ok=True)
     try:
-        r = subprocess.run(construir_comando(perfiles[perfil_nombre], prompt), capture_output=True,
+        r = subprocess.run(construir_comando(perfiles[perfil_nombre]), input=prompt, capture_output=True,
                            text=True, encoding="utf-8", timeout=timeout_s, cwd=cwd,
                            creationflags=_SIN_VENTANA)
     except FileNotFoundError:

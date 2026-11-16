@@ -1,0 +1,2 @@
+FROM huihui_ai/qwen3.5-abliterated:9b
+PARAMETER num_ctx 65536
