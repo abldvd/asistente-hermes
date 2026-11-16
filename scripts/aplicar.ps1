@@ -18,7 +18,7 @@ foreach ($linea in Get-Content (Join-Path $repo "config\hermes\ajustes.txt") -En
     $l = $linea.Trim()
     if (-not $l -or $l.StartsWith("#")) { continue }
     $clave, $valor = $l -split "\s+", 2
-    $actual = (& $hermes config get $clave 2>$null | Out-String).Trim()
+    $actual = try { (& $hermes config get $clave 2>$null | Out-String).Trim() } catch { "" }  # clave sin valor
     if ($actual -ne $valor) {
         # PS 5.1 quita las comillas dobles al pasar argumentos a un .exe: hay que escaparlas
         & $hermes config set $clave ($valor -replace '"', '\"') | Out-Null

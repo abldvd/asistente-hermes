@@ -11,3 +11,6 @@ delegation.provider claude-subscription-directsdk-experimental
 delegation.model sonnet
 delegation.max_iterations 20
 hooks.pre_tool_call [{"matcher":"^delegate_task$","command":"E:/asistente-hermes/scripts/hook_tope_delegacion.py","timeout":30,"fail_closed":true}]
+# Claude solo por las vías con tope: sin la skill integrada que llama a `claude` directamente
+skills.disabled ["claude-code"]
+HERMES_TIMEZONE Atlantic/Canary
