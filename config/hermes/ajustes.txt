@@ -1,0 +1,8 @@
+# clave valor  — se aplican con `hermes config set` (una por línea; # = comentario)
+model.provider custom
+model.base_url http://127.0.0.1:11434/v1
+model.default qwen35-64k
+model.context_length 64000
+auth.adopt_external_logins false
+telemetry.shared_metrics.enabled false
+telemetry.shared_metrics.send false
