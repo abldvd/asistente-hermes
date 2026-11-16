@@ -55,6 +55,7 @@ def _cuota_ok(cfg: dict) -> tuple[bool, str]:
 
 
 def main(argv: list[str] | None = None) -> int:
+    sys.stdout.reconfigure(encoding="utf-8")
     p = argparse.ArgumentParser(prog="asistente.compuerta")
     p.add_argument("--tarea", required=True)
     p.add_argument("--requiere-claude", action="store_true")

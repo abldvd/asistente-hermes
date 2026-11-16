@@ -1,0 +1,2 @@
+{"lectura": {"allowedTools": "Read,Grep,Glob,WebSearch,WebFetch", "max_turns": 8, "model": "sonnet"},
+ "analisis": {"allowedTools": "Read,Grep,Glob", "max_turns": 4, "model": "sonnet"}}
