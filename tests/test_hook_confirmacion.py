@@ -141,3 +141,25 @@ def test_cualquier_mencion_del_asistente_debe_ser_invocacion_limpia():
 
 def test_execute_code_se_bloquea_siempre():
     assert decidir(_e("execute_code", code="print(1)"))["action"] == "block"
+
+
+@pytest.mark.parametrize("flag", ['--con"fi"rmado', "--con'fi'rmado", '--"confirmado"', '-"-confirmado"',
+                                  "--con\firmado", '--confirmad"o"'])
+def test_comillas_dentro_de_una_opcion_se_bloquean(flag):
+    cmd = f"{GM} etiquetar --cuenta seria --ids a --quitar INBOX {flag}"
+    assert decidir(_e("terminal", command=cmd))["action"] == "block"
+
+
+def test_valor_entre_comillas_sigue_permitido():
+    cmd = f'{GM} etiquetar --cuenta seria --ids a --poner "Empleo"'
+    assert decidir(_e("terminal", command=cmd)) is None
+
+
+def test_barra_literal_en_opcion_se_bloquea():
+    cmd = f"{GM} etiquetar --cuenta seria --ids a --quitar INBOX --con" + chr(92) + "firmado"
+    assert decidir(_e("terminal", command=cmd))["action"] == "block"
+
+
+def test_caracteres_de_control_se_bloquean():
+    cmd = f"{GM} etiquetar --cuenta seria --ids a --quitar INBOX\x0c--confirmado"
+    assert decidir(_e("terminal", command=cmd))["action"] == "block"

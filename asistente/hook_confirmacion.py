@@ -88,6 +88,8 @@ def decidir(entrada: dict) -> dict | None:
     if herramienta in _TERMINAL and _MENCION.search(_OFUSCACION.sub("", texto)):
         # Falla cerrado: todo lo que toque el asistente es una invocación limpia, sin trucos de shell.
         comando = texto.strip()
+        if any(not (c.isprintable() or c == " ") for c in comando):
+            return _bloquear("Comando con caracteres de control no permitido.")
         if (_OFUSCACION.search(comando) or len(comando) > _MAX_COMANDO
                 or len(_MENCION.findall(comando)) != 1 or not _INVOCACION_ASISTENTE.match(comando)):
             return _bloquear("Las CLI del asistente se lanzan solas, como UNA invocación limpia "
@@ -97,7 +99,12 @@ def decidir(entrada: dict) -> dict | None:
         except ValueError:
             return _bloquear("Comando con comillas desparejadas.")
         for t in tokens:
-            if t.strip("\"'").lower().startswith("--conf") and t != "--confirmado":
+            # Las opciones no llevan comillas ni barras: la shell las quitaría y la CLI vería otra cosa.
+            if t.lstrip("\"'").startswith("-") and re.search(r"[\"'\\]", t):
+                return _bloquear("Las opciones (-x / --x) no pueden llevar comillas ni barras invertidas.")
+            limpio = re.sub(r"[\"'\\]", "", t).lower()
+            if limpio.startswith("--c") and ("--confirmado".startswith(limpio) or limpio.startswith("--conf")) \
+                    and t != "--confirmado":
                 return _bloquear("Escribe la opción --confirmado tal cual, sin comillas ni abreviar.")
     confirmado = _CONFIRMADO.search(texto)
     sug = _CONFIRMAR_SUG.search(texto)
