@@ -163,3 +163,14 @@ def test_barra_literal_en_opcion_se_bloquea():
 def test_caracteres_de_control_se_bloquean():
     cmd = f"{GM} etiquetar --cuenta seria --ids a --quitar INBOX\x0c--confirmado"
     assert decidir(_e("terminal", command=cmd))["action"] == "block"
+
+
+@pytest.mark.parametrize("flag", ["--con{f,}irmado", "--con?irmado", "--con*", "--c[o]nfirmado",
+                                  "--confirmad~", "--conf!rmado", "--Confirmado", "--con_firmado"])
+def test_expansiones_de_bash_y_opciones_raras_se_bloquean(flag):
+    cmd = f"{GM} etiquetar --cuenta seria --ids a --quitar INBOX {flag}"
+    assert decidir(_e("terminal", command=cmd))["action"] == "block"
+
+
+def test_valores_con_simbolos_de_bash_se_bloquean():
+    assert decidir(_e("terminal", command=f'{GM} buscar --cuenta seria --consulta "a*"'))["action"] == "block"

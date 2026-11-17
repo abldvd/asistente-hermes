@@ -41,6 +41,7 @@ _INVOCACION_ASISTENTE = re.compile(
 _MENCION = re.compile(r"asistente(?!-hermes)", re.IGNORECASE)
 _OFUSCACION = re.compile(r'[\^`]|""')
 _MAX_COMANDO = 1000
+_OPCIONES_CON = {"--confirmado", "--consulta"}  # opciones reales que empiezan por --con
 _TERMINAL = {"terminal", "shell", "bash", "powershell"}
 
 
@@ -98,14 +99,15 @@ def decidir(entrada: dict) -> dict | None:
             tokens = shlex.split(comando, posix=False)
         except ValueError:
             return _bloquear("Comando con comillas desparejadas.")
+        # Símbolos que bash (Git Bash) expandiría: --con{f,}irmado, --con?irmado...
+        if re.search(r"[{}*?\[\]~!]", comando):
+            return _bloquear("Los comandos del asistente no pueden llevar { } * ? [ ] ~ !")
         for t in tokens:
-            # Las opciones no llevan comillas ni barras: la shell las quitaría y la CLI vería otra cosa.
-            if t.lstrip("\"'").startswith("-") and re.search(r"[\"'\\]", t):
-                return _bloquear("Las opciones (-x / --x) no pueden llevar comillas ni barras invertidas.")
-            limpio = re.sub(r"[\"'\\]", "", t).lower()
-            if limpio.startswith("--c") and ("--confirmado".startswith(limpio) or limpio.startswith("--conf")) \
-                    and t != "--confirmado":
-                return _bloquear("Escribe la opción --confirmado tal cual, sin comillas ni abreviar.")
+            # Lista blanca: una opción es exactamente -x o --palabra-con-guiones, en minúsculas.
+            if t.lstrip("\"'\\").startswith("-") and not re.fullmatch(r"--?[a-z][a-z0-9-]*", t):
+                return _bloquear("Opción con formato no permitido (sin comillas, barras ni mayúsculas).")
+            if t.startswith("--con") and t not in _OPCIONES_CON:
+                return _bloquear("Escribe la opción --confirmado tal cual, sin abreviar.")
     confirmado = _CONFIRMADO.search(texto)
     sug = _CONFIRMAR_SUG.search(texto)
     if not (confirmado or sug):
