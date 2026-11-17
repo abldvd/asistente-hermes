@@ -30,3 +30,4 @@
 - aplicar.ps1 allowlist JSON without "approvals" property throws
 - non-dict JSON state could break compuerta (llamadas_hoy fixed)
 - Límite semanal de Claude no se vigila (solo el de 5 h).
+- claude_tope: el filtro de secretos solo reconoce valores literales de los .env (≥ 8 caracteres); un secreto codificado (base64, troceado) pasaría. El agente sigue pudiendo leer secretos con sus propias herramientas.
