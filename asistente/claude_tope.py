@@ -21,10 +21,26 @@ _SIN_VENTANA = getattr(subprocess, "CREATE_NO_WINDOW", 0)
 # Valores que nunca deben salir hacia Claude (el perfil `web` puede sacarlos por una URL).
 ARCHIVOS_SECRETOS = [RAIZ / "secretos" / ".env",
                      Path(os.environ.get("LOCALAPPDATA", "")) / "hermes" / ".env"]
+# Credenciales en JSON (tokens OAuth de Google y el secreto del cliente).
+DIRS_SECRETOS_JSON = [RAIZ / "secretos" / "google"]
+_CLAVES_JSON = {"token", "refresh_token", "client_secret", "access_token"}
 _MIN_SECRETO = 8
 
 
-def contiene_secreto(prompt: str) -> bool:
+def _valores_json(obj):
+    if isinstance(obj, dict):
+        for k, v in obj.items():
+            if k in _CLAVES_JSON and isinstance(v, str):
+                yield v
+            else:
+                yield from _valores_json(v)
+    elif isinstance(obj, list):
+        for v in obj:
+            yield from _valores_json(v)
+
+
+def _secretos() -> list[str]:
+    valores = []
     for archivo in ARCHIVOS_SECRETOS:
         try:
             lineas = Path(archivo).read_text(encoding="utf-8").splitlines()
@@ -32,10 +48,19 @@ def contiene_secreto(prompt: str) -> bool:
             continue
         for linea in lineas:
             _, sep, valor = linea.partition("=")
-            valor = valor.strip().strip('"').strip("'")
-            if sep and len(valor) >= _MIN_SECRETO and valor in prompt:
-                return True
-    return False
+            if sep:
+                valores.append(valor.strip().strip('"').strip("'"))
+    for d in DIRS_SECRETOS_JSON:
+        for f in Path(d).glob("*.json") if Path(d).is_dir() else []:
+            try:
+                valores += list(_valores_json(json.loads(f.read_text(encoding="utf-8"))))
+            except (OSError, ValueError):
+                continue
+    return [v for v in valores if len(v) >= _MIN_SECRETO]
+
+
+def contiene_secreto(prompt: str) -> bool:
+    return any(v in prompt for v in _secretos())
 
 
 def cargar_perfiles() -> dict:

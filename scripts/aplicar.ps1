@@ -81,7 +81,9 @@ Write-Output "vigía en Inicio"
 $sec = Join-Path $repo "secretos"
 if (Test-Path $sec) {
     icacls $sec /inheritance:r /grant:r "$($env:USERDOMAIN)\$($env:USERNAME):(OI)(CI)F" "*S-1-5-18:(OI)(CI)F" /Q | Out-Null
-    icacls "$sec\*" /reset /T /Q | Out-Null  # el contenido hereda de la carpeta (no /T arriba: deja archivos sin permisos)
+    if ($LASTEXITCODE -ne 0) { throw "icacls no pudo restringir $sec" }
+    icacls "$sec\*" /reset /T /Q | Out-Null
+    if ($LASTEXITCODE -ne 0) { throw "icacls no pudo heredar permisos en $sec" }  # el contenido hereda de la carpeta (no /T arriba: deja archivos sin permisos)
     Write-Output "secretos: permisos restringidos"
 }
 Write-Output "aplicar.ps1: listo"

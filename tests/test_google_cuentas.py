@@ -46,3 +46,17 @@ def test_config_correo_tiene_lista_blanca():
         "GitHub", "Juegos", "Música", "Newsletters", "Redes/Facebook"]
     assert (cfg["max_correos"], cfg["max_cuerpo"], cfg["primera_ventana_h"]) == (40, 1200, 24)
     assert set(cfg["cuentas"]) == set(cuentas.CUENTAS)
+
+
+def test_asegurar_permisos_llama_a_icacls_y_falla_si_no_puede(tmp_path, monkeypatch):
+    llamadas = []
+    def run(cmd, **kw):
+        llamadas.append(cmd)
+        from types import SimpleNamespace
+        return SimpleNamespace(returncode=0 if len(llamadas) == 1 else 5, stdout="", stderr="denegado")
+    monkeypatch.setattr(cuentas.subprocess, "run", run)
+    monkeypatch.setattr(cuentas.os, "name", "nt")
+    cuentas.asegurar_permisos(tmp_path)
+    assert llamadas[0][0] == "icacls" and "/inheritance:r" in llamadas[0]
+    with pytest.raises(OSError):
+        cuentas.asegurar_permisos(tmp_path)

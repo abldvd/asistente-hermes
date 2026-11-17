@@ -165,3 +165,18 @@ def test_valores_cortos_no_cuentan_como_secreto(tmp_path, monkeypatch, cuota):
     monkeypatch.setattr(claude_tope.subprocess, "run", lambda *a, **k: SimpleNamespace(
         returncode=0, stdout=json.dumps({"result": "ok"}), stderr=""))
     assert ejecutar("web", "abc", explicito=False) == (0, "ok")
+
+
+def test_prompt_con_refresh_token_de_google_se_rechaza(tmp_path, monkeypatch, cuota):
+    g = tmp_path / "google"
+    g.mkdir()
+    (g / "token_seria.json").write_text(json.dumps(
+        {"token": "ya29.tokendeaccesolargo", "refresh_token": "1//refrescolargo123", "client_id": "x"}),
+        encoding="utf-8")
+    (g / "client_secret.json").write_text(json.dumps({"installed": {"client_secret": "GOCSPX-secreto99"}}),
+                                          encoding="utf-8")
+    monkeypatch.setattr(claude_tope, "ARCHIVOS_SECRETOS", [])
+    monkeypatch.setattr(claude_tope, "DIRS_SECRETOS_JSON", [g])
+    monkeypatch.setattr(claude_tope.subprocess, "run", lambda *a, **k: pytest.fail("no debe llamar"))
+    for fuga in ("1//refrescolargo123", "ya29.tokendeaccesolargo", "GOCSPX-secreto99"):
+        assert ejecutar("web", f"mira {fuga}", explicito=True)[0] == 20

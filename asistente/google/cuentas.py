@@ -12,6 +12,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import subprocess
 import sys
 from pathlib import Path
 
@@ -75,6 +76,22 @@ def servicio(cuenta: str, api: str):
     return build(api, _APIS[api], credentials=_credenciales(cuenta), cache_discovery=False)
 
 
+def asegurar_permisos(carpeta: Path) -> None:
+    """En Windows, deja la carpeta solo para el usuario actual y SYSTEM (sin herencia).
+
+    Los archivos creados después heredan esos permisos. Falla si icacls no lo consigue.
+    """
+    if os.name != "nt":
+        os.chmod(carpeta, 0o700)
+        return
+    usuario = os.environ.get("USERDOMAIN", "") + "\\" + os.environ.get("USERNAME", "")
+    r = subprocess.run(["icacls", str(carpeta), "/inheritance:r", "/grant:r",
+                        f"{usuario}:(OI)(CI)F", "*S-1-5-18:(OI)(CI)F", "/Q"],
+                       capture_output=True, text=True, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
+    if r.returncode != 0:
+        raise OSError(f"no se pudieron restringir los permisos de {carpeta}: {(r.stderr or r.stdout).strip()}")
+
+
 def _correo_de(creds) -> str:
     from googleapiclient.discovery import build
     return build("gmail", "v1", credentials=creds, cache_discovery=False) \
@@ -107,6 +124,7 @@ def autorizar(cuenta: str) -> str:
                 pass
     ruta = ruta_token(cuenta)
     ruta.parent.mkdir(parents=True, exist_ok=True)
+    asegurar_permisos(ruta.parent.parent if ruta.parent.name == "google" else ruta.parent)
     ruta.write_text(creds.to_json(), encoding="utf-8")
     return _enmascarar(correo)
 
@@ -123,7 +141,7 @@ def main(argv: list[str] | None = None) -> int:
         try:
             print(f"AUTORIZADA {args.cuenta}: {autorizar(args.cuenta)}")
             return 0
-        except (ValueError, FileNotFoundError) as e:
+        except (ValueError, OSError) as e:
             print(f"ERROR: {e}")
             return 21
     codigo = 0
