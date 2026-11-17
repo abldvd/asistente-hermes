@@ -1,0 +1,5 @@
+{"cuentas": {
+   "seria":    {"etiquetas_auto": ["Empleo", "Newsletters", "Música"]},
+   "personal": {"etiquetas_auto": ["GitHub", "Juegos", "Música", "Newsletters", "Redes/Facebook"]}
+ },
+ "max_correos": 40, "max_cuerpo": 1200, "primera_ventana_h": 24}
