@@ -174,3 +174,14 @@ def test_expansiones_de_bash_y_opciones_raras_se_bloquean(flag):
 
 def test_valores_con_simbolos_de_bash_se_bloquean():
     assert decidir(_e("terminal", command=f'{GM} buscar --cuenta seria --consulta "a*"'))["action"] == "block"
+
+
+def test_resumen_de_la_accion_va_primero():
+    ids = ",".join(f"id{i}" for i in range(20))
+    m = decidir(_e("terminal", command=f"{GM} etiquetar --cuenta personal --ids {ids} --quitar INBOX --confirmado"))["message"]
+    assert m.splitlines()[0] == "Archivar 20 correos de la cuenta personal."
+    m = decidir(_e("terminal", command=f"{GM} etiquetar --cuenta seria --ids a,b --poner TRASH --confirmado"))["message"]
+    assert m.splitlines()[0] == "Mandar a la papelera 2 correos de la cuenta seria."
+    cal = r"E:\asistente-hermes\.venv\Scripts\python.exe -m asistente.google.calendario"
+    m = decidir(_e("terminal", command=f'{cal} crear --cuenta personal --titulo "Dentista" --inicio 2026-11-20T10:00 --fin 2026-11-20T11:00 --confirmado'))["message"]
+    assert m.splitlines()[0] == "Crear evento «Dentista» el 2026-11-20T10:00 en la cuenta personal."

@@ -18,6 +18,13 @@ _COLUMNA = re.compile(r"pid_(\d+)_.*engtype_3D", re.IGNORECASE)
 _CONTADOR_3D = r"\GPU Engine(*engtype_3D)\Utilization Percentage"
 
 
+def _texto(salida) -> str:
+    """Salida de un comando de Windows sin depender de la página de códigos (cp1252/cp850)."""
+    if isinstance(salida, bytes):
+        return salida.decode("utf-8", errors="replace")
+    return salida or ""
+
+
 def hay_juego(procesos: list[str], juegos: list[str], gpu: int | None, umbral_gpu: int) -> bool:
     """`gpu` = uso de GPU ajeno a Ollama (ver `gpu_para_juego`)."""
     activos = {p.lower() for p in procesos}
@@ -28,11 +35,11 @@ def hay_juego(procesos: list[str], juegos: list[str], gpu: int | None, umbral_gp
 
 def _tasklist() -> list[list[str]]:
     try:
-        r = subprocess.run(["tasklist", "/fo", "csv", "/nh"], capture_output=True, text=True,
+        r = subprocess.run(["tasklist", "/fo", "csv", "/nh"], capture_output=True,
                            timeout=8, creationflags=_SIN_VENTANA)
     except (OSError, subprocess.SubprocessError):
         return []
-    return [fila for fila in csv.reader(io.StringIO(r.stdout)) if fila]
+    return [fila for fila in csv.reader(io.StringIO(_texto(r.stdout))) if fila]
 
 
 def procesos_activos() -> list[str]:
@@ -66,19 +73,19 @@ def gpu_ajena_de_csv(texto: str, excluidos: set[int]) -> int | None:
 
 def gpu_ajena() -> int | None:
     try:
-        r = subprocess.run(["typeperf", _CONTADOR_3D, "-sc", "1"], capture_output=True, text=True,
+        r = subprocess.run(["typeperf", _CONTADOR_3D, "-sc", "1"], capture_output=True,
                            timeout=8, creationflags=_SIN_VENTANA)
     except (OSError, subprocess.SubprocessError):
         return None
-    return gpu_ajena_de_csv(r.stdout.strip(), pids_ollama())
+    return gpu_ajena_de_csv(_texto(r.stdout).strip(), pids_ollama())
 
 
 def gpu_util() -> int | None:
     try:
         r = subprocess.run(["nvidia-smi", "--query-gpu=utilization.gpu",
-                            "--format=csv,noheader,nounits"], capture_output=True, text=True,
+                            "--format=csv,noheader,nounits"], capture_output=True,
                            timeout=8, creationflags=_SIN_VENTANA)
-        return int(r.stdout.strip().splitlines()[0])
+        return int(_texto(r.stdout).strip().splitlines()[0])
     except (OSError, subprocess.SubprocessError, ValueError, IndexError):
         return None
 

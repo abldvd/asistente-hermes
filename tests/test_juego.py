@@ -70,3 +70,19 @@ def test_gpu_util_salida_normal(monkeypatch):
     monkeypatch.setattr(juego.subprocess, "run",
                         lambda *a, **k: SimpleNamespace(returncode=0, stdout="37\n"))
     assert gpu_util() == 37
+
+
+def test_gpu_ajena_con_salida_ilegible(monkeypatch):
+    monkeypatch.setattr(juego.subprocess, "run", lambda *a, **k: SimpleNamespace(returncode=0, stdout=None))
+    monkeypatch.setattr(juego, "pids_ollama", lambda: set())
+    assert juego.gpu_ajena() is None
+
+
+def test_subprocesos_no_decodifican_con_la_pagina_de_codigos(monkeypatch):
+    vistos = []
+    def run(cmd, **kw):
+        vistos.append(kw)
+        return SimpleNamespace(returncode=0, stdout=b"")
+    monkeypatch.setattr(juego.subprocess, "run", run)
+    juego.procesos_activos(); juego.gpu_util()
+    assert all(not kw.get("text") for kw in vistos)

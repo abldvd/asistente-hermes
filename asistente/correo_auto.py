@@ -133,9 +133,17 @@ def ejecutar(ahora: datetime, modelo: Callable[[list[dict]], str] = llamar_ollam
     return "\n\n".join(p for p in partes if p)
 
 
+def ejecutar_seguro(ahora: datetime) -> str:
+    """Un fallo inesperado avisa una vez al día en vez de romper el cron cada media hora."""
+    try:
+        return ejecutar(ahora)
+    except Exception as e:
+        return _aviso_fallo(f"{type(e).__name__}: {str(e)[:120]}", ahora)
+
+
 def main() -> int:
     sys.stdout.reconfigure(encoding="utf-8")
-    mensaje = ejecutar(datetime.now(ZONA))
+    mensaje = ejecutar_seguro(datetime.now(ZONA))
     if mensaje:  # salida vacía = Hermes no envía nada
         print(mensaje)
     return 0

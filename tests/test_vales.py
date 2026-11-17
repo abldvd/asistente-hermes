@@ -178,3 +178,14 @@ def test_consumo_atomico_solo_una_vez(monkeypatch):
 def test_comodines_en_rutas_sensibles_se_bloquean(cmd):
     from asistente.hook_confirmacion import decidir
     assert decidir({"tool_name": "terminal", "tool_input": {"command": cmd}})["action"] == "block"
+
+
+def test_hermes_antepone_plugin_rule(monkeypatch):
+    import io
+    import json
+    from asistente import hook_aprobacion
+    vales.emitir("m", ["a"], regla="confirmado:aaa")
+    monkeypatch.setattr("sys.stdin", io.StringIO(json.dumps(
+        {"choice": "once", "pattern_key": "plugin_rule:confirmado:aaa", "pattern_keys": ["plugin_rule:confirmado:aaa"]})))
+    hook_aprobacion.main()
+    assert vales.consumir("m", ["a"]) is True

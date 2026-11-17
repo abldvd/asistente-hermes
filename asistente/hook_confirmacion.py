@@ -78,6 +78,38 @@ def _visible(texto: str) -> str:
     return "".join(c if c.isprintable() or c == " " else "\\x" + f"{ord(c):02x}" for c in texto)
 
 
+def _opcion(args: list[str], nombre: str) -> str:
+    return args[args.index(nombre) + 1] if nombre in args and args.index(nombre) + 1 < len(args) else ""
+
+
+def _resumen(modulo: str, args: list[str]) -> str:
+    """Primera línea del aviso: qué va a pasar, en corto (Telegram recorta los avisos largos)."""
+    cuenta = _opcion(args, "--cuenta")
+    sub = args[0] if args else ""
+    if modulo == "asistente.google.gmail" and sub == "etiquetar":
+        n = len([i for i in _opcion(args, "--ids").split(",") if i])
+        poner, quitar = _opcion(args, "--poner").split(","), _opcion(args, "--quitar").split(",")
+        if "TRASH" in poner:
+            que = "Mandar a la papelera"
+        elif "SPAM" in poner:
+            que = "Marcar como spam"
+        elif "INBOX" in quitar:
+            que = "Archivar"
+        else:
+            que = f"Cambiar etiquetas (poner {_opcion(args, '--poner') or '-'}, quitar {_opcion(args, '--quitar') or '-'}) de"
+        return f"{que} {n} correos de la cuenta {cuenta}."
+    if modulo == "asistente.google.gmail" and sub == "borrador":
+        return f"Crear un borrador para {_opcion(args, '--para')} en la cuenta {cuenta}."
+    if modulo == "asistente.google.calendario":
+        if sub == "crear":
+            return f"Crear evento «{_opcion(args, '--titulo')}» el {_opcion(args, '--inicio')} en la cuenta {cuenta}."
+        if sub == "mover":
+            return f"Mover el evento {_opcion(args, '--id')} al {_opcion(args, '--inicio')} en la cuenta {cuenta}."
+        if sub == "borrar":
+            return f"Borrar el evento {_opcion(args, '--id')} de la cuenta {cuenta}."
+    return "Acción que requiere tu aprobación."
+
+
 def decidir(entrada: dict) -> dict | None:
     herramienta = str(entrada.get("tool_name") or "")
     texto = "\n".join(_textos(entrada.get("tool_input") or {}))
@@ -132,7 +164,7 @@ def decidir(entrada: dict) -> dict | None:
         vales.emitir(*vales.argv_de(comando), regla=f"confirmado:{clave}")
     except Exception as e:
         return _bloquear(f"No se pudo emitir el vale de aprobación ({type(e).__name__}).")
-    return {"action": "approve", "message": "Acción que requiere tu aprobación.\n" + "\n\n".join(partes),
+    return {"action": "approve", "message": _resumen(*vales.argv_de(comando)) + "\n" + "\n\n".join(partes),
             "rule_key": f"confirmado:{clave}"}
 
 

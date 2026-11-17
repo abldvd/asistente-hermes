@@ -94,3 +94,9 @@ def test_error_de_cuenta_aparece_en_el_mensaje(monkeypatch, entorno):
         [LOTES[0], {"cuenta": "personal", "error": "hay que volver a autorizarla"}], {"seria": 10}))
     msg = correo_auto.ejecutar(AHORA, _modelo({"resumen": "r", "etiquetas": [], "eventos": []}))
     assert "personal" in msg and "autorizarla" in msg
+
+
+def test_error_inesperado_avisa_una_vez_al_dia(monkeypatch):
+    monkeypatch.setattr(correo_auto, "_compuerta", lambda: (_ for _ in ()).throw(AttributeError("x")))
+    assert "no pude" in correo_auto.ejecutar_seguro(AHORA).lower()
+    assert correo_auto.ejecutar_seguro(AHORA) == ""
