@@ -87,8 +87,10 @@ def _aplicar_etiquetas(propuestas: list, lotes: list[dict], cfg: dict) -> None:
 
 
 def _sugerencias(eventos: list, lotes: list[dict], ahora: datetime) -> list[dict]:
-    origen = {c["id"] for l in lotes for c in l.get("correos", [])}
-    validos = [e for e in eventos if isinstance(e, dict) and str(e.get("origen_id")) in origen]
+    origen = {c["id"]: l["cuenta"] for l in lotes for c in l.get("correos", [])}
+    # La cuenta es la del correo de origen, no la que diga el modelo.
+    validos = [{**e, "cuenta": origen[str(e.get("origen_id"))]} for e in eventos
+               if isinstance(e, dict) and str(e.get("origen_id")) in origen]
     return agregar(validos, ahora) if validos else []
 
 
@@ -117,6 +119,8 @@ def ejecutar(ahora: datetime, modelo: Callable[[list[dict]], str] = llamar_ollam
     try:
         datos = json.loads(modelo(mensajes))
         resumen = str(datos["resumen"]).strip()[:_MAX_RESUMEN]
+        if not resumen:
+            raise ValueError("resumen vacío")
         etiquetas, eventos = list(datos.get("etiquetas") or []), list(datos.get("eventos") or [])
     except (OSError, ValueError, KeyError, TypeError) as e:
         return _aviso_fallo(type(e).__name__, ahora)

@@ -82,8 +82,8 @@ def agregar(items: list[dict], ahora: datetime) -> list[dict]:
         try:
             if existe_parecido(servicio(s["cuenta"], "calendar"), s["titulo"], s["inicio"]):
                 continue
-        except CuentaNoAutorizada:
-            pass  # se guarda igual; al confirmar se informará del problema
+        except Exception:
+            pass  # sin poder comprobar el calendario (token, red, API) se guarda igual
         s.update(n=siguiente, creada=ahora.isoformat(timespec="seconds"))
         siguiente += 1
         vistas.add(clave)

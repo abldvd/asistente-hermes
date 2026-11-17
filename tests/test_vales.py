@@ -4,6 +4,8 @@ import pytest
 
 from asistente import vales
 
+vales_activar_real = vales.activar
+
 
 def test_emitir_y_consumir_una_sola_vez():
     vales.emitir("asistente.google.gmail", ["etiquetar", "--ids", "a", "--confirmado"])
@@ -120,8 +122,7 @@ def test_hook_aprobacion_activa_si_se_aprueba_y_falla_cerrado(monkeypatch):
     monkeypatch.setattr(vales, "activar", lambda r: (_ for _ in ()).throw(OSError("x")))
     monkeypatch.setattr("sys.stdin", io.StringIO(json.dumps({"extra": {"choice": "once", "pattern_key": "r1"}})))
     hook_aprobacion.main()
-    monkeypatch.undo()
-    monkeypatch.setenv("ASISTENTE_SECRETOS", str(vales._clave_ruta().parent))
+    monkeypatch.setattr(vales, "activar", vales_activar_real)  # restaurar solo esto: el estado sigue aislado
     vales.activar_pendientes()
     assert vales.consumir("m", ["x"]) is False  # se anuló al fallar
 
@@ -189,3 +190,23 @@ def test_hermes_antepone_plugin_rule(monkeypatch):
         {"choice": "once", "pattern_key": "plugin_rule:confirmado:aaa", "pattern_keys": ["plugin_rule:confirmado:aaa"]})))
     hook_aprobacion.main()
     assert vales.consumir("m", ["a"]) is True
+
+
+def test_vigencia_cubre_el_tiempo_de_espera_de_hermes():
+    assert vales.VIGENCIA_S >= 360  # approvals.timeout de Hermes = 300 s
+
+
+def test_rule_key_no_se_repite_para_el_mismo_comando():
+    from asistente.hook_confirmacion import decidir
+    cmd = r"E:\asistente-hermes\.venv\Scripts\python.exe -m asistente.google.gmail etiquetar --cuenta seria --ids a --quitar INBOX --confirmado"
+    a = decidir({"tool_name": "terminal", "tool_input": {"command": cmd}})["rule_key"]
+    b = decidir({"tool_name": "terminal", "tool_input": {"command": cmd}})["rule_key"]
+    assert a != b  # "session"/"always" no deben saltarse el post_approval_response
+
+
+def test_workdir_no_rompe_la_confirmacion():
+    from asistente.hook_confirmacion import decidir
+    cmd = r"E:\asistente-hermes\.venv\Scripts\python.exe -m asistente.google.gmail etiquetar --cuenta seria --ids a --quitar INBOX --confirmado"
+    r = decidir({"tool_name": "terminal", "tool_input": {"command": cmd, "workdir": "E:\asistente-hermes", "notify": "x"}})
+    assert r["action"] == "approve"
+    assert decidir({"tool_name": "terminal", "tool_input": {"command": "dir", "workdir": "E:/asistente-hermes/secretos/"}})["action"] == "block"

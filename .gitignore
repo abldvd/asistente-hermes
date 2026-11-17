@@ -6,3 +6,4 @@ __pycache__/
 noticias/
 .superpowers/
 .pytest_cache/
+*.key

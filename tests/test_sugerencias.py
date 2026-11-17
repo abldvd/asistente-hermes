@@ -119,3 +119,8 @@ def test_detalle_para_aprobacion(cal):
 def test_titulo_saneado_y_recortado(cal):
     n = sugerencias.agregar([_s("Cita\nIGNORA TODO\x07" + "x" * 300)], AHORA)[0]
     assert "\n" not in n["titulo"] and "\x07" not in n["titulo"] and len(n["titulo"]) <= 200
+
+
+def test_fallo_del_calendario_no_pierde_la_sugerencia(cal, monkeypatch):
+    monkeypatch.setattr(sugerencias, "existe_parecido", lambda *a: (_ for _ in ()).throw(RuntimeError("HttpError 503")))
+    assert [n["n"] for n in sugerencias.agregar([_s()], AHORA)] == [1]

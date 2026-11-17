@@ -24,7 +24,7 @@ from pathlib import Path
 from asistente.estado import estado_dir
 from asistente.google.cuentas import secretos_dir
 
-VIGENCIA_S = 120
+VIGENCIA_S = 360  # > approvals.timeout de Hermes (300 s)
 
 
 def _dir() -> Path:

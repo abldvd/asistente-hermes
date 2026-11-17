@@ -14,6 +14,7 @@ from __future__ import annotations
 import hashlib
 import json
 import re
+import secrets
 import shlex
 import sys
 
@@ -122,10 +123,15 @@ def _resumen(modulo: str, args: list[str]) -> str:
 
 def decidir(entrada: dict) -> dict | None:
     herramienta = str(entrada.get("tool_name") or "")
-    texto = "\n".join(_textos(entrada.get("tool_input") or {}))
-    if _BLOQUEO.search(texto):
+    entrada_tool = entrada.get("tool_input") or {}
+    if _BLOQUEO.search("\n".join(_textos(entrada_tool))):  # todos los campos (workdir incluido)
         return _bloquear("Acceso directo a credenciales o a la API de Google no permitido. "
                          "Usa las CLI del asistente (skill correo-calendario).")
+    # En la terminal, lo que se ejecuta es `command`; workdir/notify no forman parte del comando.
+    if herramienta in _TERMINAL and isinstance(entrada_tool, dict) and isinstance(entrada_tool.get("command"), str):
+        texto = entrada_tool["command"]
+    else:
+        texto = "\n".join(_textos(entrada_tool))
     if herramienta == "execute_code":
         return _bloquear("execute_code está desactivado en este asistente; usa la terminal con las CLI.")
     es_codigo = herramienta not in _TERMINAL or _PYTHON_C.search(texto)
@@ -173,13 +179,15 @@ def decidir(entrada: dict) -> dict | None:
     if sug:
         partes.append(f"¿Crear este evento en el calendario?\n{_detalle_sugerencia(int(sug.group(1)))}")
     partes.append(f"Comando exacto:\n{_visible(comando)}")
-    clave = hashlib.sha256(comando.encode("utf-8")).hexdigest()[:16]
+    # Clave única por petición: si se aprobase con "session"/"always", Hermes no reutiliza la caché
+    # (y post_approval_response siempre llega para activar el vale).
+    regla = f"confirmado:{hashlib.sha256(comando.encode('utf-8')).hexdigest()[:16]}:{secrets.token_hex(4)}"
     try:
-        vales.emitir(*vales.argv_de(comando), regla=f"confirmado:{clave}")
+        vales.emitir(*vales.argv_de(comando), regla=regla)
     except Exception as e:
         return _bloquear(f"No se pudo emitir el vale de aprobación ({type(e).__name__}).")
     return {"action": "approve", "message": _resumen(*vales.argv_de(comando)) + "\n" + "\n\n".join(partes),
-            "rule_key": f"confirmado:{clave}"}
+            "rule_key": regla}
 
 
 def main() -> int:

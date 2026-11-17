@@ -100,3 +100,20 @@ def test_error_inesperado_avisa_una_vez_al_dia(monkeypatch):
     monkeypatch.setattr(correo_auto, "_compuerta", lambda: (_ for _ in ()).throw(AttributeError("x")))
     assert "no pude" in correo_auto.ejecutar_seguro(AHORA).lower()
     assert correo_auto.ejecutar_seguro(AHORA) == ""
+
+
+def test_resumen_vacio_no_cierra(entorno):
+    msg = correo_auto.ejecutar(AHORA, _modelo({"resumen": "  ", "etiquetas": [], "eventos": []}))
+    assert entorno["cerrado"] is False and "no pude" in msg.lower()
+
+
+def test_la_cuenta_de_la_sugerencia_es_la_del_correo(entorno):
+    r = {"resumen": "r", "etiquetas": [], "eventos": [
+        {"cuenta": "personal", "titulo": "Cita", "inicio": "2026-11-19T10:00", "origen_id": "m1"}]}  # m1 es de seria
+    correo_auto.ejecutar(AHORA, _modelo(r))
+    assert entorno["sugerencias"][0]["cuenta"] == "seria"
+
+
+def test_correo_diario_ya_no_tiene_cli():
+    from asistente import correo_diario
+    assert not hasattr(correo_diario, "main")

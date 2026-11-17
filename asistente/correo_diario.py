@@ -3,7 +3,7 @@
 El cron corre cada 30 min. `precheck` consulta la compuerta y solo despierta al agente cuando toca:
 imprime el lote de correos nuevos (texto entre delimitadores, dato NO confiable) y en la última
 línea {"wakeAgent": true|false}. El lote se da por procesado solo cuando el agente ejecuta
-`python -m asistente.correo_diario cerrar`; si el agente falla, el siguiente tick lo repite.
+la llamada a `cerrar_lote()` (desde correo_auto); sin CLI, para que un agente no pueda cerrar el día.
 """
 from __future__ import annotations
 
@@ -119,21 +119,3 @@ def cerrar_lote() -> None:
         escribir_json(f"correo_{cuenta}", {"ultimo_ts": ts})
     escribir_json("correo_lote", {})
     marcar_hecho(TAREA)
-
-
-def main(argv: list[str] | None = None) -> int:
-    sys.stdout.reconfigure(encoding="utf-8")
-    argv = sys.argv[1:] if argv is None else argv
-    if argv == ["cerrar"]:
-        cerrar_lote()
-        print("lote de correo cerrado")
-        return 0
-    if argv == ["precheck"]:
-        print(precheck())
-        return 0
-    print("uso: python -m asistente.correo_diario {precheck|cerrar}")
-    return 2
-
-
-if __name__ == "__main__":
-    sys.exit(main())
