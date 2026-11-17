@@ -21,7 +21,7 @@ from asistente import vales
 
 _BLOQUEO = re.compile(
     r"secretos[\\/]|googleapiclient|google\.oauth2|google_auth_oauthlib|google\.auth\b"
-    r"|token_(seria|personal)|client_secret"
+    r"|token_(seria|personal)|client_secret|vales\.key|estado[\\/]+vales"
     r"|from\s+asistente(\.\w+)*\s+import|import\s+asistente",
     re.IGNORECASE)
 # En código propio (execute_code o python -c) ni siquiera se permite nombrar estas cosas.
