@@ -16,3 +16,17 @@
 - El subproceso del hook NO hereda variables de entorno arbitrarias (p. ej. `ASISTENTE_ESTADO`): usa siempre `estado\` del repo.
 - `hermes config set` con JSON desde PowerShell 5.1: escapar `"` como `\"`; una sección existente (`hooks`) solo se cambia por clave con punto (`hooks.pre_tool_call`).
 - Tokens por sesión: `hermes sessions export f.jsonl --session-id ID` (campos input/cache_write/cache_read/output_tokens).
+
+## Pendientes de la revisión final del plan 1 (17-nov)
+- os.replace WinError 5 when target open — retry + cleanup tmp (estado.py)
+- --hecho after midnight marks the new day (compuerta) — fix in plan 3
+- EJECUTAR leaves no "running" mark → duplicate runs on long tasks — fix in plan 3
+- SALTAR notice lost when the wait passes the window end
+- game hook timeout 20 s vs inner timeouts (now 8+8+3 s)
+- watcher unloads a model the user forced with "!" → cold reload per turn
+- confirm whether cron turns fire pre_llm_call (game hook could block them)
+- aplicar.ps1 re-applies hooks/skills.disabled every run (YAML vs JSON compare)
+- aplicar.ps1 saved without BOM → mojibake in PS 5.1 output
+- aplicar.ps1 allowlist JSON without "approvals" property throws
+- non-dict JSON state could break compuerta (llamadas_hoy fixed)
+- Límite semanal de Claude no se vigila (solo el de 5 h).
