@@ -32,3 +32,12 @@
 - Límite semanal de Claude no se vigila (solo el de 5 h).
 - claude_tope: el filtro de secretos solo reconoce valores literales de los .env (≥ 8 caracteres); un secreto codificado (base64, troceado) pasaría. El agente sigue pudiendo leer secretos con sus propias herramientas.
 - Riesgo residual aceptado (17-nov): el agente corre con el mismo usuario de Windows que `secretos\` (tokens de Google y `vales.key`); los filtros del hook no pueden cerrar todas las formas de nombrar esas rutas. Mitigado: el cron de correo no tiene herramientas, las acciones destructivas exigen aprobación humana y vale firmado. Solución definitiva pendiente: un "guardián" de credenciales con otra cuenta de Windows.
+
+## Pendientes de la revisión final del plan 2 (17-nov)
+Task 1: minor (deferred): google.api_core warns Python 3.10 is unsupported for future updates — move venv to 3.11+ eventually
+- suggestion dedup by exact normalized title (variants like "con Acme" duplicate); discarded suggestions can reappear next day
+- ultimo_ts second-granularity can drop a mail sharing the newest second
+- two --confirmado calls batched in one Hermes approval would void the first voucher (fails closed, unverified)
+- _instrucciones %A weekday may render in English
+- confirm next real cron run after the typeperf decoding fix
+- google.api_core warns Python 3.10 unsupported — move venv to 3.11+
