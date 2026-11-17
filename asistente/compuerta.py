@@ -55,6 +55,32 @@ def _cuota_ok(cfg: dict) -> tuple[bool, str]:
                                  umbral_semana=cfg.get("umbral_semana", 90))
 
 
+def marcar_hecho(tarea: str, ahora: datetime | None = None) -> None:
+    ahora = ahora or datetime.now()
+    clave = f"compuerta_{tarea}"
+    est = _estado_de_hoy(leer_json(clave, {}), ahora.date())
+    est["hecho"] = True
+    escribir_json(clave, est)
+
+
+def consultar(tarea: str, requiere_claude: bool = False) -> tuple[str, str]:
+    """Decide y guarda el estado. Devuelve (decisión, motivos legibles)."""
+    cfg = cargar_config()
+    clave = f"compuerta_{tarea}"
+    ahora = datetime.now()
+    est = _estado_de_hoy(leer_json(clave, {}), ahora.date())
+    hay_juego = _hay_juego_ahora(cfg)
+    cuota_ok, motivo_cuota = _cuota_ok(cfg) if requiere_claude else (True, "")
+    decision, est = decidir(tarea, ahora, hay_juego, cuota_ok, est, cfg["retraso_max_h"])
+    escribir_json(clave, est)
+    motivos = []
+    if hay_juego:
+        motivos.append("juego abierto")
+    if not cuota_ok:
+        motivos.append(motivo_cuota)
+    return decision, ", ".join(motivos) or "sin impedimentos"
+
+
 def main(argv: list[str] | None = None) -> int:
     sys.stdout.reconfigure(encoding="utf-8")
     p = argparse.ArgumentParser(prog="asistente.compuerta")
@@ -62,30 +88,13 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument("--requiere-claude", action="store_true")
     p.add_argument("--hecho", action="store_true", help="marca la tarea como hecha hoy")
     a = p.parse_args(argv)
-    cfg = cargar_config()
-    clave = f"compuerta_{a.tarea}"
-    ahora = datetime.now()
-    est = _estado_de_hoy(leer_json(clave, {}), ahora.date())
-
     if a.hecho:
-        est["hecho"] = True
-        escribir_json(clave, est)
+        marcar_hecho(a.tarea)
         print(f"DECISION: HECHO — {a.tarea} marcada como hecha hoy")
         return 0
-
-    hay_juego = _hay_juego_ahora(cfg)
-    cuota_ok, motivo_cuota = _cuota_ok(cfg) if a.requiere_claude else (True, "")
-    decision, est = decidir(a.tarea, ahora, hay_juego, cuota_ok, est, cfg["retraso_max_h"])
-    escribir_json(clave, est)
-
-    motivos = []
-    if hay_juego:
-        motivos.append("juego abierto")
-    if not cuota_ok:
-        motivos.append(motivo_cuota)
-    print(f"DECISION: {decision} — {', '.join(motivos) or 'sin impedimentos'}")
+    decision, motivos = consultar(a.tarea, a.requiere_claude)
+    print(f"DECISION: {decision} — {motivos}")
     return CODIGOS[decision]
-
 
 if __name__ == "__main__":
     sys.exit(main())
