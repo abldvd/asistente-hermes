@@ -79,7 +79,8 @@ def _visible(texto: str) -> str:
 
 
 def _opcion(args: list[str], nombre: str) -> str:
-    return args[args.index(nombre) + 1] if nombre in args and args.index(nombre) + 1 < len(args) else ""
+    valor = args[args.index(nombre) + 1] if nombre in args and args.index(nombre) + 1 < len(args) else ""
+    return _visible(" ".join(valor.split()))[:120]  # una línea, controles a la vista, acotado
 
 
 def _resumen(modulo: str, args: list[str]) -> str:
@@ -143,6 +144,10 @@ def decidir(entrada: dict) -> dict | None:
                 return _bloquear("Opción con formato no permitido (sin comillas, barras ni mayúsculas).")
             if t.startswith("--con") and t not in _OPCIONES_CON:
                 return _bloquear("Escribe la opción --confirmado tal cual, sin abreviar.")
+        opciones = [t for t in tokens if t.startswith("-") and t != "-m"]
+        if len(opciones) != len(set(opciones)):
+            # argparse se queda con la última; el resumen del aviso podría mostrar otra.
+            return _bloquear("Opción repetida en el comando; cada opción solo puede aparecer una vez.")
     confirmado = _CONFIRMADO.search(texto)
     sug = _CONFIRMAR_SUG.search(texto)
     if not (confirmado or sug):

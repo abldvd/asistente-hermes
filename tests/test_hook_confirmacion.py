@@ -185,3 +185,13 @@ def test_resumen_de_la_accion_va_primero():
     cal = r"E:\asistente-hermes\.venv\Scripts\python.exe -m asistente.google.calendario"
     m = decidir(_e("terminal", command=f'{cal} crear --cuenta personal --titulo "Dentista" --inicio 2026-11-20T10:00 --fin 2026-11-20T11:00 --confirmado'))["message"]
     assert m.splitlines()[0] == "Crear evento «Dentista» el 2026-11-20T10:00 en la cuenta personal."
+
+
+def test_opciones_repetidas_se_bloquean():
+    cmd = f"{GM} etiquetar --cuenta seria --ids a --quitar UNREAD --quitar INBOX --confirmado"
+    assert decidir(_e("terminal", command=cmd))["action"] == "block"
+
+
+def test_forma_opcion_igual_valor_se_bloquea():
+    cmd = f"{GM} etiquetar --cuenta seria --ids a --quitar=INBOX --confirmado"
+    assert decidir(_e("terminal", command=cmd))["action"] == "block"
