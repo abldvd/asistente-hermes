@@ -78,14 +78,8 @@ def _despertar(texto: str | None) -> str:
     return f"{texto}\n{fin}" if texto else fin
 
 
-def precheck(ahora: datetime | None = None) -> str:
-    ahora = ahora or datetime.now(ZONA)
-    decision, motivos = _compuerta()
-    if decision == "SALTAR":
-        return _despertar(f"INSTRUCCIÓN: hoy no se ha podido procesar el correo ({motivos}). "
-                          "Avisa al usuario en una sola línea y no hagas nada más.")
-    if decision != "EJECUTAR":
-        return _despertar(None)
+def recolectar_todo(ahora: datetime) -> tuple[list[dict], dict]:
+    """Recoge las dos cuentas y deja pendiente el lote. Una cuenta con error no frena a la otra."""
     cfg = cargar_correo_cfg()
     lotes, pendiente = [], {}
     for cuenta in CUENTAS:
@@ -98,6 +92,18 @@ def precheck(ahora: datetime | None = None) -> str:
             lote = {"cuenta": cuenta, "error": f"{type(e).__name__}: {str(e)[:200]}"}
         lotes.append(lote)
     escribir_json("correo_lote", {"cuentas": pendiente})
+    return lotes, pendiente
+
+
+def precheck(ahora: datetime | None = None) -> str:
+    ahora = ahora or datetime.now(ZONA)
+    decision, motivos = _compuerta()
+    if decision == "SALTAR":
+        return _despertar(f"INSTRUCCIÓN: hoy no se ha podido procesar el correo ({motivos}). "
+                          "Avisa al usuario en una sola línea y no hagas nada más.")
+    if decision != "EJECUTAR":
+        return _despertar(None)
+    lotes, _ = recolectar_todo(ahora)
     if not any(l.get("correos") or "error" in l for l in lotes):
         cerrar_lote()
         return _despertar(None)
