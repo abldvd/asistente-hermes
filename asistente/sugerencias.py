@@ -15,6 +15,7 @@ import unicodedata
 from datetime import datetime, timedelta
 from pathlib import Path
 
+from asistente import vales
 from asistente.estado import escribir_json, estado_dir, leer_json
 from asistente.google.calendario import _dt, _normalizar, a_rfc3339, crear, existe_parecido
 from asistente.google.cuentas import CuentaNoAutorizada, servicio, validar_cuenta
@@ -133,6 +134,10 @@ def main(argv: list[str] | None = None) -> int:
         sub.add_parser(nombre, allow_abbrev=False).add_argument("n", type=int)
     a = p.parse_args(argv)
     ahora = datetime.now(ZONA)
+    if a.cmd == "confirmar" and not vales.consumir("asistente.sugerencias",
+                                                     sys.argv[1:] if argv is None else list(argv)):
+        print(json.dumps({"error": "falta la aprobación del usuario (vale de un solo uso)"}, ensure_ascii=False))
+        return 20
     try:
         if a.cmd == "agregar":
             permitido = (estado_dir() / "sugerencias_in").resolve()

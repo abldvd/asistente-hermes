@@ -15,9 +15,11 @@ import sys
 import unicodedata
 from datetime import datetime, timedelta
 
+from asistente import vales
 from asistente.google.cuentas import CUENTAS, CuentaNoAutorizada, servicio
 from asistente.google.gmail import ZONA, Denegado
 
+MODULO = "asistente.google.calendario"
 _FORMATO = re.compile(r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(:\d{2})?(Z|[+-]\d{2}:\d{2})?$")
 _CAL = "primary"
 
@@ -114,6 +116,10 @@ def main(argv: list[str] | None = None) -> int:
             s.add_argument("--fin", required=True)
         s.add_argument("--confirmado", action="store_true")
     a = p.parse_args(argv)
+    if getattr(a, "confirmado", False) and not vales.consumir(MODULO, sys.argv[1:] if argv is None else list(argv)):
+        print(json.dumps({"error": "falta la aprobación del usuario: lanza el comando tal cual para que Hermes "
+                                   "se la pida (vale de un solo uso ausente o caducado)"}, ensure_ascii=False))
+        return 20
     try:
         svc = servicio(a.cuenta, "calendar")
         if a.cmd == "listar":

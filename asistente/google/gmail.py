@@ -20,10 +20,12 @@ from email.message import EmailMessage
 from html.parser import HTMLParser
 from zoneinfo import ZoneInfo
 
+from asistente import vales
 from asistente.google.cuentas import (CUENTAS, CuentaNoAutorizada, cargar_correo_cfg, servicio,
                                       validar_cuenta)
 
 ZONA = ZoneInfo("Atlantic/Canary")
+MODULO = "asistente.google.gmail"
 _SIN_CONFIRMAR_QUITAR = {"UNREAD"}
 
 
@@ -165,6 +167,10 @@ def main(argv: list[str] | None = None) -> int:
             s.add_argument("--cuerpo", required=True)
             s.add_argument("--confirmado", action="store_true")
     a = p.parse_args(argv)
+    if getattr(a, "confirmado", False) and not vales.consumir(MODULO, sys.argv[1:] if argv is None else list(argv)):
+        print(json.dumps({"error": "falta la aprobación del usuario: lanza el comando tal cual para que Hermes "
+                                   "se la pida (vale de un solo uso ausente o caducado)"}, ensure_ascii=False))
+        return 20
     lista = lambda t: [x.strip() for x in t.split(",") if x.strip()]  # noqa: E731
     try:
         svc = servicio(a.cuenta, "gmail")

@@ -62,7 +62,8 @@ $al = if (Test-Path $allow) { Get-Content $allow -Raw -Encoding UTF8 | ConvertFr
 $hooks = @(
     @{ event = "pre_tool_call"; command = "E:/asistente-hermes/scripts/hook_tope_delegacion.py" },
     @{ event = "pre_llm_call";  command = "E:/asistente-hermes/scripts/hook_aviso_juego.py" },
-    @{ event = "pre_tool_call"; command = "E:/asistente-hermes/scripts/hook_confirmacion.cmd" }
+    @{ event = "pre_tool_call"; command = "E:/asistente-hermes/scripts/hook_confirmacion.cmd" },
+    @{ event = "post_approval_response"; command = "E:/asistente-hermes/scripts/hook_aprobacion.py" }
 )
 $cambio = $false
 foreach ($h in $hooks) {
