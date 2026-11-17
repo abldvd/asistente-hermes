@@ -6,6 +6,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import shutil
 import subprocess
 import sys
@@ -17,6 +18,24 @@ from asistente.estado import RAIZ, cargar_config, estado_dir
 from asistente.uso import leer_uso, llamadas_hoy, puede_usar_claude, registrar_llamada
 
 _SIN_VENTANA = getattr(subprocess, "CREATE_NO_WINDOW", 0)
+# Valores que nunca deben salir hacia Claude (el perfil `web` puede sacarlos por una URL).
+ARCHIVOS_SECRETOS = [RAIZ / "secretos" / ".env",
+                     Path(os.environ.get("LOCALAPPDATA", "")) / "hermes" / ".env"]
+_MIN_SECRETO = 8
+
+
+def contiene_secreto(prompt: str) -> bool:
+    for archivo in ARCHIVOS_SECRETOS:
+        try:
+            lineas = Path(archivo).read_text(encoding="utf-8").splitlines()
+        except OSError:
+            continue
+        for linea in lineas:
+            _, sep, valor = linea.partition("=")
+            valor = valor.strip().strip('"').strip("'")
+            if sep and len(valor) >= _MIN_SECRETO and valor in prompt:
+                return True
+    return False
 
 
 def cargar_perfiles() -> dict:
@@ -46,6 +65,8 @@ def ejecutar(perfil_nombre: str, prompt: str, explicito: bool,
     perfiles = cargar_perfiles()
     if perfil_nombre not in perfiles:
         return 20, f"perfil desconocido '{perfil_nombre}'; válidos: {', '.join(perfiles)}"
+    if contiene_secreto(prompt):
+        return 20, "el prompt contiene el valor de un secreto (.env); no se envía a Claude"
     cfg = cargar_config()
     hoy = date.today()
     ok, motivo = puede_usar_claude(leer_uso(Path(cfg["ruta_uso"]), time.time(), cfg["frescura_uso_h"]),

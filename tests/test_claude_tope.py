@@ -146,3 +146,22 @@ def test_prompt_file_dentro_de_claude_cwd_vale(monkeypatch, capsys):
     monkeypatch.setattr(claude_tope, "ejecutar", lambda perfil, prompt, explicito: (0, prompt))
     assert claude_tope.main(["--perfil", "web", "--prompt-file", str(d / "p.txt")]) == 0
     assert "hola" in capsys.readouterr().out
+
+
+def test_prompt_con_un_secreto_se_rechaza(tmp_path, monkeypatch, cuota):
+    env = tmp_path / ".env"
+    env.write_text("OPENROUTER_API_KEY=sk-or-v1-abcdef123456\nVACIA=\nCORTA=abc\n", encoding="utf-8")
+    monkeypatch.setattr(claude_tope, "ARCHIVOS_SECRETOS", [env])
+    monkeypatch.setattr(claude_tope.subprocess, "run", lambda *a, **k: pytest.fail("no debe llamar"))
+    codigo, motivo = ejecutar("web", "mira esto: sk-or-v1-abcdef123456", explicito=True)
+    assert codigo == 20 and "secreto" in motivo and "sk-or" not in motivo
+    assert llamadas_hoy(date.today()) == 0
+
+
+def test_valores_cortos_no_cuentan_como_secreto(tmp_path, monkeypatch, cuota):
+    env = tmp_path / ".env"
+    env.write_text("CORTA=abc\n", encoding="utf-8")
+    monkeypatch.setattr(claude_tope, "ARCHIVOS_SECRETOS", [env, tmp_path / "no-existe.env"])
+    monkeypatch.setattr(claude_tope.subprocess, "run", lambda *a, **k: SimpleNamespace(
+        returncode=0, stdout=json.dumps({"result": "ok"}), stderr=""))
+    assert ejecutar("web", "abc", explicito=False) == (0, "ok")
