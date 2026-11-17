@@ -78,36 +78,45 @@ def _visible(texto: str) -> str:
     return "".join(c if c.isprintable() or c == " " else "\\x" + f"{ord(c):02x}" for c in texto)
 
 
-def _opcion(args: list[str], nombre: str) -> str:
-    valor = args[args.index(nombre) + 1] if nombre in args and args.index(nombre) + 1 < len(args) else ""
-    return _visible(" ".join(valor.split()))[:120]  # una línea, controles a la vista, acotado
+def _bruto(args: list[str], nombre: str) -> str:
+    """Valor completo de una opción: es el que se usa para decidir qué dice el resumen."""
+    return args[args.index(nombre) + 1] if nombre in args and args.index(nombre) + 1 < len(args) else ""
+
+
+def _ver(valor: str, limite: int = 120) -> str:
+    """Solo para mostrar: una línea, controles a la vista y, si se recorta, con «…»."""
+    v = _visible(" ".join(valor.split()))
+    return v if len(v) <= limite else v[:limite] + "…"
 
 
 def _resumen(modulo: str, args: list[str]) -> str:
     """Primera línea del aviso: qué va a pasar, en corto (Telegram recorta los avisos largos)."""
-    cuenta = _opcion(args, "--cuenta")
+    cuenta = _ver(_bruto(args, "--cuenta"))
     sub = args[0] if args else ""
     if modulo == "asistente.google.gmail" and sub == "etiquetar":
-        n = len([i for i in _opcion(args, "--ids").split(",") if i])
-        poner, quitar = _opcion(args, "--poner").split(","), _opcion(args, "--quitar").split(",")
-        if "TRASH" in poner:
-            que = "Mandar a la papelera"
-        elif "SPAM" in poner:
-            que = "Marcar como spam"
-        elif "INBOX" in quitar:
-            que = "Archivar"
-        else:
-            que = f"Cambiar etiquetas (poner {_opcion(args, '--poner') or '-'}, quitar {_opcion(args, '--quitar') or '-'}) de"
-        return f"{que} {n} correos de la cuenta {cuenta}."
+        n = len([i for i in _bruto(args, "--ids").split(",") if i.strip()])
+        poner = {x.strip() for x in _bruto(args, "--poner").split(",") if x.strip()}
+        quitar = {x.strip() for x in _bruto(args, "--quitar").split(",") if x.strip()}
+        acciones = [nombre for cond, nombre in [("TRASH" in poner, "mandar a la papelera"),
+                                                ("SPAM" in poner, "marcar como spam"),
+                                                ("INBOX" in quitar, "archivar")] if cond]
+        otras = (poner - {"TRASH", "SPAM"}) | (quitar - {"INBOX"})
+        if otras or not acciones:
+            acciones.append(f"cambiar etiquetas (poner {_ver(','.join(sorted(poner - {'TRASH', 'SPAM'}))) or '-'}, "
+                            f"quitar {_ver(','.join(sorted(quitar - {'INBOX'}))) or '-'}) de")
+        que = " y ".join(acciones)
+        return f"{que[0].upper()}{que[1:]} {n} correos de la cuenta {cuenta}."
     if modulo == "asistente.google.gmail" and sub == "borrador":
-        return f"Crear un borrador para {_opcion(args, '--para')} en la cuenta {cuenta}."
+        return f"Crear un borrador para {_ver(_bruto(args, '--para'))} en la cuenta {cuenta}."
     if modulo == "asistente.google.calendario":
         if sub == "crear":
-            return f"Crear evento «{_opcion(args, '--titulo')}» el {_opcion(args, '--inicio')} en la cuenta {cuenta}."
+            return (f"Crear evento «{_ver(_bruto(args, '--titulo'))}» el {_ver(_bruto(args, '--inicio'))} "
+                    f"en la cuenta {cuenta}.")
         if sub == "mover":
-            return f"Mover el evento {_opcion(args, '--id')} al {_opcion(args, '--inicio')} en la cuenta {cuenta}."
+            return (f"Mover el evento {_ver(_bruto(args, '--id'))} al {_ver(_bruto(args, '--inicio'))} "
+                    f"en la cuenta {cuenta}.")
         if sub == "borrar":
-            return f"Borrar el evento {_opcion(args, '--id')} de la cuenta {cuenta}."
+            return f"Borrar el evento {_ver(_bruto(args, '--id'))} de la cuenta {cuenta}."
     return "Acción que requiere tu aprobación."
 
 

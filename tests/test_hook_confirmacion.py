@@ -195,3 +195,18 @@ def test_opciones_repetidas_se_bloquean():
 def test_forma_opcion_igual_valor_se_bloquea():
     cmd = f"{GM} etiquetar --cuenta seria --ids a --quitar=INBOX --confirmado"
     assert decidir(_e("terminal", command=cmd))["action"] == "block"
+
+
+def test_resumen_usa_el_valor_completo():
+    quitar = ",".join(["UNREAD"] * 40 + ["INBOX"])  # INBOX más allá del límite de visualización
+    ids = ",".join(f"identificador{i}" for i in range(30))
+    m = decidir(_e("terminal", command=f"{GM} etiquetar --cuenta seria --ids {ids} --quitar {quitar} --confirmado"))["message"]
+    primera = m.splitlines()[0]
+    assert primera.startswith("Archivar y cambiar etiquetas") and "quitar UNREAD" in primera
+    assert primera.endswith("30 correos de la cuenta seria.")
+
+
+def test_valor_mostrado_recortado_lleva_marca():
+    cal = r"E:\asistente-hermes\.venv\Scripts\python.exe -m asistente.google.calendario"
+    m = decidir(_e("terminal", command=f'{cal} crear --cuenta personal --titulo "{"x" * 200}" --inicio 2026-11-20T10:00 --fin 2026-11-20T11:00 --confirmado'))["message"]
+    assert "…" in m.splitlines()[0]
