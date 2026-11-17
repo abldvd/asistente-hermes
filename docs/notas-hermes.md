@@ -31,3 +31,4 @@
 - non-dict JSON state could break compuerta (llamadas_hoy fixed)
 - Límite semanal de Claude no se vigila (solo el de 5 h).
 - claude_tope: el filtro de secretos solo reconoce valores literales de los .env (≥ 8 caracteres); un secreto codificado (base64, troceado) pasaría. El agente sigue pudiendo leer secretos con sus propias herramientas.
+- Riesgo residual aceptado (17-nov): el agente corre con el mismo usuario de Windows que `secretos\` (tokens de Google y `vales.key`); los filtros del hook no pueden cerrar todas las formas de nombrar esas rutas. Mitigado: el cron de correo no tiene herramientas, las acciones destructivas exigen aprobación humana y vale firmado. Solución definitiva pendiente: un "guardián" de credenciales con otra cuenta de Windows.
