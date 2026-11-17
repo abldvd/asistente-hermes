@@ -81,8 +81,8 @@ def test_hook_de_respuesta_anula_si_se_rechaza(monkeypatch):
     import json
     from asistente import hook_aprobacion
     for eleccion, queda in [("deny", False), ("timeout", False), ("cancelled", False), ("once", True)]:
-        vales.emitir("m", ["x"])
-        monkeypatch.setattr("sys.stdin", io.StringIO(json.dumps({"extra": {"choice": eleccion}})))
+        vales.emitir("m", ["x"], regla="r1")
+        monkeypatch.setattr("sys.stdin", io.StringIO(json.dumps({"extra": {"choice": eleccion, "pattern_key": "r1"}})))
         assert hook_aprobacion.main() == 0
         assert vales.consumir("m", ["x"]) is queda
         vales.anular_todos()
@@ -112,13 +112,13 @@ def test_hook_aprobacion_activa_si_se_aprueba_y_falla_cerrado(monkeypatch):
     import io
     import json
     from asistente import hook_aprobacion
-    vales.emitir("m", ["x"])
-    monkeypatch.setattr("sys.stdin", io.StringIO(json.dumps({"extra": {"choice": "once"}})))
+    vales.emitir("m", ["x"], regla="r1")
+    monkeypatch.setattr("sys.stdin", io.StringIO(json.dumps({"extra": {"choice": "once", "pattern_key": "r1"}})))
     hook_aprobacion.main()
     assert vales.consumir("m", ["x"]) is True
-    vales.emitir("m", ["x"])
-    monkeypatch.setattr(vales, "activar_pendientes", lambda: (_ for _ in ()).throw(OSError("x")))
-    monkeypatch.setattr("sys.stdin", io.StringIO(json.dumps({"extra": {"choice": "once"}})))
+    vales.emitir("m", ["x"], regla="r1")
+    monkeypatch.setattr(vales, "activar", lambda r: (_ for _ in ()).throw(OSError("x")))
+    monkeypatch.setattr("sys.stdin", io.StringIO(json.dumps({"extra": {"choice": "once", "pattern_key": "r1"}})))
     hook_aprobacion.main()
     monkeypatch.undo()
     monkeypatch.setenv("ASISTENTE_SECRETOS", str(vales._clave_ruta().parent))
@@ -131,3 +131,50 @@ def test_hook_bloquea_tocar_la_carpeta_de_vales():
     for tool, args in [("write_file", {"path": r"E:\asistente-hermes\estado\vales\a.json", "content": "{}"}),
                        ("terminal", {"command": "dir estado" + chr(92) + "vales"})]:
         assert decidir({"tool_name": tool, "tool_input": args})["action"] == "block"
+
+
+def test_aprobar_activa_solo_el_vale_de_esa_regla(monkeypatch):
+    import io
+    import json
+    from asistente import hook_aprobacion
+    vales.emitir("m", ["a"], regla="confirmado:aaa")
+    monkeypatch.setattr("sys.stdin", io.StringIO(json.dumps({"extra": {"choice": "once", "pattern_key": "confirmado:bbb"}})))
+    hook_aprobacion.main()
+    assert vales.consumir("m", ["a"]) is False  # otra regla: no se activa
+    vales.emitir("m", ["a"], regla="confirmado:aaa")
+    monkeypatch.setattr("sys.stdin", io.StringIO(json.dumps(
+        {"extra": {"choice": "once", "pattern_key": "confirmado:aaa", "pattern_keys": ["confirmado:aaa"]}})))
+    hook_aprobacion.main()
+    assert vales.consumir("m", ["a"]) is True
+
+
+def test_aprobar_sin_clave_no_activa_nada(monkeypatch):
+    import io
+    import json
+    from asistente import hook_aprobacion
+    vales.emitir("m", ["a"], regla="confirmado:aaa")
+    monkeypatch.setattr("sys.stdin", io.StringIO(json.dumps({"extra": {"choice": "once"}})))
+    hook_aprobacion.main()
+    assert vales.consumir("m", ["a"]) is False
+
+
+def test_emitir_anula_los_otros_pendientes():
+    vales.emitir("m", ["a"], regla="r1")
+    vales.emitir("m", ["b"], regla="r2")
+    assert vales.activar({"r1", "r2"}) == 1
+    assert vales.consumir("m", ["b"]) is True and vales.consumir("m", ["a"]) is False
+
+
+def test_consumo_atomico_solo_una_vez(monkeypatch):
+    vales.emitir("m", ["a"], regla="r1")
+    vales.activar({"r1"})
+    resultados = [vales.consumir("m", ["a"]), vales.consumir("m", ["a"])]
+    assert resultados == [True, False]
+    assert not list(vales._dir().glob("*"))  # no quedan restos
+
+
+@pytest.mark.parametrize("cmd", ["type estado" + chr(92) + "v*les" + chr(92) + "x", "dir E:/asistente-hermes/estado/*",
+                                 "type secr?tos" + chr(92) + ".env", "dir .." + chr(92) + "estado" + chr(92) + "vales"])
+def test_comodines_en_rutas_sensibles_se_bloquean(cmd):
+    from asistente.hook_confirmacion import decidir
+    assert decidir({"tool_name": "terminal", "tool_input": {"command": cmd}})["action"] == "block"

@@ -1,25 +1,42 @@
-"""Hook `post_approval_response` de Hermes: activa los vales pendientes solo si el usuario aprueba.
-Si rechaza, caduca, se cancela, no llega el aviso o algo falla, se anulan todos (falla cerrado)."""
+"""Hook `post_approval_response` de Hermes: si el usuario aprueba, activa SOLO el vale de la regla
+aprobada (rule_key = pattern_key). Si rechaza, caduca, se cancela, no llega el aviso, no hay clave o
+algo falla, se anulan todos (falla cerrado). Registra los nombres de campo recibidos (sin valores)."""
 from __future__ import annotations
 
 import json
 import sys
+from datetime import datetime
 
 from asistente import vales
+from asistente.estado import estado_dir
 
 _APROBADO = {"once", "session", "always"}
 
 
+def _registrar(datos: dict, eleccion, activados: int) -> None:
+    try:
+        with open(estado_dir() / "hook_aprobacion.log", "a", encoding="utf-8") as f:
+            f.write(f"{datetime.now():%Y-%m-%d %H:%M:%S} choice={eleccion} campos={sorted(datos)} "
+                    f"activados={activados}" + chr(10))
+    except OSError:
+        pass
+
+
 def main() -> int:
+    datos, eleccion, activados = {}, None, 0
     try:
         entrada = json.loads(sys.stdin.read() or "{}")
-        eleccion = entrada.get("choice") or (entrada.get("extra") or {}).get("choice")
-        if eleccion in _APROBADO:
-            vales.activar_pendientes()
+        datos = {**(entrada.get("extra") or {}), **{k: v for k, v in entrada.items() if k != "extra"}}
+        eleccion = datos.get("choice")
+        reglas = {str(datos.get("pattern_key") or "")} | {str(k) for k in (datos.get("pattern_keys") or [])}
+        reglas.discard("")
+        if eleccion in _APROBADO and reglas:
+            activados = vales.activar(reglas)
         else:
             vales.anular_todos()
     except Exception:
         vales.anular_todos()
+    _registrar(datos, eleccion, activados)
     return 0
 
 

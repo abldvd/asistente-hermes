@@ -21,7 +21,8 @@ from asistente import vales
 
 _BLOQUEO = re.compile(
     r"secretos[\\/]|googleapiclient|google\.oauth2|google_auth_oauthlib|google\.auth\b"
-    r"|token_(seria|personal)|client_secret|vales\.key|estado[\\/]+vales"
+    r"|token_(seria|personal)|client_secret|vales\.key|estado[\\/]+vales|[\\/]vales\b"
+    r"|(?:estado|secr)[^\s]*[*?]|[*?][^\s]*(?:estado|secretos|vales)"
     r"|from\s+asistente(\.\w+)*\s+import|import\s+asistente",
     re.IGNORECASE)
 # En código propio (execute_code o python -c) ni siquiera se permite nombrar estas cosas.
@@ -126,11 +127,11 @@ def decidir(entrada: dict) -> dict | None:
     if sug:
         partes.append(f"¿Crear este evento en el calendario?\n{_detalle_sugerencia(int(sug.group(1)))}")
     partes.append(f"Comando exacto:\n{_visible(comando)}")
+    clave = hashlib.sha256(comando.encode("utf-8")).hexdigest()[:16]
     try:
-        vales.emitir(*vales.argv_de(comando))
+        vales.emitir(*vales.argv_de(comando), regla=f"confirmado:{clave}")
     except Exception as e:
         return _bloquear(f"No se pudo emitir el vale de aprobación ({type(e).__name__}).")
-    clave = hashlib.sha256(comando.encode("utf-8")).hexdigest()[:16]
     return {"action": "approve", "message": "Acción que requiere tu aprobación.\n" + "\n\n".join(partes),
             "rule_key": f"confirmado:{clave}"}
 
