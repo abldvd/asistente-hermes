@@ -74,3 +74,27 @@ def test_llamadas_hoy_con_json_que_no_es_dict(tmp_path):
     from asistente.estado import escribir_json
     escribir_json("claude_llamadas", [1, 2])
     assert llamadas_hoy(date.today()) == 0
+
+
+def test_leer_uso_incluye_la_semana(tmp_path):
+    ahora = time.time()
+    u = leer_uso(_archivo(tmp_path, {"pct": 10, "t": ahora - 60, "semana": 91}), ahora)
+    assert u.semana == 91
+
+
+def test_semana_al_90_bloquea_incluso_si_es_explicito():
+    ok, motivo = puede_usar_claude(Uso(10, True, semana=90), explicito=True, llamadas_hoy=0, tope=10)
+    assert not ok and "semanal" in motivo and "90" in motivo
+
+
+def test_semana_por_debajo_del_umbral_permite():
+    assert puede_usar_claude(Uso(10, True, semana=89), explicito=False, llamadas_hoy=0, tope=10)[0]
+
+
+def test_semana_alta_con_dato_desfasado_tambien_bloquea():
+    assert not puede_usar_claude(Uso(None, False, semana=95), explicito=True, llamadas_hoy=0, tope=10)[0]
+
+
+def test_umbral_semanal_configurable():
+    assert puede_usar_claude(Uso(10, True, semana=92), explicito=False, llamadas_hoy=0, tope=10,
+                             umbral_semana=95)[0]

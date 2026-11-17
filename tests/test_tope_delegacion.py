@@ -65,3 +65,8 @@ def test_main_con_stdin_ilegible_bloquea(monkeypatch, capsys):
     monkeypatch.setattr("sys.stdin", io.StringIO("{roto"))
     assert tope_delegacion.main() == 0
     assert json.loads(capsys.readouterr().out)["action"] == "block"
+
+
+def test_limite_semanal_bloquea_la_delegacion():
+    bloquear, msg, _ = decidir(_entrada(tasks=[{"goal": "a"}]), Uso(10, True, semana=93), 0, 10, 80)
+    assert bloquear and "semanal" in msg

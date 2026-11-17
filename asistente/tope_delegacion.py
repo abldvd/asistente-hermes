@@ -18,7 +18,8 @@ from asistente.uso import Uso, leer_uso, llamadas_hoy, puede_usar_claude, regist
 _SIN_TAREAS_NUEVAS = {"list", "steer", "stop"}
 
 
-def decidir(entrada: dict, uso: Uso, llamadas: int, tope: int, umbral: int) -> tuple[bool, str, int]:
+def decidir(entrada: dict, uso: Uso, llamadas: int, tope: int, umbral: int,
+            umbral_semana: int = 90) -> tuple[bool, str, int]:
     """Devuelve (bloquear, mensaje, llamadas_a_registrar)."""
     args = entrada.get("tool_input") or {}
     if not isinstance(args, dict):
@@ -29,12 +30,13 @@ def decidir(entrada: dict, uso: Uso, llamadas: int, tope: int, umbral: int) -> t
     n = len(tareas) if isinstance(tareas, list) and tareas else 1
     # Un lote de n subtareas cabe si las n caben en el tope diario.
     ok, motivo = puede_usar_claude(uso, explicito=False, llamadas_hoy=llamadas + n - 1, tope=tope,
-                                   umbral=umbral)
+                                   umbral=umbral, umbral_semana=umbral_semana)
     if not ok:
         if llamadas + n - 1 >= tope:
             motivo = f"tope diario alcanzado ({llamadas}/{tope} llamadas; el lote pide {n})"
         return True, (f"Subagente de Claude no disponible: {motivo}. "
-                      "Haz la tarea tú mismo con el modelo local o avisa al usuario."), 0
+                      "Haz la tarea tú mismo con el modelo local; si no hay datos privados, puedes usar la reserva "
+                      "de OpenRouter (python -m asistente.openrouter, ver SOUL.md)."), 0
     return False, "", n
 
 
@@ -49,7 +51,7 @@ def main() -> int:
         cfg = cargar_config()
         hoy = date.today()
         bloquear, mensaje, n = decidir(entrada, _uso_actual(cfg), llamadas_hoy(hoy),
-                                       cfg["tope_claude_diario"], cfg["umbral_uso"])
+                                       cfg["tope_claude_diario"], cfg["umbral_uso"], cfg.get("umbral_semana", 90))
     except Exception as e:  # cualquier fallo cierra la puerta
         bloquear, mensaje, n = True, f"Compuerta de delegación con error ({type(e).__name__}); no se delega.", 0
     if bloquear:

@@ -39,5 +39,5 @@ con el directorio de trabajo `E:\asistente-hermes` (o anteponiendo `cd /d E:\asi
 ## Resultado
 
 - Código 0: la salida es la respuesta de Claude. Resúmela o pásala al usuario.
-- Código 20: denegado (cuota alta, tope diario o dato de uso desfasado). Dile al usuario el motivo que imprime el script. No reintentes.
+- Código 20: denegado (5 h al 80 %, semanal al 90 %, tope diario o dato de uso desfasado). No reintentes. Hazlo tú con el modelo local; si no hay datos privados y necesitas más capacidad, usa la reserva `python -m asistente.openrouter` (ver SOUL.md). Dile al usuario qué vía has usado.
 - Código 21: error de Claude. Informa del error. No reintentes.

@@ -71,7 +71,7 @@ def ejecutar(perfil_nombre: str, prompt: str, explicito: bool,
     hoy = date.today()
     ok, motivo = puede_usar_claude(leer_uso(Path(cfg["ruta_uso"]), time.time(), cfg["frescura_uso_h"]),
                                    explicito, llamadas_hoy(hoy), cfg["tope_claude_diario"],
-                                   cfg["umbral_uso"])
+                                   cfg["umbral_uso"], cfg.get("umbral_semana", 90))
     if not ok:
         return 20, f"Claude no disponible: {motivo}"
 

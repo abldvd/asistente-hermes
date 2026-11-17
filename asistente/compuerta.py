@@ -51,7 +51,8 @@ def _hay_juego_ahora(cfg: dict) -> bool:
 def _cuota_ok(cfg: dict) -> tuple[bool, str]:
     u = uso.leer_uso(cfg["ruta_uso"], time.time(), cfg["frescura_uso_h"])
     return uso.puede_usar_claude(u, explicito=False, llamadas_hoy=uso.llamadas_hoy(date.today()),
-                                 tope=cfg["tope_claude_diario"], umbral=cfg["umbral_uso"])
+                                 tope=cfg["tope_claude_diario"], umbral=cfg["umbral_uso"],
+                                 umbral_semana=cfg.get("umbral_semana", 90))
 
 
 def main(argv: list[str] | None = None) -> int:
