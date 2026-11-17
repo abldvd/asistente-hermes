@@ -14,6 +14,7 @@ from __future__ import annotations
 import hashlib
 import json
 import re
+import shlex
 import sys
 
 _BLOQUEO = re.compile(
@@ -32,6 +33,13 @@ _UNA_INVOCACION = re.compile(
     r'^\s*(?:"?[A-Za-z]:[\\/][^"\s;&|<>`$]*python(?:\.exe)?"?|python(?:\.exe)?|PY)'
     r"\s+-m\s+asistente\.(?:google\.(?:gmail|calendario)|sugerencias)\s+"
     r"""[^;&|<>`$\r\n^%]*$""")
+# Cualquier CLI del asistente (compuerta, correo_diario...), también una sola invocación limpia.
+_INVOCACION_ASISTENTE = re.compile(
+    r'^\s*(?:"?[A-Za-z]:[\\/][^"\s;&|<>`$]*python(?:\.exe)?"?|python(?:\.exe)?|PY)'
+    r"\s+-m\s+asistente\.[\w.]+(?:\s+[^;&|<>`$\r\n^%]*)?$")
+# "asistente" como módulo (no la carpeta E:\asistente-hermes), tras quitar lo que cmd ignora.
+_MENCION = re.compile(r"asistente(?!-hermes)", re.IGNORECASE)
+_OFUSCACION = re.compile(r'[\^`]|""')
 _MAX_COMANDO = 1000
 _TERMINAL = {"terminal", "shell", "bash", "powershell"}
 
@@ -72,9 +80,25 @@ def decidir(entrada: dict) -> dict | None:
     if _BLOQUEO.search(texto):
         return _bloquear("Acceso directo a credenciales o a la API de Google no permitido. "
                          "Usa las CLI del asistente (skill correo-calendario).")
+    if herramienta == "execute_code":
+        return _bloquear("execute_code está desactivado en este asistente; usa la terminal con las CLI.")
     es_codigo = herramienta not in _TERMINAL or _PYTHON_C.search(texto)
     if es_codigo and _CODIGO_PROHIBIDO.search(texto):
         return _bloquear("Código propio que toca el asistente, Google o secretos no permitido; usa las CLI.")
+    if herramienta in _TERMINAL and _MENCION.search(_OFUSCACION.sub("", texto)):
+        # Falla cerrado: todo lo que toque el asistente es una invocación limpia, sin trucos de shell.
+        comando = texto.strip()
+        if (_OFUSCACION.search(comando) or len(comando) > _MAX_COMANDO
+                or len(_MENCION.findall(comando)) != 1 or not _INVOCACION_ASISTENTE.match(comando)):
+            return _bloquear("Las CLI del asistente se lanzan solas, como UNA invocación limpia "
+                             "(sin ^ ` \"\", sin encadenar ni redirigir, menos de 1000 caracteres).")
+        try:
+            tokens = shlex.split(comando, posix=False)
+        except ValueError:
+            return _bloquear("Comando con comillas desparejadas.")
+        for t in tokens:
+            if t.strip("\"'").lower().startswith("--conf") and t != "--confirmado":
+                return _bloquear("Escribe la opción --confirmado tal cual, sin comillas ni abreviar.")
     confirmado = _CONFIRMADO.search(texto)
     sug = _CONFIRMAR_SUG.search(texto)
     if not (confirmado or sug):

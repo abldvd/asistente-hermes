@@ -120,3 +120,24 @@ def test_todas_las_cli_rechazan_abreviaturas(tmp_path, monkeypatch):
                       (compuerta, ["--tar", "x"])]:
         with pytest.raises(SystemExit):
             mod.main(argv)
+
+
+@pytest.mark.parametrize("cmd", [
+    f'{GM} etiquetar --cuenta seria --ids a --quitar INBOX "--confirmado"',     # comillas alrededor
+    f"{GM} etiquetar --cuenta seria --ids a --quitar INBOX --con^firmado",      # escape de cmd
+    f'{GM} etiquetar --cuenta seria --ids a --quitar INBOX --con""firmado',     # comillas vacías
+    "python -m asis^tente.google.gmail etiquetar --cuenta seria --confirmado",
+    'python -m "asistente.google.gmail" etiquetar --cuenta seria --ids a --quitar INBOX --confirmado',
+])
+def test_ofuscaciones_del_comando_se_bloquean(cmd):
+    assert decidir(_e("terminal", command=cmd))["action"] == "block"
+
+
+def test_cualquier_mencion_del_asistente_debe_ser_invocacion_limpia():
+    assert decidir(_e("terminal", command=f"echo hola & {GM} buscar --cuenta seria --consulta x"))["action"] == "block"
+    assert decidir(_e("terminal", command=f'{GM} buscar --cuenta seria --consulta "from:x newer_than:7d"')) is None
+    assert decidir(_e("terminal", command=r"E:\asistente-hermes\.venv\Scripts\python.exe -m asistente.compuerta --tarea chat")) is None
+
+
+def test_execute_code_se_bloquea_siempre():
+    assert decidir(_e("execute_code", code="print(1)"))["action"] == "block"

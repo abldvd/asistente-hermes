@@ -15,3 +15,4 @@ hooks.pre_tool_call [{"matcher":"^delegate_task$","command":"E:/asistente-hermes
 skills.disabled ["claude-code","google-workspace"]
 HERMES_TIMEZONE Atlantic/Canary
 hooks.pre_llm_call [{"command":"E:/asistente-hermes/scripts/hook_aviso_juego.py","timeout":20}]
+agent.disabled_toolsets ["code_execution"]
