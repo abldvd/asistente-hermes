@@ -10,6 +10,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import re
 import sys
 import urllib.request
 from pathlib import Path
@@ -18,6 +19,11 @@ from asistente.claude_tope import contiene_secreto
 from asistente.estado import RAIZ, cargar_config, estado_dir
 
 URL = "https://openrouter.ai/api/v1/chat/completions"
+# Barrera en código (además de SOUL.md): nada que parezca correo sale hacia OpenRouter.
+_PARECE_CORREO = re.compile(
+    r"[\w.+-]+@[\w-]+\.[\w.-]+"                                   # una dirección de correo
+    r"|^\s*(from|to|cc|subject|de|para|asunto|remitente)\s*:",     # cabeceras de mensaje
+    re.IGNORECASE | re.MULTILINE)
 _POR_DEFECTO = ["nvidia/nemotron-3.5-super-vl:free", "baidu/ernie-5.5-flash-preview:free"]
 
 
@@ -37,6 +43,9 @@ def _clave() -> str | None:
 def preguntar(prompt: str, modelos: list[str] | None = None, timeout_s: int = 150) -> tuple[int, str]:
     if contiene_secreto(prompt):
         return 20, "el prompt contiene el valor de un secreto (.env); no se envía a OpenRouter"
+    if _PARECE_CORREO.search(prompt):
+        return 20, ("el prompt parece contener datos privados (direcciones o cabeceras de correo); "
+                    "no se envía a OpenRouter: hazlo con el modelo local")
     clave = _clave()
     if not clave:
         return 20, "falta OPENROUTER_API_KEY en secretos\\.env"
@@ -63,9 +72,9 @@ def preguntar(prompt: str, modelos: list[str] | None = None, timeout_s: int = 15
 def main(argv: list[str] | None = None) -> int:
     sys.stdout.reconfigure(encoding="utf-8")
     p = argparse.ArgumentParser(prog="asistente.openrouter")
-    p.add_argument("--prompt-file", required=True, help="archivo dentro de estado\\claude_cwd")
+    p.add_argument("--prompt-file", required=True, help="archivo dentro de estado\\openrouter")
     a = p.parse_args(argv)
-    permitido = (estado_dir() / "claude_cwd").resolve()
+    permitido = (estado_dir() / "openrouter").resolve()
     ruta = Path(a.prompt_file).resolve()
     if permitido not in ruta.parents:
         print(f"--prompt-file debe estar dentro de {permitido}")

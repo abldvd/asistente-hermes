@@ -58,3 +58,24 @@ def test_no_envia_secretos(monkeypatch, clave):
 def test_sin_clave(monkeypatch):
     monkeypatch.setattr(openrouter, "_clave", lambda: None)
     assert openrouter.preguntar("x", modelos=["m1"])[0] == 20
+
+
+@pytest.mark.parametrize("texto", [
+    "resume: hola, escribe a ana.perez@empresa.com",
+    "From: Ana <ana@x.es>\nSubject: entrevista",
+    "De: RRHH\nAsunto: oferta",
+])
+def test_rechaza_lo_que_parece_correo(monkeypatch, clave, texto):
+    monkeypatch.setattr(openrouter.urllib.request, "urlopen", lambda *a, **k: pytest.fail("no debe llamar"))
+    codigo, msg = openrouter.preguntar(texto, modelos=["m1"])
+    assert codigo == 20 and "privad" in msg
+
+
+def test_prompt_file_solo_desde_su_carpeta(monkeypatch, capsys):
+    from asistente.estado import estado_dir
+    d = estado_dir() / "claude_cwd"
+    d.mkdir(parents=True, exist_ok=True)
+    (d / "p.txt").write_text("hola", encoding="utf-8")
+    monkeypatch.setattr(openrouter, "preguntar", lambda p: pytest.fail("no debe llamar"))
+    assert openrouter.main(["--prompt-file", str(d / "p.txt")]) == 20
+    assert "openrouter" in capsys.readouterr().out
