@@ -21,8 +21,14 @@ def leer_uso(ruta: Path, ahora: float, frescura_h: float = 5) -> Uso:
     try:
         datos = json.loads(Path(ruta).read_text(encoding="utf-8"))
         pct, t = int(datos["pct"]), float(datos["t"])
-    except (OSError, ValueError, KeyError, TypeError):
+        reinicio = datos.get("resets_at")
+        reinicio = float(reinicio) if reinicio is not None else None
+    except (OSError, ValueError, KeyError, TypeError, AttributeError):
         return Uso(None, False)
+    if t > ahora + 60:  # marca en el futuro: dato no fiable
+        return Uso(None, False)
+    if reinicio is not None and t < reinicio <= ahora:
+        return Uso(0, True)  # la ventana de 5 h ya se reinició después de la lectura
     return Uso(pct, ahora - t <= frescura_h * 3600)
 
 
@@ -41,6 +47,8 @@ def puede_usar_claude(uso: Uso, explicito: bool, llamadas_hoy: int, tope: int,
 
 def llamadas_hoy(hoy: date) -> int:
     datos = leer_json(_CONTADOR, {})
+    if not isinstance(datos, dict):
+        return 0
     return int(datos.get("n", 0)) if datos.get("fecha") == hoy.isoformat() else 0
 
 

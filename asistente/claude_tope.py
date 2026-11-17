@@ -6,6 +6,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import shutil
 import subprocess
 import sys
 import time
@@ -40,7 +41,8 @@ def construir_comando(perfil: dict) -> list[str]:
 
 
 def ejecutar(perfil_nombre: str, prompt: str, explicito: bool,
-             timeout_s: int = 600) -> tuple[int, str]:
+             timeout_s: int = 170) -> tuple[int, str]:
+    """timeout_s < 180 s, el timeout de la terminal de Hermes: así el error llega legible."""
     perfiles = cargar_perfiles()
     if perfil_nombre not in perfiles:
         return 20, f"perfil desconocido '{perfil_nombre}'; válidos: {', '.join(perfiles)}"
@@ -52,6 +54,13 @@ def ejecutar(perfil_nombre: str, prompt: str, explicito: bool,
     if not ok:
         return 20, f"Claude no disponible: {motivo}"
 
+    if shutil.which("claude") is None:
+        return 21, "no se encuentra el ejecutable 'claude'"
+    # Se cuenta ANTES de lanzar: si Hermes mata el proceso a mitad, la cuota gastada ya consta.
+    try:
+        registrar_llamada(hoy)
+    except OSError as e:
+        return 21, f"no se pudo actualizar el contador de llamadas ({e}); no se llama a Claude"
     cwd = estado_dir() / "claude_cwd"
     cwd.mkdir(exist_ok=True)
     try:
@@ -61,9 +70,9 @@ def ejecutar(perfil_nombre: str, prompt: str, explicito: bool,
     except FileNotFoundError:
         return 21, "no se encuentra el ejecutable 'claude'"
     except subprocess.TimeoutExpired:
-        registrar_llamada(hoy)
         return 21, f"claude no respondió en {timeout_s} s"
-    registrar_llamada(hoy)
+    except OSError as e:
+        return 21, f"no se pudo lanzar claude: {e}"
 
     try:
         salida = json.loads(r.stdout)
@@ -83,8 +92,16 @@ def main(argv: list[str] | None = None) -> int:
                    help="el usuario lo pidió expresamente (permite dato de uso desfasado)")
     p.add_argument("--prompt-file", help="archivo con el prompt; si falta, se lee de stdin")
     a = p.parse_args(argv)
-    prompt = (Path(a.prompt_file).read_text(encoding="utf-8") if a.prompt_file
-              else sys.stdin.read()).strip()
+    if a.prompt_file:
+        # Solo prompts escritos en claude_cwd: una inyección no puede mandar p. ej. secretos\.env a la web.
+        permitido = (estado_dir() / "claude_cwd").resolve()
+        ruta = Path(a.prompt_file).resolve()
+        if permitido not in ruta.parents:
+            print(f"--prompt-file debe estar dentro de {permitido} (claude_cwd)")
+            return 20
+        prompt = ruta.read_text(encoding="utf-8").strip()
+    else:
+        prompt = sys.stdin.read().strip()
     if not prompt:
         print("prompt vacío")
         return 20

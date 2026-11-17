@@ -30,8 +30,8 @@ def decidir(entrada: dict, juego: bool) -> str | None:
 
 def _hay_juego() -> bool:
     cfg = cargar_config()
-    return juego.hay_juego(juego.procesos_activos(), cfg["juegos"], juego.gpu_util(),
-                           cfg["umbral_gpu"], juego.ollama_ocupado())
+    return juego.hay_juego(juego.procesos_activos(), cfg["juegos"], juego.gpu_para_juego(),
+                           cfg["umbral_gpu"])
 
 
 def main() -> int:

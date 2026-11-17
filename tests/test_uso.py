@@ -51,3 +51,26 @@ def test_contador_por_dia():
     assert registrar_llamada(date(2026, 11, 16)) == 2
     assert llamadas_hoy(date(2026, 11, 16)) == 2
     assert llamadas_hoy(date(2026, 11, 17)) == 0
+
+
+def test_tras_el_reinicio_de_la_ventana_el_uso_vuelve_a_cero(tmp_path):
+    ahora = time.time()
+    u = leer_uso(_archivo(tmp_path, {"pct": 85, "t": ahora - 3600, "resets_at": ahora - 60}), ahora)
+    assert u == Uso(0, True)
+
+
+def test_antes_del_reinicio_se_respeta_el_pct(tmp_path):
+    ahora = time.time()
+    u = leer_uso(_archivo(tmp_path, {"pct": 85, "t": ahora - 60, "resets_at": ahora + 600}), ahora)
+    assert u == Uso(85, True)
+
+
+def test_marca_de_tiempo_futura_no_es_fresca(tmp_path):
+    ahora = time.time()
+    assert leer_uso(_archivo(tmp_path, {"pct": 10, "t": ahora + 3600}), ahora).fresco is False
+
+
+def test_llamadas_hoy_con_json_que_no_es_dict(tmp_path):
+    from asistente.estado import escribir_json
+    escribir_json("claude_llamadas", [1, 2])
+    assert llamadas_hoy(date.today()) == 0

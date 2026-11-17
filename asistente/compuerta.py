@@ -44,8 +44,8 @@ def decidir(tarea: str, ahora: datetime, juego: bool, cuota_ok: bool, estado: di
 
 
 def _hay_juego_ahora(cfg: dict) -> bool:
-    return juego.hay_juego(juego.procesos_activos(), cfg["juegos"], juego.gpu_util(),
-                           cfg["umbral_gpu"], juego.ollama_ocupado())
+    return juego.hay_juego(juego.procesos_activos(), cfg["juegos"], juego.gpu_para_juego(),
+                           cfg["umbral_gpu"])
 
 
 def _cuota_ok(cfg: dict) -> tuple[bool, str]:

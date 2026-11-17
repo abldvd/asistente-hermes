@@ -48,8 +48,8 @@ def paso(juego: bool, cargados: Callable[[], list[str]], descargar: Callable[[st
 
 
 def _juego_por_procesos_o_gpu(cfg: dict) -> bool:
-    return juego.hay_juego(juego.procesos_activos(), cfg["juegos"], juego.gpu_util(),
-                           cfg["umbral_gpu"], juego.ollama_ocupado())
+    return juego.hay_juego(juego.procesos_activos(), cfg["juegos"], juego.gpu_para_juego(),
+                           cfg["umbral_gpu"])
 
 
 def main() -> int:
