@@ -61,7 +61,8 @@ $allow = Join-Path $hermesHome "shell-hooks-allowlist.json"
 $al = if (Test-Path $allow) { Get-Content $allow -Raw -Encoding UTF8 | ConvertFrom-Json } else { [pscustomobject]@{ approvals = @() } }
 $hooks = @(
     @{ event = "pre_tool_call"; command = "E:/asistente-hermes/scripts/hook_tope_delegacion.py" },
-    @{ event = "pre_llm_call";  command = "E:/asistente-hermes/scripts/hook_aviso_juego.py" }
+    @{ event = "pre_llm_call";  command = "E:/asistente-hermes/scripts/hook_aviso_juego.py" },
+    @{ event = "pre_tool_call"; command = "E:/asistente-hermes/scripts/hook_confirmacion.cmd" }
 )
 $cambio = $false
 foreach ($h in $hooks) {
@@ -72,6 +73,12 @@ foreach ($h in $hooks) {
     }
 }
 if ($cambio) { [IO.File]::WriteAllText($allow, ($al | ConvertTo-Json -Depth 5), (New-Object Text.UTF8Encoding $false)) }
+
+# 5b. Script previo del cron de correo (Hermes solo ejecuta scripts de su carpeta scripts\)
+$hs = Join-Path $hermesHome "scripts"
+New-Item -ItemType Directory -Force $hs | Out-Null
+Copy-Item (Join-Path $repo "scripts/cron_correo.py") (Join-Path $hs "cron_correo.py") -Force
+Write-Output "script de cron copiado"
 
 # 6. Vigía de juegos al iniciar sesión (descarga los modelos de la GPU si hay juego)
 $inicio = [Environment]::GetFolderPath("Startup")
