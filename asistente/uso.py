@@ -20,7 +20,7 @@ class Uso:
 
 def leer_uso(ruta: Path, ahora: float, frescura_h: float = 5) -> Uso:
     try:
-        datos = json.loads(Path(ruta).read_text(encoding="utf-8"))
+        datos = json.loads(Path(ruta).expanduser().read_text(encoding="utf-8"))
         pct, t = int(datos["pct"]), float(datos["t"])
         reinicio = datos.get("resets_at")
         reinicio = float(reinicio) if reinicio is not None else None

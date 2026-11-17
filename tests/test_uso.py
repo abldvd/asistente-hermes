@@ -98,3 +98,11 @@ def test_semana_alta_con_dato_desfasado_tambien_bloquea():
 def test_umbral_semanal_configurable():
     assert puede_usar_claude(Uso(10, True, semana=92), explicito=False, llamadas_hoy=0, tope=10,
                              umbral_semana=95)[0]
+
+
+def test_ruta_con_virgulilla_se_expande(tmp_path, monkeypatch):
+    monkeypatch.setenv("USERPROFILE", str(tmp_path))
+    monkeypatch.setenv("HOME", str(tmp_path))
+    ahora = time.time()
+    (tmp_path / "uso.json").write_text(json.dumps({"pct": 7, "t": ahora}), encoding="utf-8")
+    assert leer_uso("~/uso.json", ahora).pct == 7

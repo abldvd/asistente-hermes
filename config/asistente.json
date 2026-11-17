@@ -2,4 +2,4 @@
  "juegos": ["Cyberpunk2077.exe", "eldenring.exe"], "umbral_gpu": 70,
  "umbral_semana": 90,
  "retraso_bloque_min": 30, "retraso_max_h": 4,
- "ruta_uso": "C:/Users/usuario/.claude/uso-5h.json"}
+ "ruta_uso": "~/.claude/uso-5h.json"}
