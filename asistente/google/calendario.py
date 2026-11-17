@@ -94,11 +94,11 @@ def borrar(svc, id_: str, confirmado: bool = False) -> dict:
 
 def main(argv: list[str] | None = None) -> int:
     sys.stdout.reconfigure(encoding="utf-8")
-    p = argparse.ArgumentParser(prog="asistente.google.calendario")
+    p = argparse.ArgumentParser(prog="asistente.google.calendario", allow_abbrev=False)
     sub = p.add_subparsers(dest="cmd", required=True)
     ahora = datetime.now(ZONA)
     for nombre in ("listar", "crear", "mover", "borrar"):
-        s = sub.add_parser(nombre)
+        s = sub.add_parser(nombre, allow_abbrev=False)
         s.add_argument("--cuenta", required=True, choices=CUENTAS)
         if nombre == "listar":
             s.add_argument("--desde", default=ahora.isoformat(timespec="minutes"))

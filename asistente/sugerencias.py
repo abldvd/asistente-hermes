@@ -125,12 +125,12 @@ def descartar(n: int, ahora: datetime | None = None) -> None:
 
 def main(argv: list[str] | None = None) -> int:
     sys.stdout.reconfigure(encoding="utf-8")
-    p = argparse.ArgumentParser(prog="asistente.sugerencias")
+    p = argparse.ArgumentParser(prog="asistente.sugerencias", allow_abbrev=False)
     sub = p.add_subparsers(dest="cmd", required=True)
-    sub.add_parser("agregar").add_argument("--json-file", required=True)
-    sub.add_parser("listar")
+    sub.add_parser("agregar", allow_abbrev=False).add_argument("--json-file", required=True)
+    sub.add_parser("listar", allow_abbrev=False)
     for nombre in ("confirmar", "descartar"):
-        sub.add_parser(nombre).add_argument("n", type=int)
+        sub.add_parser(nombre, allow_abbrev=False).add_argument("n", type=int)
     a = p.parse_args(argv)
     ahora = datetime.now(ZONA)
     try:

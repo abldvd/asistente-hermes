@@ -132,7 +132,7 @@ def ejecutar(perfil_nombre: str, prompt: str, explicito: bool,
 
 def main(argv: list[str] | None = None) -> int:
     sys.stdout.reconfigure(encoding="utf-8")
-    p = argparse.ArgumentParser(prog="asistente.claude_tope")
+    p = argparse.ArgumentParser(prog="asistente.claude_tope", allow_abbrev=False)
     p.add_argument("--perfil", required=True)
     p.add_argument("--explicito", action="store_true",
                    help="el usuario lo pidió expresamente (permite dato de uso desfasado)")

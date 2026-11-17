@@ -21,8 +21,18 @@ _BLOQUEO = re.compile(
     r"|token_(seria|personal)|client_secret"
     r"|from\s+asistente(\.\w+)*\s+import|import\s+asistente",
     re.IGNORECASE)
-_CONFIRMADO = re.compile(r"--confirmado\b")
+# En código propio (execute_code o python -c) ni siquiera se permite nombrar estas cosas.
+_CODIGO_PROHIBIDO = re.compile(r"asistente|importlib|__import__|secretos|secr['\"]|google|exec\(|eval\(",
+                               re.IGNORECASE)
+_PYTHON_C = re.compile(r"python(\.exe)?[\"']?\s+(-\w+\s+)*-c\b", re.IGNORECASE)
+_CONFIRMADO = re.compile(r"--conf\w*", re.IGNORECASE)  # incluye abreviaturas
 _CONFIRMAR_SUG = re.compile(r"asistente\.sugerencias\s+confirmar\s+(\d+)")
+# Una única invocación limpia de una CLI del asistente, sin encadenar ni redirigir nada.
+_UNA_INVOCACION = re.compile(
+    r'^\s*(?:"?[A-Za-z]:[\\/][^"\s;&|<>`$]*python(?:\.exe)?"?|python(?:\.exe)?|PY)'
+    r"\s+-m\s+asistente\.(?:google\.(?:gmail|calendario)|sugerencias)\s+"
+    r"""[^;&|<>`$\r\n^%]*$""")
+_MAX_COMANDO = 1000
 _TERMINAL = {"terminal", "shell", "bash", "powershell"}
 
 
@@ -51,26 +61,39 @@ def _bloquear(motivo: str) -> dict:
     return {"action": "block", "message": motivo}
 
 
+def _visible(texto: str) -> str:
+    """El comando tal cual, con los caracteres de control a la vista."""
+    return "".join(c if c.isprintable() or c == " " else "\\x" + f"{ord(c):02x}" for c in texto)
+
+
 def decidir(entrada: dict) -> dict | None:
     herramienta = str(entrada.get("tool_name") or "")
     texto = "\n".join(_textos(entrada.get("tool_input") or {}))
     if _BLOQUEO.search(texto):
         return _bloquear("Acceso directo a credenciales o a la API de Google no permitido. "
                          "Usa las CLI del asistente (skill correo-calendario).")
+    es_codigo = herramienta not in _TERMINAL or _PYTHON_C.search(texto)
+    if es_codigo and _CODIGO_PROHIBIDO.search(texto):
+        return _bloquear("Código propio que toca el asistente, Google o secretos no permitido; usa las CLI.")
     confirmado = _CONFIRMADO.search(texto)
     sug = _CONFIRMAR_SUG.search(texto)
     if not (confirmado or sug):
         return None
     if herramienta not in _TERMINAL:
         return _bloquear("Las acciones con confirmación solo se pueden lanzar como comando de terminal.")
+    comando = texto.strip()
+    if len(comando) > _MAX_COMANDO or comando.count("asistente.") != 1 or not _UNA_INVOCACION.match(comando):
+        return _bloquear("Una acción con confirmación debe ser UNA sola invocación de la CLI del asistente, "
+                         "sin encadenar, redirigir ni otros comandos, y de menos de 1000 caracteres.")
+    if confirmado and confirmado.group(0).lower() != "--confirmado":
+        return _bloquear("Escribe la opción completa --confirmado.")
+    partes = []
     if sug:
-        mensaje = f"¿Crear este evento en el calendario?\n{_detalle_sugerencia(int(sug.group(1)))}"
-    else:
-        comando = texto.strip()
-        i = comando.find("-m asistente.")
-        mensaje = "Acción que requiere tu aprobación:\n" + (comando[i + 3:] if i >= 0 else comando)[:600]
-    clave = hashlib.sha256(texto.encode("utf-8")).hexdigest()[:16]
-    return {"action": "approve", "message": mensaje, "rule_key": f"confirmado:{clave}"}
+        partes.append(f"¿Crear este evento en el calendario?\n{_detalle_sugerencia(int(sug.group(1)))}")
+    partes.append(f"Comando exacto:\n{_visible(comando)}")
+    clave = hashlib.sha256(comando.encode("utf-8")).hexdigest()[:16]
+    return {"action": "approve", "message": "Acción que requiere tu aprobación.\n" + "\n\n".join(partes),
+            "rule_key": f"confirmado:{clave}"}
 
 
 def main() -> int:

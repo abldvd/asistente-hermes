@@ -62,3 +62,61 @@ def test_main_falla_cerrado(monkeypatch, capsys):
 def test_main_sin_salida_si_pasa(monkeypatch, capsys):
     monkeypatch.setattr("sys.stdin", io.StringIO(json.dumps(_e("terminal", command="dir"))))
     assert hook_confirmacion.main() == 0 and capsys.readouterr().out == ""
+
+
+@pytest.mark.parametrize("cmd", [
+    f"{GM} etiquetar --cuenta seria --ids a --quitar INBOX --conf",        # abreviatura
+    f"{GM} etiquetar --cuenta seria --ids a --quitar INBOX --confirm",
+])
+def test_abreviaturas_de_confirmado_tambien_piden_aprobacion_o_bloquean(cmd):
+    assert decidir(_e("terminal", command=cmd))["action"] in ("approve", "block")
+
+
+@pytest.mark.parametrize("cmd", [
+    f"{GM} buscar --cuenta seria --consulta x; {GM} etiquetar --cuenta seria --ids a --quitar INBOX --confirmado",
+    f"{GM} etiquetar --cuenta seria --ids a --quitar INBOX --confirmado & del x",
+    f"{GM} etiquetar --cuenta seria --ids a --quitar INBOX --confirmado | more",
+    f"{GM} etiquetar --cuenta seria --ids a --quitar INBOX --confirmado\n{GM} borrador --confirmado",
+    "python -m asistente.sugerencias confirmar 2 && python -m asistente.google.gmail etiquetar --confirmado",
+    f"{GM} etiquetar --cuenta seria --ids {'a,' * 600} --quitar INBOX --confirmado",  # demasiado largo
+])
+def test_encadenados_o_demasiado_largos_se_bloquean(cmd):
+    assert decidir(_e("terminal", command=cmd))["action"] == "block"
+
+
+def test_aprobacion_muestra_el_comando_completo():
+    cmd = f"{GM} etiquetar --cuenta personal --ids a,b,c --poner TRASH --confirmado"
+    assert cmd in decidir(_e("terminal", command=cmd))["message"]
+
+
+def test_sugerencia_muestra_detalle_y_comando(monkeypatch):
+    monkeypatch.setattr(hook_confirmacion, "_detalle_sugerencia", lambda n: "Cita X")
+    cmd = r"E:\asistente-hermes\.venv\Scripts\python.exe -m asistente.sugerencias confirmar 4"
+    m = decidir(_e("terminal", command=cmd))["message"]
+    assert "Cita X" in m and cmd in m
+
+
+@pytest.mark.parametrize("tool,args", [
+    ("execute_code", {"code": "import importlib; m = importlib.import_module('asist' + 'ente')"}),
+    ("execute_code", {"code": "__import__('asistente')"}),
+    ("execute_code", {"code": "open('E:/asistente-hermes/secr' + 'etos/x')"}),
+    ("terminal", {"command": "python -c \"import importlib\""}),
+    ("terminal", {"command": "python -c \"__import__('os')\""}),
+])
+def test_evasiones_por_codigo_se_bloquean(tool, args):
+    assert decidir(_e(tool, **args))["action"] == "block"
+
+
+def test_todas_las_cli_rechazan_abreviaturas(tmp_path, monkeypatch):
+    monkeypatch.setenv("ASISTENTE_SECRETOS", str(tmp_path))  # nunca tocar las cuentas reales
+    from asistente import claude_tope, compuerta, openrouter, sugerencias
+    from asistente.google import calendario, cuentas, gmail
+    for mod, argv in [(gmail, ["etiquetar", "--cuenta", "seria", "--ids", "a", "--quitar", "INBOX", "--conf"]),
+                      (calendario, ["borrar", "--cuenta", "seria", "--id", "x", "--conf"]),
+                      (sugerencias, ["listar", "--x"]),
+                      (cuentas, ["estado", "--x"]),
+                      (claude_tope, ["--perf", "web"]),
+                      (openrouter, ["--prompt", "f"]),
+                      (compuerta, ["--tar", "x"])]:
+        with pytest.raises(SystemExit):
+            mod.main(argv)

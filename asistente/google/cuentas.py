@@ -131,11 +131,11 @@ def autorizar(cuenta: str) -> str:
 
 def main(argv: list[str] | None = None) -> int:
     sys.stdout.reconfigure(encoding="utf-8")
-    p = argparse.ArgumentParser(prog="asistente.google.cuentas")
+    p = argparse.ArgumentParser(prog="asistente.google.cuentas", allow_abbrev=False)
     sub = p.add_subparsers(dest="cmd", required=True)
-    a = sub.add_parser("autorizar")
+    a = sub.add_parser("autorizar", allow_abbrev=False)
     a.add_argument("--cuenta", required=True, choices=CUENTAS)
-    sub.add_parser("estado")
+    sub.add_parser("estado", allow_abbrev=False)
     args = p.parse_args(argv)
     if args.cmd == "autorizar":
         try:

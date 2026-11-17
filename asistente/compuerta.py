@@ -83,7 +83,7 @@ def consultar(tarea: str, requiere_claude: bool = False) -> tuple[str, str]:
 
 def main(argv: list[str] | None = None) -> int:
     sys.stdout.reconfigure(encoding="utf-8")
-    p = argparse.ArgumentParser(prog="asistente.compuerta")
+    p = argparse.ArgumentParser(prog="asistente.compuerta", allow_abbrev=False)
     p.add_argument("--tarea", required=True)
     p.add_argument("--requiere-claude", action="store_true")
     p.add_argument("--hecho", action="store_true", help="marca la tarea como hecha hoy")

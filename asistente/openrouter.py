@@ -71,7 +71,7 @@ def preguntar(prompt: str, modelos: list[str] | None = None, timeout_s: int = 15
 
 def main(argv: list[str] | None = None) -> int:
     sys.stdout.reconfigure(encoding="utf-8")
-    p = argparse.ArgumentParser(prog="asistente.openrouter")
+    p = argparse.ArgumentParser(prog="asistente.openrouter", allow_abbrev=False)
     p.add_argument("--prompt-file", required=True, help="archivo dentro de estado\\openrouter")
     a = p.parse_args(argv)
     permitido = (estado_dir() / "openrouter").resolve()

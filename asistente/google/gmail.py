@@ -144,10 +144,10 @@ def borrador(svc, para: str, asunto: str, cuerpo: str, confirmado: bool) -> str:
 
 def main(argv: list[str] | None = None) -> int:
     sys.stdout.reconfigure(encoding="utf-8")
-    p = argparse.ArgumentParser(prog="asistente.google.gmail")
+    p = argparse.ArgumentParser(prog="asistente.google.gmail", allow_abbrev=False)
     sub = p.add_subparsers(dest="cmd", required=True)
     for nombre in ("buscar", "leer", "etiquetas", "etiquetar", "borrador"):
-        s = sub.add_parser(nombre)
+        s = sub.add_parser(nombre, allow_abbrev=False)
         s.add_argument("--cuenta", required=True, choices=CUENTAS)
         if nombre == "buscar":
             s.add_argument("--consulta", required=True)
