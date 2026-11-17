@@ -11,6 +11,7 @@ from __future__ import annotations
 import argparse
 import json
 import sys
+import unicodedata
 from datetime import datetime, timedelta
 from pathlib import Path
 
@@ -20,20 +21,40 @@ from asistente.google.cuentas import CuentaNoAutorizada, servicio, validar_cuent
 from asistente.google.gmail import ZONA
 
 _CLAVE = "sugerencias"
+_MAX_TITULO = 200
+
+
+def _estado() -> dict:
+    """{"siguiente": n, "items": [...]}; el contador nunca retrocede (los números no se reutilizan)."""
+    d = leer_json(_CLAVE, {})
+    if isinstance(d, list):  # formato antiguo
+        d = {"siguiente": max([s["n"] for s in d], default=0) + 1, "items": d}
+    return {"siguiente": int(d.get("siguiente", 1)), "items": list(d.get("items", []))}
+
+
+def _guardar(est: dict) -> None:
+    escribir_json(_CLAVE, est)
 
 
 def _vigentes(ahora: datetime) -> list[dict]:
-    todas = leer_json(_CLAVE, [])
-    vigentes = [s for s in todas if _dt(s["inicio"]) > ahora]
-    if len(vigentes) != len(todas):
-        escribir_json(_CLAVE, vigentes)
+    est = _estado()
+    vigentes = [s for s in est["items"] if _dt(s["inicio"]) > ahora]
+    if len(vigentes) != len(est["items"]):
+        _guardar({**est, "items": vigentes})
     return vigentes
+
+
+def _titulo_limpio(t) -> str:
+    """El título sale de un correo (dato no confiable): una línea, sin controles, acotado."""
+    t = unicodedata.normalize("NFKC", str(t or ""))
+    t = "".join(" " if unicodedata.category(c)[0] in "CZ" and c != " " else c for c in t)
+    return " ".join(t.split())[:_MAX_TITULO]
 
 
 def _normalizada(item: dict) -> dict | None:
     try:
         cuenta = validar_cuenta(item["cuenta"])
-        titulo = str(item["titulo"]).strip()
+        titulo = _titulo_limpio(item["titulo"])
         inicio = a_rfc3339(item["inicio"])
         fin = a_rfc3339(item["fin"]) if item.get("fin") else \
             (_dt(inicio) + timedelta(hours=1)).isoformat(timespec="seconds")
@@ -48,7 +69,7 @@ def _normalizada(item: dict) -> dict | None:
 def agregar(items: list[dict], ahora: datetime) -> list[dict]:
     actuales = _vigentes(ahora)
     vistas = {(_normalizar(s["titulo"]), s["inicio"]) for s in actuales}
-    n = max([s["n"] for s in actuales], default=0)
+    siguiente = _estado()["siguiente"]
     nuevas = []
     for item in items:
         s = _normalizada(item) if isinstance(item, dict) else None
@@ -62,11 +83,11 @@ def agregar(items: list[dict], ahora: datetime) -> list[dict]:
                 continue
         except CuentaNoAutorizada:
             pass  # se guarda igual; al confirmar se informará del problema
-        n += 1
-        s.update(n=n, creada=ahora.isoformat(timespec="seconds"))
+        s.update(n=siguiente, creada=ahora.isoformat(timespec="seconds"))
+        siguiente += 1
         vistas.add(clave)
         nuevas.append(s)
-    escribir_json(_CLAVE, actuales + nuevas)
+    _guardar({"siguiente": siguiente, "items": actuales + nuevas})
     return nuevas
 
 
@@ -87,13 +108,19 @@ def confirmar(n: int, ahora: datetime) -> dict:
     s, actuales = _buscar(n, ahora)
     ev = crear(servicio(s["cuenta"], "calendar"), s["titulo"], s["inicio"], s["fin"],
                descripcion="Sugerido a partir de un correo por el asistente.", confirmado=True)
-    escribir_json(_CLAVE, [x for x in actuales if x["n"] != n])
+    _guardar({**_estado(), "items": [x for x in actuales if x["n"] != n]})
     return {**ev, "cuenta": s["cuenta"]}
+
+
+def detalle(n: int, ahora: datetime) -> str:
+    """Texto que ve el usuario al aprobar `confirmar N` (liga la aprobación al contenido real)."""
+    s, _ = _buscar(n, ahora)
+    return f"{s['titulo']} — {s['inicio']} (cuenta {s['cuenta']})"
 
 
 def descartar(n: int, ahora: datetime | None = None) -> None:
     s, actuales = _buscar(n, ahora or datetime.now(ZONA))
-    escribir_json(_CLAVE, [x for x in actuales if x["n"] != n])
+    _guardar({**_estado(), "items": [x for x in actuales if x["n"] != n]})
 
 
 def main(argv: list[str] | None = None) -> int:

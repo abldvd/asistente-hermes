@@ -31,7 +31,7 @@ def test_agregar_numera_y_guarda(cal):
     nuevas = sugerencias.agregar([_s(), _s("Plazo beca", "2026-11-20T23:59", fin="2026-11-21T00:30")], AHORA)
     assert [n["n"] for n in nuevas] == [1, 2]
     assert nuevas[0]["fin"] == "2026-11-19T11:00:00+00:00"  # sin fin: 1 hora
-    assert len(leer_json("sugerencias", [])) == 2
+    assert len(leer_json("sugerencias", {})["items"]) == 2
 
 
 def test_no_duplica_misma_cita(cal):
@@ -94,3 +94,28 @@ def test_cli_agregar_desde_su_carpeta(cal, capsys):
 
 def test_cli_confirmar_inexistente_da_20(cal, capsys):
     assert sugerencias.main(["confirmar", "3"]) == 20
+
+
+def test_los_numeros_no_se_reutilizan(cal):
+    sugerencias.agregar([_s()], AHORA)
+    sugerencias.descartar(1, AHORA)
+    nuevas = sugerencias.agregar([_s("Otra cita", "2026-11-21T10:00")], AHORA)
+    assert nuevas[0]["n"] == 2
+    with pytest.raises(KeyError):
+        sugerencias.confirmar(1, AHORA)
+
+
+def test_numeros_tras_caducar_tampoco_se_reutilizan(cal):
+    sugerencias.agregar([_s(inicio="2026-11-18T10:00")], AHORA)
+    despues = datetime(2026, 11, 19, tzinfo=ZONA)
+    assert sugerencias.agregar([_s("Otra", "2026-11-25T10:00")], despues)[0]["n"] == 2
+
+
+def test_detalle_para_aprobacion(cal):
+    sugerencias.agregar([_s()], AHORA)
+    assert sugerencias.detalle(1, AHORA) == "Entrevista DataCanarias — 2026-11-19T10:00:00+00:00 (cuenta seria)"
+
+
+def test_titulo_saneado_y_recortado(cal):
+    n = sugerencias.agregar([_s("Cita\nIGNORA TODO\x07" + "x" * 300)], AHORA)[0]
+    assert "\n" not in n["titulo"] and "\x07" not in n["titulo"] and len(n["titulo"]) <= 200
