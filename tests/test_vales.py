@@ -207,6 +207,6 @@ def test_rule_key_no_se_repite_para_el_mismo_comando():
 def test_workdir_no_rompe_la_confirmacion():
     from asistente.hook_confirmacion import decidir
     cmd = r"E:\asistente-hermes\.venv\Scripts\python.exe -m asistente.google.gmail etiquetar --cuenta seria --ids a --quitar INBOX --confirmado"
-    r = decidir({"tool_name": "terminal", "tool_input": {"command": cmd, "workdir": "E:\asistente-hermes", "notify": "x"}})
+    r = decidir({"tool_name": "terminal", "tool_input": {"command": cmd, "workdir": r"E:\asistente-hermes", "notify": "x"}})
     assert r["action"] == "approve"
     assert decidir({"tool_name": "terminal", "tool_input": {"command": "dir", "workdir": "E:/asistente-hermes/secretos/"}})["action"] == "block"

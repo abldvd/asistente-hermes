@@ -210,3 +210,11 @@ def test_valor_mostrado_recortado_lleva_marca():
     cal = r"E:\asistente-hermes\.venv\Scripts\python.exe -m asistente.google.calendario"
     m = decidir(_e("terminal", command=f'{cal} crear --cuenta personal --titulo "{"x" * 200}" --inicio 2026-11-20T10:00 --fin 2026-11-20T11:00 --confirmado'))["message"]
     assert "…" in m.splitlines()[0]
+
+
+@pytest.mark.parametrize("wd,accion", [(None, "approve"), (r"E:\asistente-hermes", "approve"), ("E:/asistente-hermes/", "approve"),
+                                        (r"C:\Users\x\falso", "block"), (r"E:\asistente-hermes\docs", "block")])
+def test_workdir_de_las_cli_solo_el_repo(wd, accion):
+    cmd = f"{GM} etiquetar --cuenta seria --ids a --quitar INBOX --confirmado"
+    ti = {"command": cmd, **({"workdir": wd} if wd else {})}
+    assert decidir(_e("terminal", **ti))["action"] == accion

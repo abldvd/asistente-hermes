@@ -13,6 +13,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
 import re
 import secrets
 import shlex
@@ -44,6 +45,7 @@ _INVOCACION_ASISTENTE = re.compile(
 # "asistente" como módulo (no la carpeta E:\asistente-hermes), tras quitar lo que cmd ignora.
 _MENCION = re.compile(r"asistente(?!-hermes)", re.IGNORECASE)
 _OFUSCACION = re.compile(r'[\^`]|""')
+_REPO = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
 _MAX_COMANDO = 1000
 _OPCIONES_CON = {"--confirmado", "--consulta"}  # opciones reales que empiezan por --con
 _TERMINAL = {"terminal", "shell", "bash", "powershell"}
@@ -139,6 +141,10 @@ def decidir(entrada: dict) -> dict | None:
         return _bloquear("Código propio que toca el asistente, Google o secretos no permitido; usa las CLI.")
     if herramienta in _TERMINAL and _MENCION.search(_OFUSCACION.sub("", texto)):
         # Falla cerrado: todo lo que toque el asistente es una invocación limpia, sin trucos de shell.
+        wd = entrada_tool.get("workdir") if isinstance(entrada_tool, dict) else None
+        if wd and os.path.normcase(os.path.normpath(str(wd))) != os.path.normcase(_REPO):
+            # Otro directorio podría contener un paquete `asistente` falso que `python -m` importaría.
+            return _bloquear("Las CLI del asistente solo se lanzan desde E:\\asistente-hermes (o sin workdir).")
         comando = texto.strip()
         if any(not (c.isprintable() or c == " ") for c in comando):
             return _bloquear("Comando con caracteres de control no permitido.")
